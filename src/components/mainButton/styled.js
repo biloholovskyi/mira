@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const Button = styled.button`
+  font-family: 'SemiBold';
   font-style: normal;
   font-weight: 600;
   font-size: 18px;

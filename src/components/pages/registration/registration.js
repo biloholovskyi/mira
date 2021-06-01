@@ -7,10 +7,10 @@ import MainInput from '../../mainInput/mainInput';
 
 import {LoginWrap, Caption, LoginForm} from './style';
 
-import image from '../../../assets/images/login_image.jpg';
+import image from '../../../assets/images/r_image.png';
 import logo from '../../../assets/icon/logo-white.svg';
 
-const Login = () => {
+const Registation = () => {
   const history = useHistory();
 
   return (
@@ -23,37 +23,19 @@ const Login = () => {
       </div>
       <div className="right">
 
-      <Caption>
+        <Caption>
 
-        <span>Еще нет аккаунта?</span>
-
-        <MainButton
-          func={() => history.push('/registration')}
-          text={'Зарегистрироваться'}
-        />
-      </Caption>
-
-        <LoginForm>
-          <h3>Войти в систему</h3>
-
-          <MainInput
-            label={'Email'}
-            type={'text'}
-            name={'mail'}
-          />
-
-          <MainInput
-            label={'Пароль'}
-            type={'password'}
-            name={'pass'}
-            forgotPass={true}
-          />
+          <span>Уже есть аккаунт?</span>
 
           <MainButton
-            type={'submit'}
+            func={() => history.push('/login')}
             text={'Войти'}
-            colorBg={true}
           />
+        </Caption>
+
+        <LoginForm>
+
+          <h3>Зарегистрироваться</h3>
 
         </LoginForm>
 
@@ -62,4 +44,4 @@ const Login = () => {
   )
 }
 
-export default Login;
+export default Registation;
