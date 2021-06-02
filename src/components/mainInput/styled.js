@@ -5,7 +5,7 @@ const Wrapper = styled.div`
   align-items: flex-start;
   flex-direction: column;
   margin-bottom: 32px;
-  
+  width: 100%;
   .labelWrap {
     width: 100%;
     display: flex;

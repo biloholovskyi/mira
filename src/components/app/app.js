@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Redirect, Route, Switch} from "react-router";
 
 import Login from '../pages/login/login';
-import Registation from '../pages/registration/registration'
+import Registration from '../pages/registration/registration'
 
 import './App.css'
 
@@ -26,7 +26,7 @@ const App = () => {
       </Route>
 
       <Route path='/registration' exact>
-        <Registation/>
+        <Registration/>
       </Route>
 
     </Switch>

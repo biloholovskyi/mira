@@ -84,6 +84,31 @@ const LoginForm = styled.form`
     margin-bottom: 32px;
   }
   
+  .double {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    
+    & div:first-child {
+      margin-right: 24px;
+    }
+    
+  }
+  
+  .btn_section {
+    display: flex;
+    align-items: center;
+    button {
+      margin-right: 24px;
+    }
+    
+    p {
+      font-size: 15px;
+      line-height: 22px;
+      color: #9E9E9E;
+    }
+  }
+  
 `
 
 
