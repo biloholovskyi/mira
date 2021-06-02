@@ -14,7 +14,7 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  width: ${props => props.width ? `${props.width}px` : 'auto'};
+  width: ${props => props.width ? `${props.width}` : 'auto'};
   text-decoration: ${props => props.simple ? 'underline' : 'none'};
 `
 
