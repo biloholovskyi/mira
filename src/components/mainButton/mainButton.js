@@ -2,7 +2,7 @@ import React from "react";
 
 import { Button } from "./styled";
 
-const MainButton = ({text, func = () => null, width, type = 'button', classList, colorBg =  false}) => {
+const MainButton = ({text, func = () => null, width, type = 'button', classList, colorBg =  false, simple = false}) => {
   return (
     <Button
       onClick={() => func()}
@@ -10,6 +10,7 @@ const MainButton = ({text, func = () => null, width, type = 'button', classList,
       type={type}
       className={classList}
       colorBg={colorBg}
+      simple={simple}
     >
       {text}
     </Button>

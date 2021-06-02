@@ -21,6 +21,7 @@ const Login = () => {
         </NavLink>
         <img src={image} alt="images"/>
       </div>
+
       <div className="right">
 
       <Caption>
@@ -53,11 +54,13 @@ const Login = () => {
             type={'submit'}
             text={'Войти'}
             colorBg={true}
+            func={() => history.push('/authorizationCode')}
           />
 
         </LoginForm>
 
       </div>
+
     </LoginWrap>
   )
 }

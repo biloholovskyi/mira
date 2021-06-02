@@ -84,6 +84,7 @@ const Registration = () => {
               type={'submit'}
               text={'Зарегистрироваться'}
               colorBg={true}
+              func={() => history.push('/temporaryPassword')}
             />
 
             <p>Нажимая «Отправить», вы соглашаетесь предоставить Вашу информацию ООО "МИРА" на обработку.</p>
