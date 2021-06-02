@@ -15,8 +15,9 @@
   min-height: calc(100vh - 90px);
 }
 
-@media (min-width: 1200px) {
-  .container {
-    max-width: 1170px;
-  }
+.main_container {
+  margin-left: 280px;
+  padding: 64px;
+  background-color: #121212;
+  min-height: 100vh;
 }
