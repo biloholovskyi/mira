@@ -12,7 +12,7 @@ const LoginWrap = styled.div`
     flex: 1;
     max-width: 460px;
     position: relative;
-    
+    z-index: 55;
     img {
       height: 100%;
       width: 100%;
