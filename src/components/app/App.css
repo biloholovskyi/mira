@@ -21,3 +21,14 @@
   background-color: #121212;
   min-height: 100vh;
 }
+
+.recharts-cartesian-axis-line {
+    visibility: hidden!important;
+}
+.yAxis .recharts-cartesian-axis-ticks g:first-child  {
+  visibility: hidden!important;
+}
+
+.recharts-cartesian-axis-tick-line {
+  visibility: hidden!important;
+}

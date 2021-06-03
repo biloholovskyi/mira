@@ -55,6 +55,7 @@ const TemporaryPassword = () => {
             type={'submit'}
             text={'Войти'}
             colorBg={true}
+            func={() => history.push('/dashboard')}
           />
 
         </LoginForm>

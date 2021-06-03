@@ -1,9 +1,43 @@
 import React from "react";
 
-import {TopBlock, Balance, RefLink, MyIncome} from './styled';
+import LinesChart from './linesChart/linesChart'
 import MainButton from "../../mainButton/mainButton";
 
+import {TopBlock, Balance, RefLink, MyIncome} from './styled';
+
 const Dashboard = () => {
+
+  const data = [
+    {
+      date: "3 июня",
+      mrc: 400
+    },
+    {
+      date: "4 июня",
+      mrc: 600
+    },
+    {
+      date: "5 июня",
+      mrc: 800
+    },
+    {
+      date: "6 июня",
+      mrc: 700
+    },
+    {
+      date: "7 июня",
+      mrc: 950
+    },
+    {
+      date: "8 июня",
+      mrc: 450
+    },
+    {
+      date: "9 июня",
+      mrc: 500
+    }
+  ];
+
   return (
     <div className={'main_container'}>
       <TopBlock>
@@ -43,6 +77,12 @@ const Dashboard = () => {
 
       <MyIncome>
         <div className="small_title">Мои доходы</div>
+
+        <div className="lineChart">
+          <LinesChart
+            data={data}
+          />
+        </div>
 
       </MyIncome>
 

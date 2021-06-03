@@ -50,6 +50,7 @@ const AuthorizationCode = () => {
               type={'submit'}
               text={'Подтвердить'}
               colorBg={true}
+              func={() => history.push('/dashboard')}
             />
 
             <p>
