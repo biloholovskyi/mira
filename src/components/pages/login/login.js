@@ -39,8 +39,9 @@ const Login = () => {
 
           <MainInput
             label={'Email'}
-            type={'text'}
+            type={'email'}
             name={'mail'}
+            required={true}
           />
 
           <MainInput
@@ -48,6 +49,7 @@ const Login = () => {
             type={'password'}
             name={'pass'}
             forgotPass={true}
+            required={true}
           />
 
           <MainButton

@@ -73,11 +73,34 @@ const MyIncome = styled.div`
     color: #FFFFFF;
     margin-bottom: 12px;
   }
+.lineChart {
+  padding-right: 32px;
+  margin-right: 32px;
+  border-right: 1px solid #424242;
+  width: 50%;
+}
+`
+
+const ChartBtn = styled.button`
+  font-family: 'Regular';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.72);
+  padding: 8px 12px;
+  background: #424242;
+  border-radius: 8px;
+  border: none;
+  margin-right: 8px;
+  margin-bottom: 33px;
+  cursor: pointer;
 `
 
 export {
   TopBlock,
   Balance,
   RefLink,
-  MyIncome
+  MyIncome,
+  ChartBtn
 }

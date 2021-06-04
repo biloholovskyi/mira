@@ -1,25 +1,29 @@
 import React from "react";
 import moment from 'moment';
+
 import {
   AreaChart,
   Area,
   XAxis,
   YAxis,
   CartesianGrid,
-  Tooltip
+  Tooltip,
+  Line
 } from "recharts";
+
+import {ChartBtn} from '../styled';
 
 const LinesChart = ({data}) => {
 
   return (
    <>
-     {/*<button>За неделю</button>*/}
-     {/*<button>За месяц</button>*/}
-     {/*<button>За год</button>*/}
-     {/*<button>За все время</button>*/}
+     <ChartBtn>За неделю</ChartBtn>
+     <ChartBtn>За месяц</ChartBtn>
+     <ChartBtn>За год</ChartBtn>
+     <ChartBtn>За все время</ChartBtn>
 
      <AreaChart
-       width={452}
+       width={522}
        height={262}
        data={data}
        margin={{
@@ -37,11 +41,13 @@ const LinesChart = ({data}) => {
          </linearGradient>
        </defs>
 
-       <CartesianGrid vertical={false} stroke={'#424242'} />
-       <XAxis dataKey="date" tick={{ fontSize: '12px'}}/>
-       <YAxis tickCount={6}/>
+       <CartesianGrid vertical={false} stroke={'#424242'} width={'500'}/>
+       <XAxis dataKey="date" tick={{ fontSize: '12px', fill: '#C1C1C1'}} allowDataOverflow interval={0}/>
+       <YAxis tickCount={6}  tick={{ fontSize: '12px', fill: '#C1C1C1'}} allowDataOverflow domain={[400, 1000]} orientation={'right'} scale="linear"/>
        <Tooltip cursor={{ stroke: 'transparent' }}/>
        <Area type="monotone" dataKey="mrc" stroke="#36C136" fill="url(#colorUv)"/>
+       <line orientation="bottom" width="462" height="30" type="category" x="0" y="232"
+              stroke="#666" fill="none" x1="0" y1="245" x2="465" y2="245" />
      </AreaChart>
    </>
   )

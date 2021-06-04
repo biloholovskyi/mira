@@ -25,8 +25,12 @@
 .recharts-cartesian-axis-line {
     visibility: hidden!important;
 }
-.yAxis .recharts-cartesian-axis-ticks g:first-child  {
-  visibility: hidden!important;
+/*.yAxis .recharts-cartesian-axis-ticks g:first-child  {*/
+/*  visibility: hidden!important;*/
+/*}*/
+
+.xAxis .recharts-cartesian-axis-ticks {
+  transform: translate(19px,13px);
 }
 
 .recharts-cartesian-axis-tick-line {

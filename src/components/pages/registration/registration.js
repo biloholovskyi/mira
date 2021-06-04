@@ -48,20 +48,23 @@ const Registration = () => {
               label={'Имя'}
               type={'text'}
               name={'firstName'}
+              required={true}
             />
 
             <MainInput
               label={'Фамилия'}
               type={'text'}
               name={'lastName'}
+              required={true}
             />
 
           </div>
 
           <MainInput
             label={'Почта'}
-            type={'text'}
+            type={'email'}
             name={'mail'}
+            required={true}
           />
 
           <MainInput

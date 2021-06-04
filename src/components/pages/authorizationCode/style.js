@@ -7,19 +7,20 @@ const LoginWrap = styled.div`
   max-height: 100vh;
   display: flex;
   background-color: #121212;
-  
+
   .left {
     flex: 1;
     max-width: 460px;
     position: relative;
     z-index: 55;
+
     img {
       height: 100%;
       width: 100%;
       object-fit: cover;
       object-position: center;
     }
-    
+
     a {
       display: block;
       position: absolute;
@@ -27,14 +28,15 @@ const LoginWrap = styled.div`
       left: 39px;
       max-width: 146px;
       height: 32px;
+
       .logo {
         object-position: center;
         object-fit: contain;
       }
     }
-    
+
   }
-  
+
   .right {
     flex: 2;
     display: flex;
@@ -43,7 +45,7 @@ const LoginWrap = styled.div`
     justify-content: center;
     position: relative;
   }
-  
+
 `
 
 const Caption = styled.div`
@@ -58,6 +60,7 @@ const Caption = styled.div`
   top: 0;
   max-width: 660px;
   margin-left: -3px;
+
   a {
     font-style: normal;
     font-weight: normal;
@@ -68,6 +71,7 @@ const Caption = styled.div`
     text-decoration: none;
     display: flex;
     align-items: center;
+
     img {
       width: 18px;
       height: 18px;
@@ -75,7 +79,7 @@ const Caption = styled.div`
       margin-right: 8px;
     }
   }
-  
+
 `
 
 const LoginForm = styled.form`
@@ -84,7 +88,7 @@ const LoginForm = styled.form`
   width: 100%;
   max-width: 660px;
   margin: 0 auto;
-  
+
   h3 {
     font-family: 'Bold';
     font-style: normal;
@@ -94,10 +98,11 @@ const LoginForm = styled.form`
     color: #FFFFFF;
     margin-bottom: 16px;
   }
-  
+
   .btn_section {
     display: flex;
     align-items: center;
+
     p {
       display: flex;
       align-items: center;
@@ -106,12 +111,24 @@ const LoginForm = styled.form`
       font-size: 16px;
       line-height: 22px;
       color: #9E9E9E;
-      button {
+
+      a {
         margin-left: 5px;
+        font-family: 'Regular';
+        font-style: normal;
+        font-size: 16px;
+        line-height: 22px;
+        color: #fff;
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        text-decoration: underline;
       }
     }
   }
-  
+
 `
 
 const SmallDesc = styled.p`
@@ -126,6 +143,7 @@ const CodeBlock = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 36px;
+
   .border {
     background: #FFFFFF;
     border-radius: 1000px;
@@ -135,7 +153,7 @@ const CodeBlock = styled.div`
   }
 `
 
-const CodeItem = styled.div`
+const CodeItem = styled.input`
   width: 48px;
   height: 48px;
   background: #424242;
@@ -148,6 +166,8 @@ const CodeItem = styled.div`
   align-items: center;
   justify-content: center;
   color: #FFFFFF;
+  border: none;
+  padding-left: 20px;
 `
 
 export {

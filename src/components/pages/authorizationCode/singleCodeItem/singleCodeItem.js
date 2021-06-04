@@ -2,9 +2,9 @@ import React from "react";
 
 import {CodeItem} from '../style';
 
-const SingleCodeItem = ({number}) => {
+const SingleCodeItem = () => {
   return (
-    <CodeItem>{number}</CodeItem>
+    <CodeItem type={'text'} name={'code'} maxLength={'1'} required autoComplete={'off'}/>
   )
 }
 

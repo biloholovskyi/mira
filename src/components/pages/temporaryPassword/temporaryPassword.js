@@ -49,6 +49,7 @@ const TemporaryPassword = () => {
             label={'Пароль'}
             type={'password'}
             name={'pass'}
+            required={true}
           />
 
           <MainButton

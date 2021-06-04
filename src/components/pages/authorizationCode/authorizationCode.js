@@ -35,13 +35,13 @@ const AuthorizationCode = () => {
             Введите код, что бы подтвердить свой аккаунт</SmallDesc>
 
           <CodeBlock>
-            <SingleCodeItem number={'1'}/>
-            <SingleCodeItem number={'3'}/>
-            <SingleCodeItem number={'4'}/>
+            <SingleCodeItem />
+            <SingleCodeItem />
+            <SingleCodeItem />
             <div className="border" />
-            <SingleCodeItem number={'2'}/>
-            <SingleCodeItem number={'4'}/>
-            <SingleCodeItem number={'1'}/>
+            <SingleCodeItem />
+            <SingleCodeItem />
+            <SingleCodeItem />
           </CodeBlock>
 
           <div className="btn_section">
@@ -55,13 +55,7 @@ const AuthorizationCode = () => {
 
             <p>
               Не пришел код?
-
-              <MainButton
-                type={'button'}
-                text={'Выслать код еще раз'}
-                simple={true}
-              />
-
+             <NavLink to={'#'}>Выслать код еще раз</NavLink>
             </p>
 
           </div>
