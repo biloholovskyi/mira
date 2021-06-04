@@ -11,7 +11,7 @@ const TopBlock = styled.div`
   }
   div {
     .small_title {
-      font-family: 'Regular';
+      font-family: 'TTInterfaces-Regular';
       font-size: 16px;
       line-height: 22px;
       color: #FFFFFF;
@@ -19,14 +19,14 @@ const TopBlock = styled.div`
     }
     .info {
       font-style: normal;
-      font-family: 'Bold';
+      font-family: 'TTInterfaces-Bold';
       font-size: 24px;
       line-height: 32px;
       color: #FFFFFF;
       margin-bottom: 40px;
       span {
         font-style: normal;
-        font-family: 'Bold';
+        font-family: 'TTInterfaces-Bold';
         font-size: 12px;
         line-height: 18px;
         color: #C1C1C1;
@@ -67,22 +67,30 @@ const MyIncome = styled.div`
   padding: 32px;
   .small_title {
     font-style: normal;
-    font-family: 'Bold';
+    font-family: 'TTInterfaces-Bold';
     font-size: 18px;
     line-height: 24px;
     color: #FFFFFF;
     margin-bottom: 12px;
   }
-.lineChart {
-  padding-right: 32px;
-  margin-right: 32px;
-  border-right: 1px solid #424242;
-  width: 50%;
-}
+  .charts_block {
+    display: flex;
+    align-items: center;
+    .lineChart {
+      padding-right: 32px;
+      margin-right: 32px;
+      border-right: 1px solid #424242;
+      width: 50%;
+    }
+    .pieChart {
+      width: 50%;
+    }
+  }
+
 `
 
 const ChartBtn = styled.button`
-  font-family: 'Regular';
+  font-family: 'TTInterfaces-Regular';
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
@@ -97,10 +105,22 @@ const ChartBtn = styled.button`
   cursor: pointer;
 `
 
+const PieItems = styled.span` 
+  display: flex;
+  align-items: center;
+  font-family: 'TTInterfaces-Regular';
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #FFFFFF!important;
+`
+
 export {
   TopBlock,
   Balance,
   RefLink,
   MyIncome,
-  ChartBtn
+  ChartBtn,
+  PieItems
 }

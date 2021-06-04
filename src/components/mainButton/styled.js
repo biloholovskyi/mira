@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Button = styled.button`
-  font-family: ${props => props.simple ? 'Regular' : 'SemiBold'};
+  font-family: ${props => props.simple ? 'TTInterfaces-Regular' : 'TTInterfaces-SemiBold'};
   font-style: normal;
   font-size: ${props => props.simple ? '16px' : '18px'};
   line-height: ${props => props.simple ? '22px' : '24px'};

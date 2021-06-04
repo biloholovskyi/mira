@@ -20,9 +20,13 @@ const HeaderWrap = styled.div`
   .logo {
     width: 109.73px;
     height: 24px;
-    object-fit: contain;
-    object-position: center;
     margin-bottom: 32px;
+    img {
+      width: 109.73px;
+      height: 24px;
+      object-fit: contain;
+      object-position: center;
+    }
   }
 
 `
@@ -45,14 +49,14 @@ const Photo = styled.img`
 `
 
 const Currency = styled.div`
-  font-family: 'Regular';
+  font-family: 'TTInterfaces-Regular';
   font-size: 14px;
   line-height: 20px;
   color: #9E9E9E;
 `
 
 const Name = styled.div`
-  font-family: 'SemiBold';
+  font-family: 'TTInterfaces-SemiBold';
   font-size: 16px;
   line-height: 22px;
   color: #FFFFFF;
@@ -67,11 +71,11 @@ const Information = styled.div`
     line-height: 18px;
     color: #FFFFFF;
     margin-bottom: 8px;
-    font-family: 'Regular';
+    font-family: 'TTInterfaces-Regular';
   }
   
   a {
-    font-family: 'Regular';
+    font-family: 'TTInterfaces-Regular';
     font-size: 12px;
     line-height: 18px;
     color: #9E9E9E;
@@ -94,7 +98,7 @@ const Navigation = styled.div`
     font-size: 16px;
     line-height: 22px;
     color: #9E9E9E;
-    font-family: 'SemiBold';
+    font-family: 'TTInterfaces-SemiBold';
     text-decoration: none;
     svg {
       width: 24px;
@@ -118,7 +122,7 @@ const Navigation = styled.div`
     width: 100%;
     height: 1px;
     margin: 8px 0;
-    background-color: #424242;
+    background-color: #424242; 
   }
 `
 

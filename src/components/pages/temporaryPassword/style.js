@@ -6,7 +6,7 @@ const LoginWrap = styled.div`
   min-height: 100vh;
   max-height: 100vh;
   display: flex;
-  background-color: #121212;
+  background-color: #121212; 
   
   .left {
     flex: 1;
@@ -86,7 +86,7 @@ const LoginForm = styled.form`
   margin: 0 auto;
   
   h3 {
-    font-family: 'Bold';
+    font-family: 'TTInterfaces-Bold';
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
@@ -102,12 +102,23 @@ const LoginForm = styled.form`
       display: flex;
       align-items: center;
       margin-left: 24px;
-      font-family: 'Regular';
+      font-family: 'TTInterfaces-Regular';
       font-size: 16px;
       line-height: 22px;
       color: #9E9E9E;
-      button {
+      a {
         margin-left: 5px;
+        font-family: 'TTInterfaces-Regular';
+        font-style: normal;
+        font-size: 16px;
+        line-height: 22px;
+        color: #fff;
+        background-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        text-decoration: underline;
       }
     }
   }
@@ -115,15 +126,26 @@ const LoginForm = styled.form`
   .send_again {
     display: flex;
     align-items: center;
-    font-family: 'Regular';
-    font-size: 16px;
-    line-height: 22px;
+    font-family: 'TTInterfaces-Regular';
+    font-size: 14px;
+    line-height: 20px;
     color: #fff;
     width: 100%;
     justify-content: flex-end;
     transform: translateY(22px);
-    button {
+    a {
       margin-left: 5px;
+      font-family: 'TTInterfaces-Regular';
+      font-style: normal;
+      font-size: 14px;
+      line-height: 20px;
+      color: #fff;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      text-decoration: underline;
     }
   }
   
@@ -134,7 +156,7 @@ const SmallDesc = styled.p`
   line-height: 22px;
   color: #9E9E9E;
   margin-bottom: 16px;
-  font-family: 'Regular';
+  font-family: 'TTInterfaces-Regular';
 `
 
 const CodeBlock = styled.div`
@@ -156,7 +178,7 @@ const CodeItem = styled.div`
   background: #424242;
   border-radius: 12px;
   margin-right: 8px;
-  font-family: 'SemiBold';
+  font-family: 'TTInterfaces-SemiBold';
   font-size: 18px;
   line-height: 24px;
   display: flex;

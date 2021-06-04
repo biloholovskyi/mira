@@ -75,7 +75,7 @@ const LoginForm = styled.form`
   margin: 0 auto;
   
   h3 {
-    font-family: 'Bold';
+    font-family: 'TTInterfaces-Bold';
     font-style: normal;
     font-weight: bold;
     font-size: 24px;

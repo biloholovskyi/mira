@@ -13,7 +13,7 @@ const Wrapper = styled.div`
     align-items: flex-start;
     margin-bottom: 12px;
     .label {
-      font-family: 'Bold';
+      font-family: 'TTInterfaces-Bold';
       font-style: normal;
       font-weight: bold;
       font-size: 14px;

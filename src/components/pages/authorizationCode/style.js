@@ -7,36 +7,7 @@ const LoginWrap = styled.div`
   max-height: 100vh;
   display: flex;
   background-color: #121212;
-
-  .left {
-    flex: 1;
-    max-width: 460px;
-    position: relative;
-    z-index: 55;
-
-    img {
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-
-    a {
-      display: block;
-      position: absolute;
-      top: 32px;
-      left: 39px;
-      max-width: 146px;
-      height: 32px;
-
-      .logo {
-        object-position: center;
-        object-fit: contain;
-      }
-    }
-
-  }
-
+  
   .right {
     flex: 2;
     display: flex;
@@ -90,7 +61,7 @@ const LoginForm = styled.form`
   margin: 0 auto;
 
   h3 {
-    font-family: 'Bold';
+    font-family: 'TTInterfaces-Bold';
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
@@ -107,14 +78,14 @@ const LoginForm = styled.form`
       display: flex;
       align-items: center;
       margin-left: 24px;
-      font-family: 'Regular';
+      font-family: 'TTInterfaces-Regular';
       font-size: 16px;
       line-height: 22px;
       color: #9E9E9E;
 
       a {
         margin-left: 5px;
-        font-family: 'Regular';
+        font-family: 'TTInterfaces-Regular';
         font-style: normal;
         font-size: 16px;
         line-height: 22px;
@@ -136,21 +107,13 @@ const SmallDesc = styled.p`
   line-height: 22px;
   color: #9E9E9E;
   margin-bottom: 32px;
-  font-family: 'Regular';
+  font-family: 'TTInterfaces-Regular';
 `
 
 const CodeBlock = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 36px;
-
-  .border {
-    background: #FFFFFF;
-    border-radius: 1000px;
-    width: 24px;
-    height: 1px;
-    margin: 0 16px;
-  }
 `
 
 const CodeItem = styled.input`
@@ -159,7 +122,7 @@ const CodeItem = styled.input`
   background: #424242;
   border-radius: 12px;
   margin-right: 8px;
-  font-family: 'SemiBold';
+  font-family: 'TTInterfaces-SemiBold';
   font-size: 18px;
   line-height: 24px;
   display: flex;
@@ -168,6 +131,21 @@ const CodeItem = styled.input`
   color: #FFFFFF;
   border: none;
   padding-left: 20px;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+`
+
+const Border = styled.div`
+    background: #FFFFFF;
+    border-radius: 1000px;
+    width: 24px;
+    height: 1px;
+    margin: 0 16px 0 4px;
 `
 
 export {
@@ -176,5 +154,6 @@ export {
   LoginForm,
   SmallDesc,
   CodeBlock,
-  CodeItem
+  CodeItem,
+  Border
 }

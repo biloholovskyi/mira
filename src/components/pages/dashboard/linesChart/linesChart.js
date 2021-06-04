@@ -12,6 +12,7 @@ import {
 } from "recharts";
 
 import {ChartBtn} from '../styled';
+import '../style.css';
 
 const LinesChart = ({data}) => {
 

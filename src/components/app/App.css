@@ -1,18 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;500;700&display=swap');
 
 * {
   margin: 0;
   padding: 0;
   outline: none;
   box-sizing: border-box;
-  font-family: 'Regular', sans-serif;
+  font-family: 'TTInterfaces-Regular', sans-serif;
   -webkit-font-smoothing: antialiased;
-}
-
-.bg-grey {
-  background-color: #f7f7f7;
-  padding: 50px 0;
-  min-height: calc(100vh - 90px);
 }
 
 .main_container {
@@ -20,19 +13,4 @@
   padding: 64px;
   background-color: #121212;
   min-height: 100vh;
-}
-
-.recharts-cartesian-axis-line {
-    visibility: hidden!important;
-}
-/*.yAxis .recharts-cartesian-axis-ticks g:first-child  {*/
-/*  visibility: hidden!important;*/
-/*}*/
-
-.xAxis .recharts-cartesian-axis-ticks {
-  transform: translate(19px,13px);
-}
-
-.recharts-cartesian-axis-tick-line {
-  visibility: hidden!important;
 }

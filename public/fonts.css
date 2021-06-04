@@ -1,19 +1,19 @@
 /*fonts*/
 
 @font-face {
-  font-family: 'Regular';
+  font-family: 'TTInterfaces-Regular';
   font-weight: 400;
-  src: local('Regular'), url(fonts/TTInterfaces-Regular.ttf) format('opentype');
+  src: local('TTInterfaces-Regular'), url(fonts/TTInterfaces-Regular.ttf) format('opentype');
 }
 
 @font-face {
-  font-family: 'SemiBold';
+  font-family: 'TTInterfaces-SemiBold';
   font-weight: 600;
-  src: local('SemiBold'), url(fonts/TTInterfaces-SemiBold.ttf) format('opentype');
+  src: local('TTInterfaces-SemiBold'), url(fonts/TTInterfaces-SemiBold.ttf) format('opentype');
 }
 
 @font-face {
-  font-family: 'Bold';
+  font-family: 'TTInterfaces-Bold';
   font-weight: 900;
-  src: local('Bold'), url(fonts/TTInterfaces-Bold.ttf) format('opentype');
+  src: local('TTInterfaces-Bold'), url(fonts/TTInterfaces-Bold.ttf) format('opentype');
 }

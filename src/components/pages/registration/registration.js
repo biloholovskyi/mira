@@ -1,15 +1,12 @@
 import React from 'react';
-import {NavLink} from "react-router-dom";
 import {useHistory} from "react-router";
 import ReCAPTCHA from "react-google-recaptcha"; // link on docs https://www.npmjs.com/package/react-google-recaptcha
 
 import MainButton from '../../mainButton/mainButton';
 import MainInput from '../../mainInput/mainInput';
+import LeftImageBlock from '../../leftImageBlock/leftImageBlock';
 
 import {LoginWrap, Caption, LoginForm} from './style';
-
-import image from '../../../assets/images/r_image.png';
-import logo from '../../../assets/icon/logo-white.svg';
 
 const Registration = () => {
   const history = useHistory();
@@ -20,18 +17,11 @@ const Registration = () => {
 
   return (
     <LoginWrap>
-      <div className="left">
-        <NavLink to='/'>
-          <img src={logo} alt="logo" className={'logo'}/>
-        </NavLink>
-        <img src={image} alt="images"/>
-      </div>
+      <LeftImageBlock/>
+
       <div className="right">
-
         <Caption>
-
           <span>Уже есть аккаунт?</span>
-
           <MainButton
             func={() => history.push('/login')}
             text={'Войти'}
@@ -39,11 +29,8 @@ const Registration = () => {
         </Caption>
 
         <LoginForm>
-
           <h3>Зарегистрироваться</h3>
-
           <div className="double">
-
             <MainInput
               label={'Имя'}
               type={'text'}
@@ -57,9 +44,7 @@ const Registration = () => {
               name={'lastName'}
               required={true}
             />
-
           </div>
-
           <MainInput
             label={'Почта'}
             type={'email'}
@@ -82,20 +67,15 @@ const Registration = () => {
           />,
 
           <div className="btn_section">
-
             <MainButton
               type={'submit'}
               text={'Зарегистрироваться'}
               colorBg={true}
               func={() => history.push('/temporaryPassword')}
             />
-
             <p>Нажимая «Отправить», вы соглашаетесь предоставить Вашу информацию ООО "МИРА" на обработку.</p>
-
           </div>
-
         </LoginForm>
-
       </div>
     </LoginWrap>
   )

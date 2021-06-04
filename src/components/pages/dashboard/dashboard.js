@@ -2,6 +2,7 @@ import React from "react";
 
 import LinesChart from './linesChart/linesChart'
 import MainButton from "../../mainButton/mainButton";
+import PieCharts from './pieCharts/pieCharts';
 
 import {TopBlock, Balance, RefLink, MyIncome} from './styled';
 
@@ -10,31 +11,45 @@ const Dashboard = () => {
   const data = [
     {
       date: "3 июня",
-      mrc: 400
+      mrc: 400,
+      value: 1300,
+      name: 'Дивиденды'
     },
     {
       date: "4 июня",
-      mrc: 600
+      mrc: 600,
+      value: 500,
+      name: 'Реферальные начисления'
     },
     {
       date: "5 июня",
-      mrc: 800
+      mrc: 800,
+      value: 200,
+      name: 'Карьерные инвестиции'
     },
     {
       date: "6 июня",
-      mrc: 700
+      mrc: 700,
+      value: 700,
+      name: 'Другое'
     },
     {
       date: "7 июня",
-      mrc: 950
+      mrc: 950,
+      value: 100,
+      name: 'Другое Другое'
     },
     {
       date: "8 июня",
-      mrc: 450
+      mrc: 450,
+      value: 1500,
+      name: 'инвестиции'
     },
     {
       date: "9 июня",
-      mrc: 500
+      mrc: 500,
+      value: 500,
+      name: 'еще что то'
     }
   ];
 
@@ -78,10 +93,21 @@ const Dashboard = () => {
       <MyIncome>
         <div className="small_title">Мои доходы</div>
 
-        <div className="lineChart">
-          <LinesChart
-            data={data}
-          />
+        <div className="charts_block">
+          <div className="lineChart">
+
+            <LinesChart
+              data={data}
+            />
+
+          </div>
+          <div className="pieChart">
+
+            <PieCharts
+              data={data}
+            />
+
+          </div>
         </div>
 
       </MyIncome>
