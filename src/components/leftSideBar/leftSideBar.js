@@ -1,13 +1,13 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 
-import {HeaderWrap, UserBlock, Photo, Name, Currency, Information, Navigation} from './styled';
+import {SideBarWrap, UserBlock, Photo, Name, Currency, Information, Navigation} from './styled';
 import logo from '../../assets/icon/logo-green.svg';
 import avatar from '../../assets/icon/avatar.svg';
 
 const LeftSideBar = () => {
   return (
-    <HeaderWrap>
+    <SideBarWrap>
       <NavLink className={'logo'} to={'/'}><img src={logo} alt="icon" /></NavLink>
 
       <UserBlock>
@@ -132,7 +132,7 @@ const LeftSideBar = () => {
         <NavLink to={'#'}>Пользовательское соглашение</NavLink>
         <NavLink to={'#'}>Политика конфиденциальности</NavLink>
       </Information>
-    </HeaderWrap>
+    </SideBarWrap>
   )
 }
 

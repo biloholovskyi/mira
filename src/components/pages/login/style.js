@@ -56,6 +56,24 @@ const LoginForm = styled.form`
     color: #FFFFFF;
     margin-bottom: 32px;
   }
+
+  .send_again {
+    display: flex;
+    align-items: center;
+    font-family: 'TTInterfaces-Regular';
+    font-size: 14px;
+    line-height: 20px;
+    color: #fff;
+    width: 100%;
+    justify-content: flex-end;
+    transform: translateY(22px);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  & div:nth-child(2){
+    margin-bottom: 10px;
+  }
   
 `
 

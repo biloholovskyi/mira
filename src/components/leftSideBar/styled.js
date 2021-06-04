@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const HeaderWrap = styled.div`
+const SideBarWrap = styled.div`
   width: 100%;
   min-width: 280px;
   max-width: 280px;
@@ -16,7 +16,7 @@ const HeaderWrap = styled.div`
   background-color: #212121;
   z-index: 50;
   padding: 32px 16px;
-
+  
   .logo {
     width: 109.73px;
     height: 24px;
@@ -127,7 +127,7 @@ const Navigation = styled.div`
 `
 
 export {
-  HeaderWrap,
+  SideBarWrap,
   UserBlock,
   Photo,
   Currency,

@@ -7,38 +7,25 @@ import '../style.css';
 
 const COLORS = ["#FF3F35", "#EAA904", "#049BED", "#2EC144"];
 
-//const RADIAN = Math.PI / 180;
-// const renderCustomizedLabel = ({
-//                                  cx,
-//                                  cy,
-//                                  midAngle,
-//                                  innerRadius,
-//                                  outerRadius,
-//                                  percent,
-//                                  index
-//                                }: any) => {
-//   const radius = innerRadius + (outerRadius - innerRadius) * 1.4;
-//   const x = cx + radius * Math.cos(-midAngle * RADIAN);
-//   const y = cy + radius * Math.sin(-midAngle * RADIAN);
-//
-//   return (
-//     <text
-//       x={x}
-//       y={y}
-//       fill="white"
-//       textAnchor={x > cx ? "start" : "end"}
-//       dominantBaseline="central"
-//     >
-//       {`${(percent * 100).toFixed(0)}%`}
-//     </text>
-//   );
-// };
-
 // выводим справа от диаграмы лейбл с инфо
-const renderLegend = (value: number, entry: any) => {
-  const { color } = entry;
-  return <PieItems style={{color}}>{value}</PieItems>
-};
+const renderLegend = (props) => {
+  const { payload } = props;
+  return (
+    <ul>
+      {
+        payload.map((entry, index) => (
+          <PieItems key={`item-${index}`}>
+            <div className="left">
+              <span style={{backgroundColor: entry.color}} />
+              {entry.value}
+            </div>
+            <div className="percent">{`${(entry.payload.percent * 100).toFixed(0)}%`}</div>
+          </PieItems>
+        ))
+      }
+    </ul>
+  );
+}
 
 const PieCharts = ({data}) => {
   return (
@@ -60,7 +47,7 @@ const PieCharts = ({data}) => {
           <Label fill={'#fff'} style={{fontSize: 28}} value="+123 456" position="center" />
           <Label fill={'#fff'} style={{fontSize: 12,  transform: `translateY(${25}px`}} value="+12.4%" position="center" />
         </Pie>
-        <Legend  verticalAlign={'middle'} align={'right'} iconSize={8} iconType={'circle'} formatter={renderLegend} layout={'vertical'} />
+        <Legend  verticalAlign={'middle'} align={'right'} iconSize={8} iconType={'circle'} content={renderLegend} layout={'vertical'} />
       </PieChart>
     </>
   );

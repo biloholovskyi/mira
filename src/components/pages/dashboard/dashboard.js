@@ -24,7 +24,7 @@ const Dashboard = () => {
     {
       date: "5 июня",
       mrc: 800,
-      value: 200,
+      value: 1200,
       name: 'Карьерные инвестиции'
     },
     {

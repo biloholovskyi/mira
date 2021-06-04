@@ -1,11 +1,12 @@
 import React from 'react';
-import {useHistory} from "react-router";
+import {Redirect, useHistory} from "react-router";
 
 import MainButton from '../../mainButton/mainButton';
 import MainInput from '../../mainInput/mainInput';
 import LeftImageBlock from '../../leftImageBlock/leftImageBlock';
 
 import {LoginWrap, Caption, LoginForm} from './style';
+import {NavLink} from "react-router-dom";
 
 const Login = () => {
   const history = useHistory();
@@ -31,11 +32,13 @@ const Login = () => {
             name={'mail'}
             required={true}
           />
+
+          <NavLink to={'/'} className={'send_again'}>Забыли пароль?</NavLink>
+
           <MainInput
             label={'Пароль'}
             type={'password'}
             name={'pass'}
-            forgotPass={true}
             required={true}
           />
           <MainButton

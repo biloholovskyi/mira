@@ -105,7 +105,7 @@ const ChartBtn = styled.button`
   cursor: pointer;
 `
 
-const PieItems = styled.span` 
+const PieItems = styled.li` 
   display: flex;
   align-items: center;
   font-family: 'TTInterfaces-Regular';
@@ -114,6 +114,35 @@ const PieItems = styled.span`
   font-size: 14px;
   line-height: 20px;
   color: #FFFFFF!important;
+  justify-content: space-between;
+  min-width: 240px;
+  list-style-type: none;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #424242;
+  .left {
+    display: flex;
+    align-items: center;
+    position: relative;
+    span {
+      width: 8px;
+      height: 8px;
+      margin-right: 6px;
+      border-radius: 50%;
+      position: absolute;
+      left: 0;
+    }
+    padding-left: 15px;
+  }
+  .percent {
+    font-family: 'TTInterfaces-Bold';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 20px;
+    color: #FFFFFF;
+  }
+  
 `
 
 export {
