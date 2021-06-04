@@ -45,7 +45,7 @@ const LinesChart = ({data}) => {
        <XAxis dataKey="date" tick={{ fontSize: '12px', fill: '#C1C1C1'}} allowDataOverflow interval={0}/>
        <YAxis tickCount={6}  tick={{ fontSize: '12px', fill: '#C1C1C1'}} allowDataOverflow domain={[400, 1000]} orientation={'right'} scale="linear"/>
        <Tooltip cursor={{ stroke: 'transparent' }}/>
-       <Area type="monotone" dataKey="mrc" stroke="#36C136" fill="url(#colorUv)"/>
+       <Area type="monotone" dataKey="mrc" stroke="#36C136" fill="url(#colorUv)"  type={'linear'}/>
        <line orientation="bottom" width="462" height="30" type="category" x="0" y="232"
               stroke="#666" fill="none" x1="0" y1="245" x2="465" y2="245" />
      </AreaChart>
