@@ -1,0 +1,65 @@
+.CircularProgressbar,
+#CircularProgressbarWithChildren {
+  vertical-align: middle;
+  width: 48px;
+  height: 48px;
+  max-width: 48px;
+}
+
+.tests div:first-child{
+  margin-top: 0;
+  left: 50%;
+  transform: translateX(-59%);
+  align-items: flex-end;
+  font-size: 10px;
+  top: 9px;
+  color: #9E9E9E;
+}
+
+.CircularProgressbar .CircularProgressbar-path {
+  stroke: #4BA499;
+  stroke-linecap: round;
+  -webkit-transition: stroke-dashoffset 0.5s ease 0s;
+  transition: stroke-dashoffset 0.5s ease 0s;
+}
+
+.CircularProgressbar .CircularProgressbar-trail {
+  stroke: #3B3B3B;
+  stroke-linecap: round;
+}
+
+.CircularProgressbar .CircularProgressbar-text {
+  fill: #ffffff;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 22px;
+  color: #FFFFFF;
+  dominant-baseline: middle;
+  text-anchor: middle;
+  transform: translateY(-5px);
+}
+
+.CircularProgressbar .CircularProgressbar-background {
+  fill: #d6d6d6;
+}
+
+.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-background {
+  fill: #3e98c7;
+}
+
+.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-text {
+  fill: #fff;
+}
+
+.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-path {
+  stroke: #fff;
+}
+
+.CircularProgressbar.CircularProgressbar-inverted .CircularProgressbar-trail {
+  stroke: transparent;
+}
+
+#CircularProgressbarWithChildren__children {
+  font-size: 10px;
+}

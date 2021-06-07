@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect, useHistory} from "react-router";
+import {useHistory} from "react-router";
 
 import MainButton from '../../mainButton/mainButton';
 import MainInput from '../../mainInput/mainInput';

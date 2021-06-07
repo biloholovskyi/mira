@@ -7,6 +7,7 @@ import AuthorizationCode from '../pages/authorizationCode/authorizationCode';
 import TemporaryPassword from '../pages/temporaryPassword/temporaryPassword';
 import Dashboard from '../pages/dashboard/dashboard';
 import LeftSideBar from "../leftSideBar/leftSideBar";
+import Settings from '../pages/settings/settings';
 
 import './App.css'
 
@@ -30,6 +31,7 @@ const App = () => {
         <Route path='/authorizationCode' exact component={AuthorizationCode} />
         <Route path='/temporaryPassword' exact component={TemporaryPassword} />
         <Route path='/dashboard' exact component={Dashboard} />
+        <Route path='/settings' exact component={Settings} />
       </Switch>
     </>
   )

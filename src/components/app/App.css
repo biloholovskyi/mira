@@ -8,6 +8,10 @@
   -webkit-font-smoothing: antialiased;
 }
 
+html, body {
+  background-color: #212121;
+}
+
 .main_container {
   margin-left: 280px;
   padding: 64px;

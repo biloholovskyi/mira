@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 
 import LinesChart from './linesChart/linesChart'
 import MainButton from "../../mainButton/mainButton";
 import PieCharts from './pieCharts/pieCharts';
+import ActiveProgram from './activeProgram/activeProgram';
 
-import {TopBlock, Balance, RefLink, MyIncome} from './styled';
+import {TopBlock, Balance, RefLink, MyIncome, ActivePrograms} from './styled';
 
 const Dashboard = () => {
 
@@ -85,6 +86,7 @@ const Dashboard = () => {
             type={'button'}
             text={'Скопировать ссылку'}
             width={'100%'}
+            func={() =>  navigator.clipboard.writeText('https://mira.ru/ref-1234567')}
           />
 
         </RefLink>
@@ -92,7 +94,6 @@ const Dashboard = () => {
 
       <MyIncome>
         <div className="small_title">Мои доходы</div>
-
         <div className="charts_block">
           <div className="lineChart">
 
@@ -109,9 +110,14 @@ const Dashboard = () => {
 
           </div>
         </div>
-
       </MyIncome>
 
+      <ActivePrograms>
+        <div className="small_title">Мои доходы</div>
+
+        <ActiveProgram/>
+
+      </ActivePrograms>
     </div>
   )
 }

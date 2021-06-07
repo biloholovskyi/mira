@@ -145,11 +145,23 @@ const PieItems = styled.li`
   
 `
 
+const ActivePrograms = styled.div`
+  .small_title {
+    font-style: normal;
+    font-family: 'TTInterfaces-Bold';
+    font-size: 18px;
+    line-height: 24px;
+    color: #FFFFFF;
+    margin-bottom: 12px;
+  }
+`
+
 export {
   TopBlock,
   Balance,
   RefLink,
   MyIncome,
   ChartBtn,
-  PieItems
+  PieItems,
+  ActivePrograms
 }
