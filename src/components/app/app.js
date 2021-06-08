@@ -9,6 +9,7 @@ import Dashboard from '../pages/dashboard/dashboard';
 import LeftSideBar from "../leftSideBar/leftSideBar";
 import Settings from '../pages/settings/settings';
 import Balance from '../pages/balance/balance';
+import Faq from '../pages/faq/faq';
 
 import './App.css'
 
@@ -34,6 +35,7 @@ const App = () => {
         <Route path='/dashboard' exact component={Dashboard} />
         <Route path='/settings' exact component={Settings} />
         <Route path='/balance' exact component={Balance} />
+        <Route path='/faq' exact component={Faq} />
       </Switch>
     </>
   )

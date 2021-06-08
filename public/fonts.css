@@ -17,3 +17,9 @@
   font-weight: 900;
   src: local('TTInterfaces-Bold'), url(fonts/TTInterfaces-Bold.ttf) format('opentype');
 }
+
+@font-face {
+  font-family: 'TTInterfaces-Medium';
+  font-weight: 500;
+  src: local('TTInterfaces-Medium'), url(fonts/TTInterfaces-Medium.ttf) format('opentype');
+}

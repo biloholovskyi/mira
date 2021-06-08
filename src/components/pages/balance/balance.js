@@ -11,7 +11,7 @@ import bg from '../../../assets/images/image2.png';
 const Balance = () => {
   const [tabStatus, setTabStatus] = useState('withdraw');
 
-  // change tabs
+  // change allCategoryTab
   const changeTab = (e, tab) => {
     setTabStatus(tab);
     document.querySelector('.btn-active').classList.remove('btn-active');
