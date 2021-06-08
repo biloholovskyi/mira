@@ -3,11 +3,19 @@ import React from "react";
 import MainInput from '../../../mainInput/mainInput';
 import MainButton from '../../../mainButton/mainButton';
 import ChangePhotoBlock from './changePhotoBlock/changePhotoBlock';
+import MainDropList from '../../../mainDropList/mainDropList';
 
 import photo from '../../../../assets/icon/avatar.svg';
 import {PersonalDateWrap, PersonalDateForm, MyRefs, RefsBlock, Security} from '../styled';
 
 const TabPersonalDate = () => {
+
+  const cityList = [
+    {name: 'Казань', value: 1},
+    {name: 'Киев', value: 2},
+    {name: 'ИФ', value: 3}
+  ]
+
   return (
     <PersonalDateWrap>
       <div className="small_title">Личные данные</div>
@@ -37,6 +45,13 @@ const TabPersonalDate = () => {
           label={'Instagram'}
           name={'text'}
           type={'instagram'}
+        />
+
+        <MainDropList
+          name={'city'}
+          required={true}
+          options={cityList}
+          label={'Город'}
         />
 
         <MainButton

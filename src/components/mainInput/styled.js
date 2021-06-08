@@ -13,7 +13,7 @@ const Wrapper = styled.div`
     align-items: flex-start;
     margin-bottom: 12px;
     .label {
-      font-family: 'TTInterfaces-Bold';
+      font-family: 'TTInterfaces-Regular';
       font-style: normal;
       font-weight: bold;
       font-size: 14px;
@@ -25,8 +25,8 @@ const Wrapper = styled.div`
       font-weight: normal;
       font-size: 14px;
       line-height: 20px;
-      text-decoration-line: underline;
-      color: #FFFFFF;
+      text-decoration-line: underline; 
+      color: #FFFFFF; 
     }
   }
   
