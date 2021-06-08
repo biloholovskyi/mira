@@ -29,7 +29,7 @@ const Wrapper = styled.div`
     }
   }
   
-  .input {
+textarea{
     background: #424242;
     border-radius: 12px;
     padding: 12px 16px;
@@ -40,6 +40,8 @@ const Wrapper = styled.div`
     color: #FFFFFF;
     width: 100%;
     border: none;
+  resize: none;
+  min-height: 96px;
   }
   
 `

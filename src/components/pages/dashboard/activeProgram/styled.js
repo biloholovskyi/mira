@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 const ActiveTableWrap = styled.table`
   width: 100%;
-
   border-collapse: collapse;
 
   thead {
