@@ -5,7 +5,7 @@ import MainButton from '../../../mainButton/mainButton';
 import ChangePhotoBlock from './changePhotoBlock/changePhotoBlock';
 
 import photo from '../../../../assets/icon/avatar.svg';
-import {PersonalDateWrap, PersonalDateForm, MyRefs, RefsBlock} from '../styled';
+import {PersonalDateWrap, PersonalDateForm, MyRefs, RefsBlock, Security} from '../styled';
 
 const TabPersonalDate = () => {
   return (
@@ -64,20 +64,20 @@ const TabPersonalDate = () => {
 
         <MainInput
           label={'Введите старый пароль'}
-          name={'name'}
-          type={'text'}
+          name={'oldPass'}
+          type={'password'}
         />
 
         <MainInput
           label={'Введите новый пароль'}
-          name={'lastName'}
-          type={'text'}
+          name={'newPass'}
+          type={'password'}
         />
 
         <MainInput
           label={'Повторите новый пароль'}
-          name={'email'}
-          type={'email'}
+          name={'repeatPass'}
+          type={'password'}
         />
 
         <MainButton
@@ -89,16 +89,19 @@ const TabPersonalDate = () => {
 
       </PersonalDateForm>
 
-      <MyRefs>
+      <Security>
         <div className="small_title">Дополнительная безопасность</div>
         <div className="checkBlock">
           <label className="switch">
             <input type="checkbox"  />
               <span className="slider round" />
           </label>
-          <p>Двухфакторная аунтификация</p>
+          <div className="text_block">
+            <p>Двухфакторная аунтификация</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+          </div>
         </div>
-      </MyRefs>
+      </Security>
     </PersonalDateWrap>
   )
 }

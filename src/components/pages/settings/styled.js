@@ -18,6 +18,7 @@ const TabHeadNav = styled.div`
   margin-right: 32px;
   border-bottom: 4px solid transparent;
   padding-bottom: 20px;
+
   &.tabs-active {
     color: #fff;
     border-bottom: 4px solid #36B37E;
@@ -37,7 +38,7 @@ const BigTitle = styled.div`
 `
 
 const TabBody = styled.div`
-  
+
 `
 
 const PersonalDateWrap = styled.div`
@@ -60,6 +61,7 @@ const PersonalDateForm = styled.form`
   padding: 32px;
   align-items: flex-end;
   margin-bottom: 32px;
+
   .small_title {
     font-family: 'TTInterfaces-Bold';
     font-style: normal;
@@ -80,20 +82,23 @@ const MyRefs = styled.div`
   border-radius: 12px;
   padding: 32px;
   margin-bottom: 32px;
-  
+
   .checkBlock {
     display: flex;
     align-items: center;
+
     .switch {
       position: relative;
       display: inline-block;
       width: 40px;
       height: 24px;
       margin-right: 24px;
+
       input {
         opacity: 0;
         width: 0;
         height: 0;
+
         &:checked + .slider {
           background-color: #36B37E;
         }
@@ -106,7 +111,7 @@ const MyRefs = styled.div`
           transform: translateX(13px);
         }
       }
-      
+
       .slider {
         position: absolute;
         cursor: pointer;
@@ -117,9 +122,11 @@ const MyRefs = styled.div`
         background-color: #ccc;
         -webkit-transition: .4s;
         transition: .4s;
+
         &.round {
           border-radius: 34px;
         }
+
         &.round:before {
           border-radius: 50%;
         }
@@ -137,17 +144,29 @@ const MyRefs = styled.div`
         transition: .4s;
       }
     }
-    
-    p {
-      font-family: 'TTInterfaces-Regular';
-      font-style: normal;
-      font-weight: normal;
-      font-size: 16px;
-      line-height: 22px;
-      color: #FFFFFF;
+
+    .text_block {
+      display: flex;
+      flex-direction: column;
+      & p:first-child {
+        font-family: 'TTInterfaces-Regular';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 22px;
+        color: #FFFFFF;
+      }
+      & p:last-child {
+        font-family: 'TTInterfaces-Regular';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        color: rgba(255, 255, 255, 0.72);
+      }
     }
   }
-  
+
 `
 
 const RefsBlock = styled.div`
@@ -156,6 +175,7 @@ const RefsBlock = styled.div`
   align-items: center;
   border: 1px solid #424242;
   border-radius: 12px;
+
   .photo {
     width: 40px;
     height: 40px;
@@ -164,6 +184,7 @@ const RefsBlock = styled.div`
     border-radius: 50%;
     margin-right: 16px;
   }
+
   .name {
     font-family: 'TTInterfaces-Bold';
     font-style: normal;
@@ -182,6 +203,8 @@ const ChangePhoto = styled.div`
   border-radius: 12px;
   padding: 32px;
   margin-bottom: 32px;
+  position: relative;
+
   .name {
     font-family: 'TTInterfaces-Bold';
     font-style: normal;
@@ -190,8 +213,27 @@ const ChangePhoto = styled.div`
     line-height: 24px;
     color: #FFFFFF;
   }
+
   .hidden-input {
     display: none;
+  }
+
+  .dlt_btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: contain;
+    object-position: center;
+    position: absolute;
+    border-radius: 50%;
+    background-color: #121212;
+    border: none;
+    left: 85px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
   }
 `
 
@@ -200,6 +242,7 @@ const Photo = styled.label`
   align-items: center;
   cursor: pointer;
   width: 100%;
+
   .preview {
     min-width: 72px;
     width: 72px;
@@ -223,6 +266,7 @@ const Photo = styled.label`
     object-position: center;
     margin-right: 24px;
   }
+
   .download {
     font-family: 'TTInterfaces-Bold';
     font-style: normal;
@@ -236,6 +280,100 @@ const Photo = styled.label`
   }
 `
 
+const Security = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #212121;
+  border-radius: 12px;
+  padding: 32px;
+  
+  .checkBlock {
+    display: flex;
+    align-items: center;
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 24px;
+      margin-right: 24px;
+
+      input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+
+        &:checked + .slider {
+          background-color: #36B37E;
+        }
+
+        &:focus + .slider {
+          box-shadow: 0 0 1px #36B37E;
+        }
+
+        &:checked + .slider:before {
+          transform: translateX(13px);
+        }
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+
+        &.round {
+          border-radius: 34px;
+        }
+
+        &.round:before {
+          border-radius: 50%;
+        }
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 2px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+    }
+
+    .text_block {
+      display: flex;
+      flex-direction: column;
+      & p:first-child {
+        font-family: 'TTInterfaces-Regular';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 22px;
+        color: #FFFFFF;
+      }
+      & p:last-child {
+        font-family: 'TTInterfaces-Regular';
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        color: rgba(255, 255, 255, 0.72);
+      }
+    }
+  }
+
+`
+
 export {
   TabHead,
   TabHeadNav,
@@ -246,5 +384,6 @@ export {
   MyRefs,
   RefsBlock,
   ChangePhoto,
-  Photo
+  Photo,
+  Security
 }
