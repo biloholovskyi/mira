@@ -10,7 +10,7 @@ const AllCategoryTab = () => {
    <TabsList>
      <SingleTab/>
      <SingleTab/>
-     <SingleTab/>
+     <SingleTab video={'2g811Eo7K8U'}/>
    </TabsList>
   )
 }
