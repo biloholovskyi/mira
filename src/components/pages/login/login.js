@@ -1,12 +1,13 @@
 import React from 'react';
 import {useHistory} from "react-router";
+import {NavLink} from "react-router-dom";
 
 import MainButton from '../../mainButton/mainButton';
 import MainInput from '../../mainInput/mainInput';
 import LeftImageBlock from '../../leftImageBlock/leftImageBlock';
 
-import {LoginWrap, Caption, LoginForm} from './style';
-import {NavLink} from "react-router-dom";
+import {LoginWrap, Caption, LoginForm, LogoMobile, MobileBtn} from './style';
+import logo from '../../../assets/icon/logo-green.svg';
 
 const Login = () => {
   const history = useHistory();
@@ -16,6 +17,10 @@ const Login = () => {
       <LeftImageBlock loginPage={true}/>
 
       <div className="right">
+        <NavLink to='/'>
+          <LogoMobile src={logo} alt="logo"/>
+        </NavLink>
+
       <Caption>
         <span>Еще нет аккаунта?</span>
         <MainButton
@@ -48,6 +53,15 @@ const Login = () => {
             func={() => history.push('/authorizationCode')}
           />
         </LoginForm>
+
+        <MobileBtn>
+          <span>Еще нет аккаунта?</span>
+          <MainButton
+            func={() => history.push('/registration')}
+            text={'Зарегистрироваться'}
+            width={'100%'}
+          />
+        </MobileBtn>
       </div>
     </LoginWrap>
   )

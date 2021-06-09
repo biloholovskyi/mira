@@ -37,6 +37,12 @@ const TemporaryPassword = () => {
             name={'pass'}
             required={true}
           />
+
+          <div className={'send_again--mobile'}>
+            Не пришел пароль?
+            <NavLink to={'/'}>Выслать пароль еще раз</NavLink>
+          </div>
+
           <MainButton
             type={'submit'}
             text={'Войти'}

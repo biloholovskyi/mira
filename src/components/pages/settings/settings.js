@@ -10,8 +10,8 @@ const Settings = () => {
   // change allCategoryTab
   const changeTab = (e, tab) => {
     setTabStatus(tab);
-    document.querySelector('.allCategoryTab-active').classList.remove('allCategoryTab-active');
-    e.target.classList.add('allCategoryTab-active');
+    document.querySelector('.tabs-active').classList.remove('tabs-active');
+    e.target.classList.add('tabs-active');
   };
 
   return (

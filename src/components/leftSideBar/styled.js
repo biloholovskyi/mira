@@ -28,7 +28,9 @@ const SideBarWrap = styled.div`
       object-position: center;
     }
   }
-
+@media(max-width: 700px) {
+  display: none;
+}
 `
 const UserBlock = styled.div`
   display: flex;

@@ -7,7 +7,8 @@ const LoginWrap = styled.div`
   max-height: 100vh;
   display: flex;
   background-color: #121212;
-  
+  position: relative;
+  z-index: 50;
   .left {
     flex: 1;
     max-width: 460px;
@@ -42,6 +43,14 @@ const LoginWrap = styled.div`
     flex-direction: column;
     justify-content: center;
     position: relative;
+    padding: 0 20px;
+    @media(max-width: 600px) {
+      padding: 80px 20px 20px;
+    }
+  }
+  
+  @media(max-width: 600px) {
+    max-height: none;
   }
   
 `
@@ -64,6 +73,10 @@ const Caption = styled.div`
     color: #FFFFFF;
     margin-right: 32px;
     text-decoration: none;
+  }
+
+  @media (max-width: 600px) {
+    display: none;
   }
   
 `
@@ -93,11 +106,22 @@ const LoginForm = styled.form`
       margin-right: 24px;
     }
     
+    @media(max-width: 600px) {
+      flex-direction: column;
+      div {
+        margin-bottom: 24px;
+      }
+      & div:first-child {
+        margin-right: 0;
+      }
+    }
+    
   }
   
   .btn_section {
     display: flex;
     align-items: center;
+    margin-top: 48px;
     button {
       margin-right: 24px;
     }
@@ -107,13 +131,70 @@ const LoginForm = styled.form`
       line-height: 22px;
       color: #9E9E9E;
     }
+    @media(max-width: 600px) {
+      margin-top: 0px;
+      flex-direction: column;
+      p {
+        text-align: center;
+        font-size: 12px;
+        line-height: 18px;
+      }
+      button {
+        width: 100%;
+        margin-bottom: 24px;
+        margin-top: 32px;
+        margin-right: 0;
+      }
+    }
   }
   
 `
 
+const LogoMobile = styled.img`
+  width: 109.73px;
+  height: 24px;
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  display: none;
+  cursor: pointer;
+  img {
+    object-fit: contain;
+    width: 109.73px;
+    height: 24px;
+  }
+  @media (max-width: 600px) {
+    display: block;
+  }
+`
+
+const MobileBtn = styled.div`
+  width: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 32px;
+  margin-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  span {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    color: #FFFFFF;
+    text-decoration: none;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 600px) {
+    display: flex;
+  }
+`
 
 export {
   LoginWrap,
   Caption,
-  LoginForm
+  LoginForm,
+  LogoMobile,
+  MobileBtn
 }

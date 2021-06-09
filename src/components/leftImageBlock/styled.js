@@ -28,6 +28,9 @@ const Left = styled.div`
       object-fit: contain;
     }
   }
+  @media (max-width: 920px) {
+    display: none;
+  }
 `
 
 export {

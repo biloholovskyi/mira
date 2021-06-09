@@ -1,12 +1,14 @@
 import React from 'react';
 import {useHistory} from "react-router";
 import ReCAPTCHA from "react-google-recaptcha"; // link on docs https://www.npmjs.com/package/react-google-recaptcha
+import {NavLink} from "react-router-dom";
 
 import MainButton from '../../mainButton/mainButton';
 import MainInput from '../../mainInput/mainInput';
 import LeftImageBlock from '../../leftImageBlock/leftImageBlock';
 
-import {LoginWrap, Caption, LoginForm} from './style';
+import {LoginWrap, Caption, LoginForm, LogoMobile, MobileBtn} from './style';
+import logo from "../../../assets/icon/logo-green.svg";
 
 const Registration = () => {
   const history = useHistory();
@@ -20,6 +22,10 @@ const Registration = () => {
       <LeftImageBlock/>
 
       <div className="right">
+        <NavLink to='/'>
+          <LogoMobile src={logo} alt="logo"/>
+        </NavLink>
+
         <Caption>
           <span>Уже есть аккаунт?</span>
           <MainButton
@@ -64,7 +70,7 @@ const Registration = () => {
             theme={'dark'}
             // secret key 6LexLAgbAAAAAJLRuwu1zgGi9EkMenGGgeuztkzu
             // key 6LexLAgbAAAAAOlHJXKYTdzb2kSvPPMFk6RT8kcV
-          />,
+          />
 
           <div className="btn_section">
             <MainButton
@@ -76,6 +82,16 @@ const Registration = () => {
             <p>Нажимая «Отправить», вы соглашаетесь предоставить Вашу информацию ООО "МИРА" на обработку.</p>
           </div>
         </LoginForm>
+
+
+        <MobileBtn>
+          <span>Уже есть аккаунт?</span>
+          <MainButton
+            func={() => history.push('/login')}
+            text={'Войти'}
+            width={'100%'}
+          />
+        </MobileBtn>
       </div>
     </LoginWrap>
   )

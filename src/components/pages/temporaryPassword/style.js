@@ -6,8 +6,9 @@ const LoginWrap = styled.div`
   min-height: 100vh;
   max-height: 100vh;
   display: flex;
-  background-color: #121212; 
-  
+  background-color: #121212;
+  position: relative;
+  z-index: 50;
   .left {
     flex: 1;
     max-width: 460px;
@@ -42,6 +43,11 @@ const LoginWrap = styled.div`
     flex-direction: column;
     justify-content: center;
     position: relative;
+    padding: 0 20px;
+  }
+
+  @media(max-width: 700px) {
+   max-height: none;
   }
   
 `
@@ -74,6 +80,13 @@ const Caption = styled.div`
       object-fit: contain;
       margin-right: 8px;
     }
+  }
+  
+  @media(max-width: 700px) {
+    transform: none;
+    left: 20px;
+    max-width: none;
+    width: fit-content;
   }
   
 `
@@ -123,7 +136,8 @@ const LoginForm = styled.form`
     }
   }
   
-  .send_again {
+  .send_again,
+  .send_again--mobile {
     display: flex;
     align-items: center;
     font-family: 'TTInterfaces-Regular';
@@ -147,6 +161,21 @@ const LoginForm = styled.form`
       cursor: pointer;
       text-decoration: underline;
     }
+    @media(max-width: 500px) {
+      display: none;
+    }
+  }
+  .send_again--mobile {
+    transform: none;
+    margin-bottom: 32px;
+    justify-content: flex-start;
+    a {
+      font-size: 12px;
+      line-height: 18px;
+    }
+    @media(max-width: 500px) {
+      display: flex;
+    }
   }
   
 `
@@ -157,6 +186,10 @@ const SmallDesc = styled.p`
   color: #9E9E9E;
   margin-bottom: 16px;
   font-family: 'TTInterfaces-Regular';
+  @media(max-width: 500px) {
+    font-size: 14px;
+    line-height: 20px;
+  }
 `
 
 const CodeBlock = styled.div`
