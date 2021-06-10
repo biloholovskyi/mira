@@ -3,6 +3,9 @@ import styled from "styled-components";
 const Top = styled.div`
   margin-bottom: 48px;
   display: flex;
+  @media(max-width: 1000px) {
+    flex-direction: column;
+  }
 `
 
 const BalanceBlock = styled.div`
@@ -68,6 +71,14 @@ const BalanceBlock = styled.div`
       color: #C1C1C1;
     }
   }
+  
+  @media(max-width: 1160px) {
+    padding: 16px;
+  }
+  @media(max-width: 1000px) {
+    margin-right: 0;
+    margin-bottom: 30px;
+  }
 `
 
 const TabBody = styled.form`
@@ -124,7 +135,14 @@ const InfoBlock = styled.div`
       text-decoration-line: underline;
       color: #FFFFFF;
     }
+    @media(max-width: 1160px) {
+      padding: 16px 16px 0;
+      .text {
+        font-size: 14px;
+      }
+    }
   }
+  
 `
 
 const TableWrap = styled.div`
@@ -161,6 +179,9 @@ const TableWrap = styled.div`
       & tr th:last-child {
         text-align: left;
       }
+      @media (max-width: 1170px) {
+        display: none;
+      }
     }
 
     tbody {
@@ -179,7 +200,7 @@ const TableWrap = styled.div`
           .info {
             display: flex;
             align-items: center;
-
+            position: relative;
             .indicator {
               width: 8px;
               height: 8px;
@@ -195,12 +216,54 @@ const TableWrap = styled.div`
               font-size: 18px;
               line-height: 24px;
               color: #FFFFFF;
+              @media(max-width: 325px) {
+                font-size: 16px;
+              }
             }
+            
+            .mobile_summ {
+              font-style: normal;
+              font-weight: normal;
+              font-size: 16px;
+              line-height: 22px;
+              text-transform: uppercase;
+              color: #FFFFFF;
+              display: none;
+              position: absolute;
+              left: 24px;
+              bottom: -25px;
+              @media(max-width: 1170px) {
+                display: block;
+              }
+            }
+          }
+          @media(max-width: 1340px) {
+          font-size: 14px;
+          line-height: 18px;
+          }
+          @media(max-width: 1170px) {
+            min-height: 82px;
           }
         }
         & td:last-child {
           max-width: 300px;
           text-align: left;
+        }
+        @media (max-width: 1170px) {
+          & {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+            border-bottom: 1px solid #424242;
+            td {
+              display: none;
+            }
+          }
+          & td:first-child {
+            display: block;
+            border: none;
+          }
         }
       }
     }

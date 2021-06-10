@@ -37,6 +37,15 @@ const TabHead = styled.div`
       border-bottom: 2px solid #36B37E;
     }
   }
+  @media(max-width: 767px) {
+    overflow: auto;
+    &::-webkit-scrollbar{
+      display: none;
+    }
+    button {
+      min-width: fit-content;
+    }
+  }
 `
 
 const TabBody = styled.div`
@@ -52,8 +61,19 @@ const Question = styled.div`
   
   #video_youtube {
     border-radius: 4px;
+    @media(max-width: 1200px) {
+      height: 450px;
+    }
+    @media(max-width: 991px) {
+      height: 300px;
+    }
+    @media(max-width: 600px) {
+      height: 200px;
+    }
   }
-  
+  @media(max-width: 600px) {
+    padding: 16px 0;
+  }
 `;
 
 const FaqTitle = styled.button`
@@ -89,7 +109,13 @@ const FaqTitle = styled.button`
       transform: rotate(-180deg);
     }
   }
-`;
+
+  @media(max-width: 600px) {
+    font-size: 16px;
+    line-height: 22px;
+    text-align: left;
+  }
+`
 
 const FaqAnswer = styled.div`
   font-style: normal;
@@ -99,7 +125,11 @@ const FaqAnswer = styled.div`
   color: #FFFFFF;
   padding: 24px 0;
   font-family: 'TTInterfaces-Medium';
-`;
+  @media(max-width: 600px) {
+    font-size: 16px;
+    line-height: 22px;
+  }
+`
 
 const TabsList = styled.div`
   width: 100%;
@@ -121,6 +151,9 @@ const AddQuestion = styled.div`
     color: #FFFFFF;
     margin-bottom: 32px;
     font-family: 'TTInterfaces-Bold';
+  }
+  @media(max-width: 600px) {
+    padding: 16px;
   }
 `
 

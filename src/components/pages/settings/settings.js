@@ -7,7 +7,7 @@ import {TabHeadNav, TabHead, BigTitle, TabBody} from './styled';
 const Settings = () => {
   const [tabStatus, setTabStatus] = useState('personalDate');
 
-  // change allCategoryTab
+  // change categories Tab
   const changeTab = (e, tab) => {
     setTabStatus(tab);
     document.querySelector('.tabs-active').classList.remove('tabs-active');

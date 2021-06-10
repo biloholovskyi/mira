@@ -8,7 +8,7 @@ const HeaderWrap = styled.div`
   justify-content: space-between;
   padding: 0 16px;
   background-color: #212121;
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
   .left {

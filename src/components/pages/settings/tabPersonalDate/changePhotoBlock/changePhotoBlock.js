@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import {ChangePhoto, Photo} from "../../styled";
 import dlt from '../../../../../assets/icon/delete.svg';
@@ -6,6 +6,17 @@ import dlt from '../../../../../assets/icon/delete.svg';
 const ChangePhotoBlock = () => {
   // preview
   const [photo, setPhoto] = useState({})
+  // window width
+  const [windowWidth, setWidth] = useState(window.innerWidth);
+
+  const handlerResize = () => {
+    setWidth(window.innerWidth);
+  }
+
+  useEffect(() => {
+    setWidth(window.innerWidth);
+    window.addEventListener('resize', () => handlerResize())
+  }, [])
 
   //  download photo
   const handleImageChange = (e) => {
@@ -37,7 +48,7 @@ const ChangePhotoBlock = () => {
           required={false}
         />
         <div className="preview"/>
-        <div className={'download'}>Загрузить фото с компьютера</div>
+        <div className={'download'}>{windowWidth < 575 ? 'Загрузить фото' : 'Загрузить фото с компьютера'}</div>
       </Photo>
     ) : (
       <>

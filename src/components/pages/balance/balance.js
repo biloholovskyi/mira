@@ -96,6 +96,7 @@ const Balance = () => {
               <div className="info">
                 <div className="indicator"/>
                 <div className="name">Оплата программы “Mira Auto”</div>
+                <div className="mobile_summ">20 000,00 MRc</div>
               </div>
             </td>
             <td>Проведено</td>
@@ -108,6 +109,7 @@ const Balance = () => {
               <div className="info">
                 <div className="indicator"/>
                 <div className="name">Начисление процентов</div>
+                <div className="mobile_summ">40 000,00 MRc</div>
               </div>
             </td>
             <td>Проведено</td>

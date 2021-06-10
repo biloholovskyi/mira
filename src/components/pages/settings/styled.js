@@ -7,6 +7,12 @@ const TabHead = styled.div`
   align-items: center;
   border-bottom: 1px solid #424242;
   margin-bottom: 32px;
+  @media(max-width: 575px) {
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `
 
 const TabHeadNav = styled.div`
@@ -25,6 +31,9 @@ const TabHeadNav = styled.div`
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
   }
+  @media(max-width: 575px) {
+    min-width: fit-content;
+  }
 `
 
 const BigTitle = styled.div`
@@ -35,6 +44,10 @@ const BigTitle = styled.div`
   line-height: 36px;
   color: #FFFFFF;
   margin-bottom: 24px;
+  @media(max-width: 575px) {
+    font-size: 24px;
+    line-height: 32px;
+  }
 `
 
 const TabBody = styled.div`
@@ -71,6 +84,13 @@ const PersonalDateForm = styled.form`
     color: #FFFFFF;
     margin-bottom: 24px;
     width: 100%;
+  }
+  @media(max-width: 575px) {
+    padding: 16px;
+    margin-bottom: 8px;
+    button {
+      width: 100%;
+    }
   }
 `
 
@@ -167,6 +187,11 @@ const MyRefs = styled.div`
     }
   }
 
+  @media(max-width: 575px) {
+    padding: 16px;
+    margin-bottom: 8px;
+  }
+
 `
 
 const RefsBlock = styled.div`
@@ -235,6 +260,10 @@ const ChangePhoto = styled.div`
     transform: translateY(-50%);
     cursor: pointer;
   }
+  @media(max-width: 575px) {
+    padding: 16px;
+    margin-bottom: 8px;
+  }
 `
 
 const Photo = styled.label`
@@ -277,6 +306,9 @@ const Photo = styled.label`
     padding: 12px 24px;
     border: 2px solid #36B37E;
     border-radius: 12px;
+    @media(max-width: 325px) {
+      font-size: 16px;
+    }
   }
 `
 
@@ -298,7 +330,7 @@ const Security = styled.div`
       width: 40px;
       height: 24px;
       margin-right: 24px;
-
+      min-width: 40px;
       input {
         opacity: 0;
         width: 0;
@@ -371,7 +403,10 @@ const Security = styled.div`
       }
     }
   }
-
+  @media(max-width: 575px) {
+    padding: 16px;
+    margin-bottom: 8px;
+  }
 `
 
 export {

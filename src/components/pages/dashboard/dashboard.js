@@ -113,7 +113,7 @@ const Dashboard = () => {
       </MyIncome>
 
       <ActivePrograms>
-        <div className="small_title">Мои доходы</div>
+        <div className="small_title">Активные программы</div>
 
         <ActiveProgram/>
 
