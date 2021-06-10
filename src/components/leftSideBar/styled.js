@@ -28,9 +28,15 @@ const SideBarWrap = styled.div`
       object-position: center;
     }
   }
-@media(max-width: 700px) {
-  display: none;
-}
+  
+  @media(max-width: 1199px) {
+    max-width: 250px;
+    min-width: 250px;
+  }
+  
+    @media(max-width: 900px) {
+      display: none;
+    }
 `
 const UserBlock = styled.div`
   display: flex;
@@ -90,7 +96,7 @@ const Navigation = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 115px;
+  margin-bottom: 50px;
   a {
     display: flex;
     align-items: center;
