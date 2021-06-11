@@ -14,6 +14,20 @@ const ChartBtn = styled.button`
   margin-right: 8px;
   margin-bottom: 16px;
   cursor: pointer;
+  @media (max-width: 1330px) {
+    font-size: 12px;
+  }
+  @media (max-width: 600px) {
+    padding: 6px 10px;
+    margin-right: 4px;
+  }
+  @media (max-width: 360px) {
+    margin-bottom: 4px;
+  }
+  @media (max-width: 320px) {
+    margin-bottom: 12px;
+    padding: 4px;
+  }
 `
 
 export {

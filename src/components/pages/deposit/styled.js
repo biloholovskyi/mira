@@ -9,11 +9,18 @@ const DepositWrap = styled.div`
     line-height: 36px;
     color: #FFFFFF;
     font-family: 'TTInterfaces-SemiBold';
+    @media(max-width: 500px) {
+      font-size: 20px;
+      line-height: 28px;
+    }
   }
   .info_block {
     display: flex;
     align-items: flex-start;
     margin-bottom: 48px;
+    @media(max-width: 1199px) {
+      flex-direction: column;
+    }
   }
 `
 
@@ -105,6 +112,13 @@ const Left = styled.div`
        margin-right: 16px;
      }
       margin-bottom: 32px;
+      @media(max-width: 360px) {
+        flex-direction: column;
+        align-items: flex-start;
+        p {
+          margin-bottom: 10px;
+        }
+      }
     }
     .btn_section {
       display: flex;
@@ -113,7 +127,26 @@ const Left = styled.div`
       & button:first-child {
         margin-right: 16px;
       }
+@media(max-width: 500px) {
+  flex-direction: column;
+  button {
+    width: 100%;
+  }
+  & button:first-child {
+    margin-right: 0px;
+    margin-bottom: 10px;
+  }
+}
     }
+  }
+  @media(max-width: 1199px) {
+   width: 100%;
+    margin-right: 0;
+    margin-bottom: 32px;
+  }
+  @media(max-width: 767px) {
+   padding: 16px;
+    margin-bottom: 16px;
   }
 `
 
@@ -155,6 +188,12 @@ const Right = styled.div`
     color: #FFFFFF;
     margin-bottom: 12px;
     font-family: 'TTInterfaces-Bold';
+  }
+  @media(max-width: 1199px) {
+    width: 100%;
+  }
+  @media(max-width: 767px) {
+    padding: 16px;
   }
 `
 

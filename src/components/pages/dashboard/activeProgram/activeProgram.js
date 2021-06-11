@@ -1,5 +1,5 @@
 import React from "react";
-import { CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
+import {CircularProgressbarWithChildren} from 'react-circular-progressbar';
 
 import {ActiveTableWrap} from './styled';
 import Car from '../../../../assets/images/car.svg';
