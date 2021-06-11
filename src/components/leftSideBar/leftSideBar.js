@@ -2,8 +2,8 @@ import React from "react";
 import {NavLink} from "react-router-dom";
 
 import {SideBarWrap, UserBlock, Photo, Name, Currency, Information, Navigation} from './styled';
-import logo from '../../assets/icon/logo-green.svg';
-import avatar from '../../assets/icon/avatar.svg';
+import logo from './media/icon/logo-green.svg';
+import avatar from './media/icon/avatar.svg';
 
 const LeftSideBar = () => {
   return (

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import arrow from '../../assets/icon/arrow_down.svg';
+import arrow from './media/icon/arrow_down.svg';
 
 const Wrapper = styled.div`
   width: ${props => props.width ? props.width + 'px' : '100%'};

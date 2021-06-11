@@ -3,9 +3,9 @@ import {NavLink} from "react-router-dom";
 
 import {HeaderWrap, BurgerBtn} from './styled'
 
-import bell from '../../assets/icon/bell.svg';
-import burger from '../../assets/icon/burger.svg';
-import logo from  '../../assets/icon/logo-green.svg';
+import bell from './media/icons/bell.svg';
+import burger from './media/icons/burger.svg';
+import logo from  './media/icons/logo-green.svg';
 
 const Header = () => {
   return(

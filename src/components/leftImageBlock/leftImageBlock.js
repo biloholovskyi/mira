@@ -3,9 +3,9 @@ import {NavLink} from "react-router-dom";
 
 import {Left} from './styled';
 
-import logo from "../../assets/icon/logo-white.svg";
-import image from "../../assets/images/login_image.jpg";
-import image2 from '../../assets/images/r_image.png';
+import logo from "./media/icon/logo-white.svg";
+import image from "./media/images/login_image.jpg";
+import image2 from './media/images/r_image.png';
 
 const LeftImageBlock = ({loginPage}) => {
   return (

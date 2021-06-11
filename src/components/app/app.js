@@ -1,16 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import {Redirect, Route, Switch} from "react-router";
 
-import Login from '../pages/login/login';
-import Registration from '../pages/registration/registration'
-import AuthorizationCode from '../pages/authorizationCode/authorizationCode';
-import TemporaryPassword from '../pages/temporaryPassword/temporaryPassword';
-import Dashboard from '../pages/dashboard/dashboard';
+import Login from '../../pages/login/login';
+import Registration from '../../pages/registration/registration'
+import AuthorizationCode from '../../pages/authorizationCode/authorizationCode';
+import TemporaryPassword from '../../pages/temporaryPassword/temporaryPassword';
+import Dashboard from '../../pages/dashboard/dashboard';
 import LeftSideBar from "../leftSideBar/leftSideBar";
-import Settings from '../pages/settings/settings';
-import Balance from '../pages/balance/balance';
-import Faq from '../pages/faq/faq';
-import Deposit from '../pages/deposit/deposit';
+import Settings from '../../pages/settings/settings';
+import Balance from '../../pages/balance/balance';
+import Faq from '../../pages/faq/faq';
+import Deposit from '../../pages/deposit/deposit';
 import Header from '../header/header';
 
 import './App.css'
