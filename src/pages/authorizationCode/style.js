@@ -7,6 +7,8 @@ const LoginWrap = styled.div`
   max-height: 100vh;
   display: flex;
   background-color: #121212;
+  position: relative;
+  z-index: 50;
   
   .right {
     flex: 2;
@@ -15,6 +17,10 @@ const LoginWrap = styled.div`
     flex-direction: column;
     justify-content: center;
     position: relative;
+    padding: 0 25px;
+  }
+  @media(max-width: 700px) {
+    max-height: none;
   }
 
 `
@@ -50,7 +56,15 @@ const Caption = styled.div`
       margin-right: 8px;
     }
   }
-
+  @media(max-width: 700px) {
+    left: 25px;
+    transform: none;
+  }
+  @media(max-width: 600px) {
+    top: 30px;
+    max-width: none;
+    width: fit-content;
+  }
 `
 
 const LoginForm = styled.form`
@@ -97,6 +111,17 @@ const LoginForm = styled.form`
         cursor: pointer;
         text-decoration: underline;
       }
+    }
+    @media(max-width: 600px) {
+      flex-direction: column;
+      align-items: flex-start;
+      button {
+        width: 100%;
+        margin-bottom: 24px;
+      }
+       p {
+         margin-left: 0;
+       }
     }
   }
 
@@ -148,6 +173,24 @@ const Border = styled.div`
     margin: 0 16px 0 4px;
 `
 
+const LogoMobile = styled.img`
+  width: 109.73px;
+  height: 24px;
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  display: none;
+  cursor: pointer;
+  img {
+    object-fit: contain;
+    width: 109.73px;
+    height: 24px;
+  }
+  @media (max-width: 600px) {
+    display: block;
+  }
+`
+
 export {
   LoginWrap,
   Caption,
@@ -155,5 +198,6 @@ export {
   SmallDesc,
   CodeBlock,
   CodeItem,
-  Border
+  Border,
+  LogoMobile
 }

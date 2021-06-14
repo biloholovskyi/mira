@@ -6,6 +6,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   margin-bottom: 32px;
   width: 100%;
+  position: relative;
+  
   .labelWrap {
     width: 100%;
     display: flex;
@@ -40,6 +42,46 @@ const Wrapper = styled.div`
     color: #FFFFFF;
     width: 100%;
     border: none;
+    padding-left: ${props => props.icon ? '50px' : props.iconText ? '60px' : null};
+    
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      /* display: none; <- Crashes Chrome on hover */
+      -webkit-appearance: none;
+      margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    }
+    
+    &::placeholder {
+      font-family: 'TTInterfaces-Regular', sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 22px;
+      color: #9E9E9E;
+
+    }
+  }
+  
+  .icon {
+    position: absolute;
+    left: 15px;
+    bottom: 10px;
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .iconText {
+    position: absolute;
+    left: 15px;
+    bottom: 12px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    color: rgba(255, 255, 255, 0.72);
+    font-family: 'TTInterfaces-Regular', sans-serif;
   }
   
 `

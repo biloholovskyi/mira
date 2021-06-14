@@ -3,11 +3,12 @@ import {NavLink} from "react-router-dom";
 import {useHistory} from "react-router";
 
 import MainButton from "../../components/mainButton/mainButton";
-import SingleCodeItem from './singleCodeItem/singleCodeItem';
+import ConfirmationCodeItem from '../../components/confirmationCodeItem/ConfirmationCodeItem';
 import LeftImageBlock from "../../components/leftImageBlock/leftImageBlock";
 
 import arrow from './media/icon/small_arrow.svg';
-import {Caption, LoginForm, LoginWrap, SmallDesc, CodeBlock} from "./style";
+import {Caption, LoginForm, LoginWrap, SmallDesc, CodeBlock, LogoMobile} from "./style";
+import logo from "../registration/media/icon/logo-green.svg";
 
 const AuthorizationCode = () => {
   const history = useHistory();
@@ -17,6 +18,8 @@ const AuthorizationCode = () => {
       <LeftImageBlock loginPage={true}/>
 
       <div className="right">
+        <LogoMobile src={logo} alt="logo"/>
+
         <Caption>
           <NavLink to={'/login'}><img src={arrow} alt="icon"/>Назад</NavLink>
         </Caption>
@@ -26,9 +29,7 @@ const AuthorizationCode = () => {
           <SmallDesc>Мы выслали проверочный код на почту stasmihaylov228@gmail.com <br/>
             Введите код, что бы подтвердить свой аккаунт</SmallDesc>
 
-          <CodeBlock>
-            <SingleCodeItem />
-          </CodeBlock>
+          <ConfirmationCodeItem />
 
           <div className="btn_section">
             <MainButton

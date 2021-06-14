@@ -11,39 +11,19 @@ const Top = styled.div`
 const BalanceBlock = styled.div`
   background: #212121;
   border-radius: 12px;
-  flex: 50%;
+  flex: 50%; 
   min-height: 202px;
   padding: 32px;
   margin-right: 32px;
-
+  max-height: 500px;
+  height: 100%;
+  
   .btn_section {
     display: flex;
     align-items: center;
-    background-color: #424242;
-    border-radius: 12px;
-    padding: 4px;
-    margin-bottom: 24px;
 
     button:first-child {
-      margin-right: 4px;
-    }
-
-    button {
-      font-style: normal;
-      font-weight: normal;
-      font-size: 16px;
-      line-height: 22px;
-      color: rgba(255, 255, 255, 0.72);
-      width: 50%;
-      background-color: transparent;
-      border: none;
-      min-height: 40px;
-      cursor: pointer;
-
-      &.btn-active {
-        background: #36B37E;
-        border-radius: 8px;
-      }
+      margin-right: 16px;
     }
   }
 
@@ -53,6 +33,13 @@ const BalanceBlock = styled.div`
     line-height: 22px;
     color: #FFFFFF;
     margin-bottom: 4px;
+    @media (max-width: 600px) {
+      font-size: 14px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    margin-bottom: 0px;
   }
 
   .info {
@@ -70,19 +57,20 @@ const BalanceBlock = styled.div`
       line-height: 18px;
       color: #C1C1C1;
     }
+
+    @media (max-width: 900px) {
+      font-size: 18px;
+      line-height: 24px;
+    }
+
+    @media (max-width: 600px) {
+      margin-bottom: 24px;
+    }
   }
-  
-  @media(max-width: 1160px) {
+
+  @media (max-width: 900px) {
     padding: 16px;
   }
-  @media(max-width: 1000px) {
-    margin-right: 0;
-    margin-bottom: 30px;
-  }
-`
-
-const TabBody = styled.form`
-
 `
 
 const InfoBlock = styled.div`
@@ -90,59 +78,17 @@ const InfoBlock = styled.div`
   border-radius: 12px;
   flex: 50%;
   min-height: 202px;
-  padding-bottom: 32px;
-
-  img {
-    width: 100%;
-    min-height: 280px;
-    object-position: center;
-    object-fit: cover;
-    margin-bottom: 32px;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-  }
-
-  .text_block {
-    padding: 32px 32px 0;
-    display: flex;
-    flex-direction: column;
-
-    .name {
-      font-family: 'TTInterfaces-Bold';
-      font-style: normal;
-      font-weight: bold;
-      font-size: 18px;
-      line-height: 24px;
-      color: #FFFFFF;
-      margin-bottom: 16px;
-    }
-
-    .text {
-      font-style: normal;
-      font-weight: normal;
-      font-size: 16px;
-      line-height: 22px;
-      color: #9E9E9E;
-      margin-bottom: 16px;
-    }
-
-    a {
-      font-family: 'TTInterfaces-Bold';
-      font-style: normal;
-      font-weight: 600;
-      font-size: 16px;
-      line-height: 22px;
-      text-decoration-line: underline;
-      color: #FFFFFF;
-    }
-    @media(max-width: 1160px) {
-      padding: 16px 16px 0;
-      .text {
-        font-size: 14px;
-      }
-    }
-  }
+  padding: 32px;
   
+  .title {
+    font-family: 'TTInterfaces-Bold', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 24px;
+    color: #FFFFFF;
+    margin-bottom: 24px;
+  }
 `
 
 const TableWrap = styled.div`
@@ -273,7 +219,6 @@ const TableWrap = styled.div`
 export {
   Top,
   BalanceBlock,
-  TabBody,
   InfoBlock,
   TableWrap
 }
