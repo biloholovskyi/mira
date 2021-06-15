@@ -1,7 +1,7 @@
 import React from "react";
 
 import {SuccessWrap} from './styled';
-import ok from 'media/icon/ok.svg';
+import ok from './media/icon/ok.svg';
 
 const SmallSuccessModal = () => {
   return(

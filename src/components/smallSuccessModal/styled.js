@@ -10,13 +10,15 @@ const SuccessWrap = styled.div`
   display: flex;
   align-self: center;
   padding: 16px;
+  z-index: 500;
+  
   .image {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     background-color: #36B37E;
     display: flex;
-    align-self: center;
+    align-items: center;
     justify-content: center;
     margin-right: 15px;
     img {
@@ -33,6 +35,7 @@ const SuccessWrap = styled.div`
     font-size: 16px;
     line-height: 22px;
     color: #FFFFFF;
+    align-self: center;
   }
 `
 

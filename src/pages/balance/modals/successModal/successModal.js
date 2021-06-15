@@ -6,14 +6,14 @@ import {ModalOverlay, ModalWrapper} from "../styled";
 import ok from '../../media/icon/ok.svg';
 import closed from "../../media/icon/close.svg";
 
-const SuccessModal = ({close}) => {
+const SuccessModal = ({close, title}) => {
   return(
     <ModalOverlay>
       <ModalWrapper>
         <button onClick={close} className={'close'}><img src={closed} alt="icon"/></button>
         <div className="content">
           <div className="image"><img src={ok} alt="icon"/></div>
-          <div className="text">Вы успешно вывели деньги</div>
+          <div className="text">{title}</div>
           <div className="info_block">
             <div className="item">
               <div className="left">Дата / время транзакции</div>

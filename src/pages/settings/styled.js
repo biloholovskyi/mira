@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { Link, animateScroll as scroll } from "react-scroll";
 import user from './media/icon/userAvatar.svg';
 
 const TabHead = styled.div`
@@ -29,6 +29,28 @@ const TabHeadNav = styled.div`
   padding-bottom: 20px;
 
   &.tabs-active {
+    color: #fff;
+    border-bottom: 4px solid #36B37E;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+  @media(max-width: 575px) {
+    min-width: fit-content;
+  }
+`
+
+const TabLink = styled(Link)`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  color: #9E9E9E;
+  margin-right: 32px;
+  border-bottom: 4px solid transparent;
+  padding-bottom: 20px;
+cursor: pointer;
+  
+  &.active {
     color: #fff;
     border-bottom: 4px solid #36B37E;
     border-top-left-radius: 4px;
@@ -423,5 +445,6 @@ export {
   RefsBlock,
   ChangePhoto,
   Photo,
-  Security
+  Security,
+  TabLink
 }

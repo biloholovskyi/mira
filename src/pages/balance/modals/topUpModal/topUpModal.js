@@ -81,6 +81,7 @@ console.log(topUpInfo)
         successModal && (
           <SuccessModal
             close={closeModal}
+            title={'Вы успешно перевели деньги'}
           />
         )
       }

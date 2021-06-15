@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
+import {animateScroll as scroll } from "react-scroll";
 
 import TabPersonalDate from './tabPersonalDate/tabPersonalDate';
 
-import {TabHeadNav, TabHead, BigTitle, TabBody} from './styled';
+
+import {TabHeadNav, TabHead, BigTitle, TabBody, TabLink} from './styled';
 
 const Settings = () => {
   const [tabStatus, setTabStatus] = useState('personalDate');
@@ -14,12 +16,16 @@ const Settings = () => {
     e.target.classList.add('tabs-active');
   };
 
+  const scrollToTop = () => {
+    scroll.scrollToTop();
+  };
+
   return (
     <div className={'main_container'}>
       <BigTitle>Настройки</BigTitle>
       <TabHead>
         <TabHeadNav className='tabs-active' onClick={(e) => changeTab(e, 'personalDate')}>Личные данные</TabHeadNav>
-        <TabHeadNav onClick={(e) => changeTab(e, 'Security')}>Безопасность</TabHeadNav>
+        <TabLink to='security'  smooth={true} offset={100} duration={1500} activeClass={'active'}>Безопасность</TabLink>
         <TabHeadNav onClick={(e) => changeTab(e, 'Уведомления')}>Уведомления</TabHeadNav>
       </TabHead>
       <TabBody>

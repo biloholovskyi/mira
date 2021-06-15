@@ -95,6 +95,7 @@ const WithDraw = ({close}) => {
         successModal && (
           <SuccessModal
             close={closeModal}
+            title={'Вы успешно вывели деньги'}
           />
         )
       }

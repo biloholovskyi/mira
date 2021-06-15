@@ -4,7 +4,6 @@ import MainInput from '../../components/mainInput/mainInput';
 import MainButton from "../../components/mainButton/mainButton";
 import WithDraw from './modals/withDraw/withDraw';
 import ConfirmationCode from './modals/confirmationCode/confirmationCode';
-import SuccessModal from './modals/successModal/successModal';
 import TopUpModal from "./modals/topUpModal/topUpModal";
 
 import {Top, BalanceBlock, InfoBlock, TableWrap} from './styled';
@@ -15,11 +14,13 @@ const Balance = () => {
   const [withDraw, setWithDraw] = useState(false);
   // модалка пополнения стеча
   const [topUpModal, setTopUpModal] = useState(false)
-
-  // close for all modal
+  // модалка перевода средств
+  const [transferModal, setTransferModal] = useState(false)
+  // закритие модалок
   const closeModal = () => {
-    setWithDraw(false);
+    setWithDraw(false)
     setTopUpModal(false)
+    setTransferModal(false)
   }
   
   return (
@@ -71,6 +72,7 @@ const Balance = () => {
              text={'Перевести'}
              colorBg={true}
              width={'100%'}
+             func={()=> setTransferModal(true)}
            />
          </InfoBlock>
        </Top>
@@ -118,7 +120,6 @@ const Balance = () => {
          </table>
        </TableWrap>
      </div>
-
      {
        withDraw && (
          <WithDraw
@@ -129,6 +130,15 @@ const Balance = () => {
      {
        topUpModal && (
          <TopUpModal
+           close={closeModal}
+         />
+       )
+     }
+     {
+       transferModal && (
+         <ConfirmationCode
+           transferModal={transferModal}
+           title={'Подтвердите перевод'}
            close={closeModal}
          />
        )

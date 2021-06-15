@@ -73,7 +73,7 @@ const TabPersonalDate = () => {
         </RefsBlock>
       </MyRefs>
 
-      <div className="small_title">Безопасность</div>
+      <div id={'security'} className="small_title">Безопасность</div>
       <PersonalDateForm>
         <div className="small_title">Смена пароля</div>
 
