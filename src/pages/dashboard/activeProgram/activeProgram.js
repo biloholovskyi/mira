@@ -1,4 +1,5 @@
 import React from "react";
+
 import {CircularProgressbarWithChildren} from 'react-circular-progressbar';
 
 import {ActiveTableWrap} from './styled';
@@ -25,7 +26,7 @@ const ActiveProgram = () => {
         <tr>
           <td>
             <div className="info">
-              <img src={Car} alt="photo"/>
+              <img src={Car} alt="photos"/>
               <div className="name">Toyota RAV4 Hybrid</div>
             </div>
           </td>

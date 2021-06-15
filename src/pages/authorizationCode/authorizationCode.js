@@ -7,7 +7,7 @@ import ConfirmationCodeItem from '../../components/confirmationCodeItem/Confirma
 import LeftImageBlock from "../../components/leftImageBlock/leftImageBlock";
 
 import arrow from './media/icon/small_arrow.svg';
-import {Caption, LoginForm, LoginWrap, SmallDesc, CodeBlock, LogoMobile} from "./style";
+import {Caption, LoginForm, LoginWrap, SmallDesc, LogoMobile} from "./style";
 import logo from "../registration/media/icon/logo-green.svg";
 
 const AuthorizationCode = () => {

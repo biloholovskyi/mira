@@ -68,7 +68,7 @@ const TabPersonalDate = () => {
       <MyRefs>
         <div className="small_title">Мой реферал</div>
         <RefsBlock>
-          <img className={'photo'} src={photo} alt="photo"/>
+          <img className={'photo'} src={photo} alt="photos"/>
           <div className="name">Альберт Гайфулин</div>
         </RefsBlock>
       </MyRefs>

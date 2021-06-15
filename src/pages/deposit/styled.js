@@ -61,92 +61,58 @@ const Desc = styled.div`
 `
 
 const Left = styled.div`
-  background: #212121;
-  border-radius: 12px;
   flex: 50%;
-  min-height: 202px;
-  padding: 32px;
-  margin-right: 32px;
-  //max-width: 500px;
+  padding: 32px 0px 32px 0;
+ display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   .top {
-    border-bottom: 1px solid #424242;
-    padding-bottom: 32px;
+    flex: 2;
+    min-height: 231px;
     margin-bottom: 32px;
-    h3 {
-      font-style: normal;
-      font-weight: normal;
-      font-size: 16px;
-      line-height: 22px;
-      color: #FFFFFF;
-      margin-bottom: 7px;
-    }
-    .summa {
-      font-family: 'TTInterfaces-Bold';
-      font-style: normal;
-      font-weight: bold;
-      font-size: 24px;
-      line-height: 32px;
-      color: #FFFFFF;
-      margin-bottom: 32px;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .bottom {
-    h3 {
-      font-style: normal;
-      font-weight: normal;
-      font-size: 16px;
-      line-height: 22px;
-      color: #FFFFFF;
-      margin-bottom: 7px;
-    }
-    .summa {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    .item {
+      flex: 50%;
       display: flex;
+      flex-direction: column;
       align-items: center;
-     p {
-       font-family: 'TTInterfaces-Bold';
-       font-style: normal;
-       font-weight: bold;
-       font-size: 24px;
-       line-height: 32px;
-       color: #FFFFFF;
-       margin-right: 16px;
-     }
-      margin-bottom: 32px;
-      @media(max-width: 360px) {
-        flex-direction: column;
-        align-items: flex-start;
-        p {
-          margin-bottom: 10px;
-        }
+      .title {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 22px;
+        color: #FFFFFF;
+        margin-bottom: 7px;
+      }
+      .text {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 32px;
+        color: #FFFFFF;
       }
     }
-    .btn_section {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      & button:first-child {
-        margin-right: 16px;
-      }
-@media(max-width: 500px) {
-  flex-direction: column;
-  button {
-    width: 100%;
-  }
-  & button:first-child {
-    margin-right: 0px;
-    margin-bottom: 10px;
-  }
-}
+    & .item:first-child {
+      padding-right: 15px;
+      margin-right: 15px;
+      border-right: 1px solid rgba(255, 255, 255, 0.16);
     }
   }
-  @media(max-width: 1199px) {
-   width: 100%;
-    margin-right: 0;
-    margin-bottom: 32px;
-  }
-  @media(max-width: 767px) {
-   padding: 16px;
-    margin-bottom: 16px;
+  h3 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 24px;
+    color: #FFFFFF;
+    margin-bottom: 12px;
+    font-family: 'TTInterfaces-Bold';
   }
 `
 
@@ -172,14 +138,10 @@ const Label = styled.div`
 `
 
 const Right = styled.div`
-  background: #212121;
-  border-radius: 12px;
   flex: 50%;
-  min-height: 202px;
-  padding: 32px;
-  max-height: 414px;
-  //max-width: 500px;
-  overflow: hidden;
+  padding: 32px 0 32px 32px;
+  border-left: 1px solid #424242;
+  margin-left: 32px;
   h3 {
     font-style: normal;
     font-weight: bold;
@@ -276,11 +238,117 @@ const DepositTable = styled.div`
   }
 `
 
+const InfoBlock = styled.div`
+  background: #212121;
+  border-radius: 12px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 48px;
+`
+
+const TabHead = styled.div`
+  display: flex;
+  align-items: center;
+  background: #424242;
+  border-radius: 12px;
+  padding: 4px;
+  min-height: 65px;
+  margin-bottom: 24px;
+  & div:last-child {
+    margin-right: 0;
+  }
+  @media(max-width: 575px) {
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+`
+
+const TabHeadNav = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  flex: 1;
+  cursor: pointer;
+  padding: 6px 0;
+  position: relative;
+  z-index: 10;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  color: #FFFFFF;
+  text-align: center;
+  span {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 24px;
+    color: #FFFFFF;
+    position: relative;
+    z-index: 8;
+  }
+  .text {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    color: #FFFFFF; 
+    position: relative;
+    z-index: 8;
+  }
+  &.tabs-active {
+    background: #36B37E;
+    border-radius: 8px;
+  }
+`
+
+const TabWrap = styled.form`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 48px;
+    border-bottom: 1px solid #424242;
+    .name {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 22px;
+      color: #CACACA;
+    }
+    .value {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 22px;
+      color: #FFFFFF;
+      background-color: transparent;
+      border: none;
+      text-align: right;
+    }
+  }
+  
+  button {
+    margin-top: 32px; 
+  }
+`
+
 export {
   DepositWrap,
   Desc,
   Left,
   Label,
   Right,
-  DepositTable
+  DepositTable,
+  InfoBlock,
+  TabHead,
+  TabHeadNav,
+  TabWrap
 }

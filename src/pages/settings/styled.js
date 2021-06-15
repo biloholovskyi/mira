@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link, animateScroll as scroll } from "react-scroll";
+import { Link } from "react-scroll";
 import user from './media/icon/userAvatar.svg';
 
 const TabHead = styled.div`

@@ -6,7 +6,6 @@ import SuccessModal from "../successModal/successModal";
 import TopUpInfo from './topUpInfo/topUpInfo';
 
 import {ModalOverlay, ModalWrapper} from "../styled";
-import arrow from "../../media/icon/arrow.svg";
 import closed from "../../media/icon/close.svg";
 
 const TopUpModal = ({close}) => {

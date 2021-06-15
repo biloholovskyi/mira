@@ -1,8 +1,9 @@
 import React from "react";
-import {ModalOverlay, ModalWrapper} from "../../styled";
-import arrow from "../../../media/icon/arrow.svg";
-import closed from "../../../media/icon/close.svg";
+
 import MainButton from "../../../../../components/mainButton/mainButton";
+
+import {ModalOverlay, ModalWrapper} from "../../styled";
+import closed from "../../../media/icon/close.svg";
 
 const TopUpInfo = ({close, openSuccessModal}) => {
 
