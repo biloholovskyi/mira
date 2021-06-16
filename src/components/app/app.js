@@ -12,6 +12,7 @@ import Balance from '../../pages/balance/balance';
 import Faq from '../../pages/faq/faq';
 import Deposit from '../../pages/deposit/deposit';
 import Header from '../header/header';
+import Referral from '../../pages/referral/Referral';
 
 import './App.css'
 
@@ -55,6 +56,7 @@ const App = () => {
         <Route path='/balance' exact component={Balance}/>
         <Route path='/faq' exact component={Faq}/>
         <Route path='/deposit' exact component={Deposit}/>
+        <Route path='/ref' exact component={Referral}/>
       </Switch>
     </>
   )
