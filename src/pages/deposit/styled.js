@@ -98,6 +98,16 @@ const Left = styled.div`
         line-height: 32px;
         color: #FFFFFF;
       }
+    @media(max-width: 1150px) {
+      .title {
+        font-size: 14px;
+        line-height: 20px;
+      }
+      .text {
+        font-size: 18px;
+        line-height: 24px;
+      }
+    }
     }
     & .item:first-child {
       padding-right: 15px;
@@ -114,6 +124,15 @@ const Left = styled.div`
     margin-bottom: 12px;
     font-family: 'TTInterfaces-Bold';
   }
+
+  @media(max-width: 1099px) {
+    padding: 16px 0px 16px 0;
+  }
+
+  @media(max-width: 730px) {
+    width: 100%;
+  }
+  
 `
 
 const Label = styled.div`
@@ -151,11 +170,18 @@ const Right = styled.div`
     margin-bottom: 12px;
     font-family: 'TTInterfaces-Bold';
   }
-  @media(max-width: 1199px) {
-    width: 100%;
+  
+  @media(max-width: 1099px) {
+    padding: 16px 0 16px 16px;
+    margin-left: 16px;
   }
-  @media(max-width: 767px) {
-    padding: 16px;
+
+  @media(max-width: 730px) {
+    width: 100%;
+    border-top: 1px solid #424242;
+    margin-left: 0px;
+    border-left: none;
+    padding-left: 0;
   }
 `
 
@@ -192,6 +218,11 @@ const DepositTable = styled.div`
       tr th:last-child {
         text-align: right;
       }
+@media(max-width: 400px) {
+  tr th:nth-child(2){
+    display: none;
+  }
+}
     }
 
     tbody {
@@ -234,6 +265,16 @@ const DepositTable = styled.div`
           text-align: right;
         }
       }
+      @media(max-width: 400px) {
+        tr {
+          td {
+            padding: 15px 15px 15px 0;
+          }
+        }
+        tr td:nth-child(2){
+          display: none;
+        }
+      }
     }
   }
 `
@@ -243,8 +284,17 @@ const InfoBlock = styled.div`
   border-radius: 12px;
   padding: 0 32px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 48px;
+
+  @media(max-width: 1099px) {
+    padding: 0 16px;
+  }
+
+  @media(max-width: 730px) {
+    flex-direction: column;
+  }
+  
 `
 
 const TabHead = styled.div`

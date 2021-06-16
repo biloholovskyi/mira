@@ -1,14 +1,22 @@
 import React from "react";
-import {Left, Right, DepositTable, InfoBlock, TabWrap} from "../styled";
+import CircleProgressBar from './circleProgressBar/circleProgressBar';
+
 import MainButton from "../../../components/mainButton/mainButton";
 
-const ActiveDeposit = ({deposit}) => {
+import {Left, Right, DepositTable, InfoBlock, TabWrap} from "../styled";
 
+const ActiveDeposit = ({deposit}) => {
   return(
    <>
      <InfoBlock>
        <Left>
-         <div className="top">Осталось {deposit.term} дней</div>
+         <div className="top">
+
+          <CircleProgressBar
+            term={deposit.term}
+          />
+
+         </div>
          <div className="bottom">
            <div className="item">
              <div className="title">Тело депозита</div>
@@ -67,12 +75,12 @@ const ActiveDeposit = ({deposit}) => {
          </thead>
          <tbody>
            <tr>
-             <td>10 MRC</td>
+             <td>10</td>
              <td>3%</td>
              <td>21.06.1995</td>
            </tr>
            <tr>
-             <td>20 MRC</td>
+             <td>20</td>
              <td>5%</td>
              <td>28.06.1995</td>
            </tr>

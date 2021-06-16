@@ -52,10 +52,12 @@ const MakeDeposit = ({updateList}) => {
           : tabStatus === 'month6'
             ? <SixMonthTab
               totalSum={summa}
+              getInfo={updateList}
               />
             : tabStatus === 'month9'
               ? <NineMonthTab
                 totalSum={summa}
+                getInfo={updateList}
                 />
               : null
         }

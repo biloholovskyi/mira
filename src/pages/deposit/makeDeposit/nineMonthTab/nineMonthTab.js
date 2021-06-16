@@ -1,9 +1,23 @@
 import React from "react";
 
-import {TabWrap} from "../../styled";
 import MainButton from "../../../../components/mainButton/mainButton";
 
-const NineMonthTab = ({totalSum}) => {
+import {TabWrap} from "../../styled";
+
+const NineMonthTab = ({totalSum, getInfo}) => {
+
+  const onCreateDeposit = (e) => {
+    e.preventDefault();
+
+    const data = {
+      term: e.target.month.value,
+      rate: e.target.percent.value,
+      dailyIncome: e.target.dailyIncome.value,
+      income: e.target.income.value,
+      total: e.target.total.value
+    }
+    getInfo(data)
+  }
 
   //Прибыль за весь срок
   let income = ((totalSum * 1.2) / 100) * 270;
@@ -13,7 +27,7 @@ const NineMonthTab = ({totalSum}) => {
   let formatDailyIncome = dalyIncome.toString();
 
   return(
-    <TabWrap>
+    <TabWrap onSubmit={(e)=>onCreateDeposit(e)}>
       <div className="item">
         <div className="name">Срок депозита</div>
         <div className="value">9 месяцей</div>
