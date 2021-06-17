@@ -37,11 +37,7 @@ const BalanceBlock = styled.div`
       font-size: 14px;
     }
   }
-
-  @media (max-width: 900px) {
-    margin-bottom: 0px;
-  }
-
+  
   .info {
     font-style: normal;
     font-family: 'TTInterfaces-Bold';
@@ -68,6 +64,11 @@ const BalanceBlock = styled.div`
     }
   }
 
+  @media (max-width: 1000px) {
+    margin-right: 0;
+    margin-bottom: 16px;
+  }
+  
   @media (max-width: 900px) {
     padding: 16px;
   }
@@ -88,6 +89,9 @@ const InfoBlock = styled.div`
     line-height: 24px;
     color: #FFFFFF;
     margin-bottom: 24px;
+  }
+  @media (max-width: 900px) {
+    padding: 16px;
   }
 `
 

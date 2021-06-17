@@ -35,7 +35,8 @@ const SideBarWrap = styled.div`
   }
   
     @media(max-width: 900px) {
-      display: none;
+      display: ${props => props.mobileMenu ? 'flex' : 'none'};
+      padding: 16px;
     }
 `
 const UserBlock = styled.div`
@@ -134,6 +135,35 @@ const Navigation = styled.div`
   }
 `
 
+const CloseMenuBtn = styled.button`
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  cursor: pointer;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+`
+
+const MobileBackground = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color:  rgba(18, 18, 18, 0.72);
+  z-index: 49;
+`
+
 export {
   SideBarWrap,
   UserBlock,
@@ -141,5 +171,7 @@ export {
   Currency,
   Name,
   Information,
-  Navigation
+  Navigation,
+  CloseMenuBtn,
+  MobileBackground
 }
