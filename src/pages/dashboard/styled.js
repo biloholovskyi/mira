@@ -209,7 +209,7 @@ const ChartBtn = styled.button`
   margin-right: 8px;
   margin-bottom: 33px;
   cursor: pointer;
-  &.active {
+  &.btn-active {
     background: rgba(54, 179, 126, 0.2);
     color: #36B37E;
   }

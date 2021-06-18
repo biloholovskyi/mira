@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 import LinesChart from './linesChart/linesChart'
 import MainButton from "../../components/mainButton/mainButton";
@@ -8,50 +8,204 @@ import ActiveProgram from './activeProgram/activeProgram';
 import {TopBlock, Balance, RefLink, MyIncome, ActivePrograms} from './styled';
 
 const Dashboard = () => {
+  const [chartsType, setChartsType] = useState('week');
+
+  const changeTab = (e, tab) => {
+    setChartsType(tab);
+    document.querySelector('.btn-active').classList.remove('btn-active');
+    e.target.classList.add('btn-active');
+  };
 
   const data = [
     {
-      date: "3 июня",
-      mrc: 400,
+      date: "2021-06-03",
+      mrc: 600,
       value: 1300,
       name: 'Дивиденды'
     },
     {
-      date: "4 июня",
-      mrc: 600,
+      date: "2021-06-04",
+      mrc: 750,
       value: 500,
       name: 'Реферальные начисления'
     },
     {
-      date: "5 июня",
-      mrc: 800,
+      date: "2021-06-05",
+      mrc: 700,
       value: 1200,
       name: 'Карьерные инвестиции'
     },
     {
-      date: "6 июня",
+      date: "2021-06-06",
       mrc: 700,
       value: 700,
       name: 'Другое'
     },
     {
-      date: "7 июня",
-      mrc: 950,
+      date: "2021-06-07",
+      mrc: 850,
       value: 100,
       name: 'Другое Другое'
     },
     {
-      date: "8 июня",
-      mrc: 450,
+      date: "2021-06-08",
+      mrc: 800,
       value: 1500,
       name: 'инвестиции'
     },
     {
-      date: "9 июня",
-      mrc: 500,
+      date: "2021-06-09",
+      mrc: 900,
       value: 500,
       name: 'еще что то'
     }
+  ];
+
+  const dataMonth = [
+    {
+      date: "2021-06-03",
+      mrc: 600,
+      value: 1300,
+      name: 'Дивиденды'
+    },
+    {
+      date: "2021-06-04",
+      mrc: 750,
+      value: 500,
+      name: 'Реферальные начисления'
+    },
+    {
+      date: "2021-06-05",
+      mrc: 700,
+      value: 1200,
+      name: 'Карьерные инвестиции'
+    },
+    {
+      date: "2021-06-06",
+      mrc: 700,
+      value: 700,
+      name: 'Другое'
+    },
+    {
+      date: "2021-06-07",
+      mrc: 850,
+      value: 100,
+      name: 'Другое Другое'
+    },
+    {
+      date: "2021-06-08",
+      mrc: 800,
+      value: 1500,
+      name: 'инвестиции'
+    },
+    {
+      date: "2021-06-09",
+      mrc: 900,
+      value: 500,
+      name: 'еще что то'
+    },
+    {
+      date: "2021-06-10",
+      mrc: 600,
+      value: 1300,
+      name: 'Дивиденды'
+    },
+    {
+      date: "2021-06-11",
+      mrc: 750,
+      value: 500,
+      name: 'Реферальные начисления'
+    },
+    {
+      date: "2021-06-12",
+      mrc: 700,
+      value: 1200,
+      name: 'Карьерные инвестиции'
+    },
+    {
+      date: "2021-06-13",
+      mrc: 700,
+      value: 700,
+      name: 'Другое'
+    },
+    {
+      date: "2021-06-14",
+      mrc: 850,
+      value: 100,
+      name: 'Другое Другое'
+    },
+    {
+      date: "2021-06-15",
+      mrc: 800,
+      value: 1500,
+      name: 'инвестиции'
+    },
+    {
+      date: "2021-06-16",
+      mrc: 900,
+      value: 500,
+      name: 'еще что то'
+    },
+    {
+      date: "2021-06-17",
+      mrc: 700,
+      value: 700,
+      name: 'Другое'
+    },
+    {
+      date: "2021-06-18",
+      mrc: 850,
+      value: 100,
+      name: 'Другое Другое'
+    },
+    {
+      date: "2021-06-19",
+      mrc: 800
+    },
+    {
+      date: "2021-06-20",
+      mrc: 900
+    },
+    {
+      date: "2021-06-21",
+      mrc: 900
+    },
+    {
+      date: "2021-06-22",
+      mrc: 900
+    },
+    {
+      date: "2021-06-23",
+      mrc: 900
+    },
+    {
+      date: "2021-06-24",
+      mrc: 900
+    },
+    {
+      date: "2021-06-25",
+      mrc: 950
+    },
+    {
+      date: "2021-06-26",
+      mrc: 900
+    },
+    {
+      date: "2021-06-27",
+      mrc: 900
+    },
+    {
+      date: "2021-06-28",
+      mrc: 900
+    },
+    {
+      date: "2021-06-29",
+      mrc: 900
+    },
+    {
+      date: "2021-06-30",
+      mrc: 980
+    },
   ];
 
   return (
@@ -99,6 +253,9 @@ const Dashboard = () => {
 
             <LinesChart
               data={data}
+              dataMonth={dataMonth}
+              chartsType={chartsType}
+              changeTab={changeTab}
             />
 
           </div>
