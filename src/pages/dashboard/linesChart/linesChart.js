@@ -16,7 +16,12 @@ import {
 import {ChartBtn} from '../styled';
 import '../style.css';
 
+// форматируем дату для подсказки при наведение
 const dateFormatter = item => moment(item).format("dd D MMMM");
+// форматируем дату для недельного графика
+const xAxiosDateFormatter = (date) => moment(date).format('D MMMM');
+// форматируем дату для годового графика
+const dateFormatterForMonth = (date) => moment(date).format('MMMM');
 
 const LinesChart = ({data, dataMonth, chartsType, changeTab}) => {
 
@@ -43,7 +48,7 @@ const LinesChart = ({data, dataMonth, chartsType, changeTab}) => {
         <AreaChart
           width={'100%'}
           height={262}
-          data={chartsType === 'week' ? data : chartsType === 'month' ? dataMonth : null}
+          data={chartsType === 'week' ? data : chartsType === 'month' || chartsType === 'year' || chartsType === 'allTime' ? dataMonth : null}
           margin={{
             top: 0,
             right: 30,
@@ -61,9 +66,9 @@ const LinesChart = ({data, dataMonth, chartsType, changeTab}) => {
 
           <CartesianGrid vertical={false} stroke={'#424242'} width={'500'}/>
 
-          <XAxis tickFormatter={(date) => moment(date).format('D MMMM')} dataKey="date"
+          <XAxis tickFormatter={chartsType === 'year' || chartsType === 'allTime' ? dateFormatterForMonth : xAxiosDateFormatter} dataKey="date"
                  tick={{fontSize: '12px', fill: '#C1C1C1'}} allowDataOverflow
-                 interval={chartsType === 'week' ? 0 : chartsType === 'month' ? 5 : null}/>
+                 interval={chartsType === 'week' ? 0 : chartsType === 'month' ? 5 : chartsType === 'year' || chartsType === 'allTime' ? dataMonth.length : null}/>
 
           <YAxis tickCount={6} tick={{fontSize: '12px', fill: '#C1C1C1'}} allowDataOverflow domain={[400, 1000]}
                  orientation={'right'} scale="linear"/>

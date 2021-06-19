@@ -24,6 +24,10 @@ const ModalWrapper = styled.div`
       height: 24px;
       object-fit: contain;
     }
+    @media(max-width: 575px) {
+      top: 16px;
+      right: 16px;
+    }
   }
 
   .title {
@@ -222,6 +226,11 @@ const ModalWrapper = styled.div`
       }
     }
   }
+  
+  @media(max-width: 575px) {
+    padding: 16px;
+  }
+  
 `
 const ModalOverlay = styled.div`
   width: 100%;
