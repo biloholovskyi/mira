@@ -169,6 +169,7 @@ const LoginForm = styled.form`
     transform: none;
     margin-bottom: 32px;
     justify-content: flex-start;
+    display: none;
     a {
       font-size: 12px;
       line-height: 18px;

@@ -1,7 +1,10 @@
 import React from 'react';
+import axios from "axios";
 import {useHistory} from "react-router";
 import ReCAPTCHA from "react-google-recaptcha"; // link on docs https://www.npmjs.com/package/react-google-recaptcha
 import {NavLink} from "react-router-dom";
+import {loginUser} from "../../actions/index";
+import {connect} from "react-redux";
 
 import MainButton from '../../components/mainButton/mainButton';
 import MainInput from '../../components/mainInput/mainInput';
@@ -10,11 +13,56 @@ import LeftImageBlock from '../../components/leftImageBlock/leftImageBlock';
 import {LoginWrap, Caption, LoginForm, LogoMobile, MobileBtn} from './style';
 import logo from "./media/icon/logo-green.svg";
 
-const Registration = () => {
+import ServerSettings from '../../service/serverSettings';
+
+const Registration = ({loginUser}) => {
   const history = useHistory();
 
   const onChange = (value) => {
     console.log("Captcha value:", value);
+  }
+
+  const createNewUser = async (e) => {
+    e.preventDefault();
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const server = new ServerSettings();
+    const email = e.target.email.value;
+
+    await axios.get(`${server.getApi()}api/users/${email}/`)
+      .then(res => {
+        alert(('Email уже занят'))
+      }).catch(error => {
+
+        const data = new FormData();
+        data.set('name', e.target.name.value);
+        data.set('surName', e.target.surName.value);
+        data.set('email', e.target.email.value);
+        data.set('password' , generatePassword())
+
+        axios.post(`${server.getApi()}api/users/`, data)
+          .then(res => {
+            localStorage.setItem('mira_login', JSON.stringify({email: res.data.email}));
+            loginUser(res.data);
+            history.push('/temporaryPassword')
+            console.log(res.data)
+          }).catch(error => console.error(error));
+
+    })
+
+  }
+
+  // генерируем пароль
+  const generatePassword = () => {
+    let pass = "";
+    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let passLength = (Math.random() * 15) + 5;
+
+    for (let i = 0; i < passLength; i++)
+      pass += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return pass;
   }
 
   return (
@@ -34,27 +82,27 @@ const Registration = () => {
           />
         </Caption>
 
-        <LoginForm>
+        <LoginForm onSubmit={(e) => createNewUser(e)}>
           <h3>Зарегистрироваться</h3>
           <div className="double">
             <MainInput
               label={'Имя'}
               type={'text'}
-              name={'firstName'}
+              name={'name'}
               required={true}
             />
 
             <MainInput
               label={'Фамилия'}
               type={'text'}
-              name={'lastName'}
+              name={'surName'}
               required={true}
             />
           </div>
           <MainInput
             label={'Почта'}
             type={'email'}
-            name={'mail'}
+            name={'email'}
             required={true}
           />
 
@@ -77,7 +125,7 @@ const Registration = () => {
               type={'submit'}
               text={'Зарегистрироваться'}
               colorBg={true}
-              func={() => history.push('/temporaryPassword')}
+              //func={() => history.push('/temporaryPassword')}
             />
             <p>Нажимая «Отправить», вы соглашаетесь предоставить Вашу информацию ООО "МИРА" на обработку.</p>
           </div>
@@ -97,4 +145,14 @@ const Registration = () => {
   )
 }
 
-export default Registration;
+const mapStateToProps = (state) => {
+  return {
+
+  }
+};
+
+const mapDispatchToProps = {
+  loginUser
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Registration);
