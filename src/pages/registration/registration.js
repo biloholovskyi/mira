@@ -37,7 +37,7 @@ const Registration = ({loginUser}) => {
 
         const data = new FormData();
         data.set('name', e.target.name.value);
-        data.set('surName', e.target.surName.value);
+        data.set('surName', e.target.surname.value);
         data.set('email', e.target.email.value);
         data.set('password' , generatePassword())
 
@@ -95,7 +95,7 @@ const Registration = ({loginUser}) => {
             <MainInput
               label={'Фамилия'}
               type={'text'}
-              name={'surName'}
+              name={'surname'}
               required={true}
             />
           </div>
