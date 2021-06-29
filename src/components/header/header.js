@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {NavLink} from "react-router-dom";
+import {connect} from "react-redux";
 
 import {HeaderWrap, BurgerBtn} from './styled'
 
@@ -8,7 +9,8 @@ import burger from './media/icons/burger.svg';
 import logo from './media/icons/logo-green.svg';
 import LeftSideBar from "../leftSideBar/leftSideBar";
 
-const Header = ({user}) => {
+
+const Header = ({photo, user}) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
@@ -28,6 +30,7 @@ const Header = ({user}) => {
         showMenu && (
           <LeftSideBar
             user={user}
+            photo={photo}
             mobileMenu={showMenu}
             closeMenu={toggleMenu}
           />
@@ -37,4 +40,14 @@ const Header = ({user}) => {
   )
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+};
+
+const mapDispatchToProps = {
+
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

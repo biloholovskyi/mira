@@ -12,7 +12,13 @@ const getAllUsers = (users) => {
   }
 }
 
+// передаем текст в success modal
+const setSuccessModalText = (text) => {
+  return {type: 'SHOW_SUCCESS_MODAL', text}
+}
+
 export {
   loginUser,
-  getAllUsers
+  getAllUsers,
+  setSuccessModalText
 }

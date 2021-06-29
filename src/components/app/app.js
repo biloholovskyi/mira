@@ -23,12 +23,10 @@ import ServerSettings from "../../service/serverSettings";
 
 import './App.css'
 
-const App = () => {
+const App = ({loginUser}) => {
   const [loading, setLoading] = useState(false);
-  // записиваем дание от пользователе
-  const [user, setUser] = useState({});
-  console.log(user)
-// window width
+
+  // window width
   const [windowWidth, setWidth] = useState(window.innerWidth);
 
   const handlerResize = () => {
@@ -65,9 +63,7 @@ const App = () => {
       await axios.get(`${server.getApi()}api/users/${statusToken}/`)
         .then(res => {
           loginUser(res.data);
-          setUser(res.data)
           setLoading(true);
-
         }).catch(error => {
           console.log(error)
           localStorage.removeItem('mira_login');
@@ -80,34 +76,50 @@ const App = () => {
 
   return (
     <>
-      <LeftSideBar user={user}/>
+      <LeftSideBar/>
       {
         windowWidth < 900 && (
-          <Header user={user}/>
+          <Header/>
         )
       }
 
       <Switch>
         <Route path='/' exact>
           {
-            localStorage.getItem('mira_login')
+            loading
               ? <Redirect to={'/dashboard'}/>
               : <Redirect to={'/login'}/>
           }
         </Route>
-        <Route path='/login' exact component={Login}/>
-        <Route path='/registration' exact component={Registration}/>
+        <Route path='/login' exact>
+          {
+            loading
+            ? <Redirect to={'/dashboard'}/>
+            :  <Login/>
+          }
+        </Route>
+        <Route path='/registration' exact>
+          {
+            loading
+              ? <Redirect to={'/dashboard'}/>
+              : <Registration/>
+          }
+        </Route>
         <Route path='/authorizationCode' exact component={AuthorizationCode}/>
         <Route path='/temporaryPassword' exact component={TemporaryPassword}/>
-        <Route path='/dashboard' exact component={Dashboard}/>
-        <Route path='/settings' exact >
-          <Settings user={user}/>
+        <Route path='/dashboard' exact component={Dashboard}>
+          {
+            loading
+              ? <Dashboard/>
+              :   <Redirect to={'/login'}/>
+          }
         </Route>
+        <Route path='/settings' exact component={Settings} />
         <Route path='/balance' exact component={Balance}/>
         <Route path='/faq' exact component={Faq}/>
         <Route path='/deposit' exact component={Deposit}/>
         <Route path='/ref' exact component={Referral}/>
-        <Route path='/forgotPassword' exact component={ForgotPassword}/>
+        <Route path='/forgotPassword' exact component={ForgotPassword} />
       </Switch>
     </>
   )
@@ -115,6 +127,7 @@ const App = () => {
 
 const mapStateToProps = (state) => {
   return {
+    user: state.user
   }
 };
 

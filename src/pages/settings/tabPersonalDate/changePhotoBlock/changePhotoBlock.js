@@ -2,10 +2,13 @@ import React, {useEffect, useState} from "react";
 
 import {ChangePhoto, Photo} from "../../styled";
 import dlt from '../../media/icon/delete.svg';
+import userPhoto from '../../media/icon/userAvatar.svg';
 
-const ChangePhotoBlock = () => {
+const ChangePhotoBlock = ({avatar}) => {
+
   // preview
   const [photo, setPhoto] = useState({})
+
   // window width
   const [windowWidth, setWidth] = useState(window.innerWidth);
 
@@ -47,8 +50,19 @@ const ChangePhotoBlock = () => {
           type={'file'}
           required={false}
         />
-        <div className="preview"/>
-        <div className={'download'}>{windowWidth < 575 ? 'Загрузить фото' : 'Загрузить фото с компьютера'}</div>
+        {
+          avatar !== null
+            ? <>
+              <img alt={'preview'} src={avatar === null ? userPhoto : avatar}/>
+              <div className={'download'}>Заменить фото</div>
+            </>
+            : <div className="preview"/>
+        }
+        {
+          avatar !== null
+            ? null
+            : <div className={'download'}>{windowWidth < 575 ? 'Загрузить фото' : 'Загрузить фото с компьютера'}</div>
+        }
       </Photo>
     ) : (
       <>
@@ -62,10 +76,12 @@ const ChangePhotoBlock = () => {
             type={'file'}
             required={false}
           />
+
           <img alt={'preview'} src={photo.preview}/>
           <div className={'download'}>Заменить фото</div>
         </Photo>
-        <button onClick={() => handleRemove()} type={'button'} className={'dlt_btn'}><img src={dlt} alt="icon"/></button>
+        {/*<button onClick={() => handleRemove()} type={'button'} className={'dlt_btn'}><img src={dlt} alt="icon"/>*/}
+        {/*</button>*/}
       </>
     )
 

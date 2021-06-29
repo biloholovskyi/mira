@@ -58,17 +58,11 @@ const Registration = ({loginUser}) => {
                   console.error(error);
                 });
 
-              axios.get(`${server.getApi()}api/user/email/${res.data.email}/`)
-                .catch(error => {
-                  console.error(error);
-                });
-
             }).catch(error => console.error(error));
         } else {
           alert('checked captcha!')
         }
       })
-
   }
 
   // генерируем пароль

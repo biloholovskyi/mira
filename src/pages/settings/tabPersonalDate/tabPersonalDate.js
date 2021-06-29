@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import axios from "axios";
 
@@ -9,12 +9,16 @@ import MainButton from '../../../components/mainButton/mainButton';
 import ChangePhotoBlock from './changePhotoBlock/changePhotoBlock';
 import MainDropList from '../../../components/mainDropList/mainDropList';
 
-import photo from '../media/icon/avatar.svg';
+import avatar from '../media/icon/avatar.svg';
 import {PersonalDateWrap, PersonalDateForm, MyRefs, RefsBlock, Security} from '../styled';
 
 import ServerSettings from "../../../service/serverSettings";
 
-const TabPersonalDate = ({user}) => {
+const TabPersonalDate = ({user, loginUser}) => {
+  useEffect(() => {
+  }, [user])
+
+  const [photo, setPhoto] = useState();
 
   const cityList = [
     {name: 'Казань', value: 1},
@@ -44,7 +48,7 @@ const TabPersonalDate = ({user}) => {
 
   }
 
-  // изминения данных пользователя
+  // изминения пароля пользователя
   const changePassword = async (e) => {
     e.preventDefault();
     axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
@@ -70,8 +74,27 @@ const TabPersonalDate = ({user}) => {
           }
         }
       }).catch(error => console.log(error));
-
   }
+
+  // get user photo
+  const getUserPhoto = async () => {
+
+    // меняем формат ссылки фото
+    const avatar = user.photo.split('/')
+    const newAva =  `${avatar[1]}/${avatar[2]}`;
+
+    const server = new ServerSettings();
+
+    // получаем аватарку и записиваем у стейт
+    await axios.get(`${server.getApi()}${newAva}/`)
+      .then(res => {
+        setPhoto(res.config.url)
+      }).catch(error => console.log(error))
+  }
+
+  useEffect(()=> {
+    getUserPhoto().catch(error => console.error(error));
+  })
 
   return (
     <PersonalDateWrap>
@@ -123,12 +146,12 @@ const TabPersonalDate = ({user}) => {
 
       </PersonalDateForm>
 
-      <ChangePhotoBlock/>
+      <ChangePhotoBlock avatar={photo}/>
 
       <MyRefs>
         <div className="small_title">Мой реферал</div>
         <RefsBlock>
-          <img className={'photo'} src={photo} alt="photos"/>
+          <img className={'photo'} src={avatar} alt="photos"/>
           <div className="name">Альберт Гайфулин</div>
         </RefsBlock>
       </MyRefs>
@@ -181,7 +204,9 @@ const TabPersonalDate = ({user}) => {
   )
 }
 const mapStateToProps = (state) => {
-  return {}
+  return {
+    user: state.user
+  }
 };
 
 const mapDispatchToProps = {

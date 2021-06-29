@@ -1,5 +1,7 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {NavLink} from "react-router-dom";
+import {connect} from "react-redux";
+import axios from "axios";
 
 import {
   SideBarWrap,
@@ -16,7 +18,34 @@ import logo from './media/icon/logo-green.svg';
 import avatar from './media/icon/avatar.svg';
 import closed from './media/icon/close.svg';
 
+import ServerSettings from "../../service/serverSettings";
+
+
 const LeftSideBar = ({mobileMenu, closeMenu, user}) => {
+  const [photo, setPhoto] = useState();
+
+  useEffect(() => {
+  }, [user])
+
+  // get user photo
+  const getUserPhoto = async () => {
+    // меняем формат ссылки фото
+    const avatar = user.photo.split('/')
+    const newAva =  `${avatar[1]}/${avatar[2]}`;
+
+    const server = new ServerSettings();
+
+    // получаем аватарку и записиваем у стейт
+   await axios.get(`${server.getApi()}${newAva}/`)
+      .then(res => {
+        setPhoto(res.config.url)
+      }).catch(error => console.log(error))
+  }
+
+  useEffect(()=> {
+    getUserPhoto().catch(error => console.error(error));
+  })
+
   return (
     <>
       {
@@ -35,7 +64,7 @@ const LeftSideBar = ({mobileMenu, closeMenu, user}) => {
         <NavLink className={'logo'} to={'/'}><img src={logo} alt="icon"/></NavLink>
 
         <UserBlock>
-          <Photo src={avatar} alt={'photo'}/>
+          <Photo src={photo === null ? avatar : photo} alt={'photo'}/>
           <div className="info">
             <Name>{user.name} {user.surName}</Name>
             <Currency>10 000 MRC</Currency>
@@ -183,4 +212,14 @@ const LeftSideBar = ({mobileMenu, closeMenu, user}) => {
   )
 }
 
-export default LeftSideBar;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+};
+
+const mapDispatchToProps = {
+
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LeftSideBar);

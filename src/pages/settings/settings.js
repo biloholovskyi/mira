@@ -5,8 +5,9 @@ import TabPersonalDate from './tabPersonalDate/tabPersonalDate';
 
 
 import {TabHeadNav, TabHead, BigTitle, TabBody, TabLink} from './styled';
+import {connect} from "react-redux";
 
-const Settings = ({user}) => {
+const Settings = ({user, photo}) => {
   const [tabStatus, setTabStatus] = useState('personalDate');
 
   // change categories Tab
@@ -27,7 +28,7 @@ const Settings = ({user}) => {
       <TabBody>
         {
           tabStatus === 'personalDate'
-          ? <TabPersonalDate user={user}/>
+          ? <TabPersonalDate user={user} photo={photo}/>
           : null
         }
       </TabBody>
@@ -35,4 +36,14 @@ const Settings = ({user}) => {
   )
 }
 
-export default Settings;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+};
+
+const mapDispatchToProps = {
+
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

@@ -1,5 +1,8 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
+import axios from "axios";
+import {loginUser} from "../../actions";
+import {connect} from "react-redux";
 
 import MainInput from "../../components/mainInput/mainInput";
 import MainButton from "../../components/mainButton/mainButton";
@@ -9,8 +12,58 @@ import {Caption, LoginForm, LoginWrap, SmallDesc} from "../temporaryPassword/sty
 import arrow from "../temporaryPassword/media/icon/small_arrow.svg";
 import {useHistory} from "react-router";
 
-const ForgotPassword = () => {
+import {setSuccessModalText} from '../../actions'
+
+import ServerSettings from "../../service/serverSettings";
+
+const ForgotPassword = ({setSuccessModalText}) => {
   const history = useHistory();
+
+  const createNewPassword = async (e) => {
+    e.preventDefault();
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const server = new ServerSettings();
+    const email = e.target.email.value;
+
+    await axios.get(`${server.getApi()}api/users/${email}/`)
+      .then(res => {
+        // get user id
+        const userId = res.data.id;
+
+        const data = new FormData();
+        data.set('email', e.target.email.value);
+        data.set('password', generatePassword())
+
+        axios.put(`${server.getApi()}api/users/${res.data.id}/update/`, data)
+          .then(res => {
+            loginUser(res.data);
+            localStorage.setItem('mira_login', JSON.stringify({email: res.data.email}));
+            history.push('/login')
+
+            setSuccessModalText('Пароль был успешно сброшен')
+            // отправка письма с новым паролем
+            axios.get(`${server.getApi()}api/user/email/${userId}/`)
+              .catch(error => {
+                console.error(error);
+              });
+
+          }).catch(error => console.error(error));
+      }).catch(error => {console.log(error)})
+  }
+
+  // генерируем пароль
+  const generatePassword = () => {
+    let pass = "";
+    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let passLength = (Math.random() * 15) + 5;
+
+    for (let i = 0; i < passLength; i++)
+      pass += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return pass;
+  }
 
   return (
     <LoginWrap>
@@ -21,13 +74,13 @@ const ForgotPassword = () => {
           <NavLink to={'/login'}><img src={arrow} alt="icon"/>Назад</NavLink>
         </Caption>
 
-        <LoginForm>
+        <LoginForm onSubmit={(e)=> createNewPassword(e)}>
           <h3>Забыли пароль?</h3>
 
           <MainInput
             label={'Email'}
             type={'Email'}
-            name={'Email'}
+            name={'email'}
             required={true}
           />
 
@@ -42,4 +95,15 @@ const ForgotPassword = () => {
   )
 }
 
-export default ForgotPassword;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+};
+
+const mapDispatchToProps = {
+  loginUser,
+  setSuccessModalText
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);
