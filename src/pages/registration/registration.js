@@ -128,6 +128,7 @@ const Registration = ({loginUser}) => {
             sitekey="6LexLAgbAAAAAOlHJXKYTdzb2kSvPPMFk6RT8kcV"
             onChange={onChange}
             theme={'dark'}
+            data-type="image"
             // secret key 6LexLAgbAAAAAJLRuwu1zgGi9EkMenGGgeuztkzu
             // key 6LexLAgbAAAAAOlHJXKYTdzb2kSvPPMFk6RT8kcV
           />

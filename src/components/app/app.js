@@ -114,7 +114,13 @@ const App = ({loginUser}) => {
               :   <Redirect to={'/login'}/>
           }
         </Route>
-        <Route path='/settings' exact component={Settings} />
+        <Route path='/settings' exact>
+          {
+            loading
+              ? <Settings/>
+              :   <Redirect to={'/login'}/>
+          }
+        </Route>
         <Route path='/balance' exact component={Balance}/>
         <Route path='/faq' exact component={Faq}/>
         <Route path='/deposit' exact component={Deposit}/>

@@ -8,9 +8,37 @@ import MainInput from "../../components/mainInput/mainInput";
 
 import arrow from './media/icon/small_arrow.svg';
 import {Caption, LoginForm, LoginWrap, SmallDesc} from "./style";
+import {loginUser} from "../../actions";
+import {connect} from "react-redux";
+import ServerSettings from "../../service/serverSettings";
+import axios from "axios";
+import {Button} from "../../components/mainButton/styled";
 
-const TemporaryPassword = () => {
+
+const TemporaryPassword = ({user}) => {
   const history = useHistory();
+
+  const checkPassword = async (e) => {
+    e.preventDefault();
+    const pass = e.target.pass.value;
+    if(user.password === pass) {
+      window.location.assign('/dashboard');
+    }else {
+      alert('wrong password')
+    }
+  }
+
+  const sendPassAgain = async (e) => {
+    e.preventDefault();
+
+    const server = new ServerSettings();
+
+    // отправляем письмо с кодом авторизации
+    axios.get(`${server.getApi()}api/user/email/${user.id}/`)
+      .catch(error => {
+        console.error(error);
+      });
+  }
 
   return (
     <LoginWrap>
@@ -21,14 +49,14 @@ const TemporaryPassword = () => {
           <NavLink to={'/registration'}><img src={arrow} alt="icon"/>Назад</NavLink>
         </Caption>
 
-        <LoginForm>
+        <LoginForm onSubmit={(e)=> checkPassword(e)}>
           <h3>Введите временный пароль</h3>
-          <SmallDesc>Мы выслали временный пароль на почту stasmihaylov228@gmail.com<br/>
+          <SmallDesc>Мы выслали временный пароль на почту {user.email}<br/>
             Позже вы сможете поменять пароль в личном кабинете</SmallDesc>
 
           <div className={'send_again'}>
             Не пришел пароль?
-            <NavLink to={'/'}>Выслать пароль еще раз</NavLink>
+            <Button  onClick={(e)=> sendPassAgain(e)}>Выслать пароль еще раз</Button>
           </div>
 
           <MainInput
@@ -47,7 +75,7 @@ const TemporaryPassword = () => {
             type={'submit'}
             text={'Войти'}
             colorBg={true}
-            func={() => history.push('/dashboard')}
+            //func={() => history.push('/dashboard')}
           />
         </LoginForm>
       </div>
@@ -55,4 +83,14 @@ const TemporaryPassword = () => {
   )
 }
 
-export default TemporaryPassword;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+};
+
+const mapDispatchToProps = {
+  loginUser
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TemporaryPassword);

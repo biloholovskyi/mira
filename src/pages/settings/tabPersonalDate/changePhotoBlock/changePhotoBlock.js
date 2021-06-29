@@ -3,9 +3,9 @@ import React, {useEffect, useState} from "react";
 import {ChangePhoto, Photo} from "../../styled";
 import dlt from '../../media/icon/delete.svg';
 import userPhoto from '../../media/icon/userAvatar.svg';
+import {connect} from "react-redux";
 
-const ChangePhotoBlock = ({avatar}) => {
-
+const ChangePhotoBlock = ({avatar, user}) => {
   // preview
   const [photo, setPhoto] = useState({})
 
@@ -53,7 +53,7 @@ const ChangePhotoBlock = ({avatar}) => {
         {
           avatar !== null
             ? <>
-              <img alt={'preview'} src={avatar === null ? userPhoto : avatar}/>
+              <img alt={'preview'} src={user.photo === null ? userPhoto : avatar}/>
               <div className={'download'}>Заменить фото</div>
             </>
             : <div className="preview"/>
@@ -93,4 +93,14 @@ const ChangePhotoBlock = ({avatar}) => {
   )
 }
 
-export default ChangePhotoBlock;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+};
+
+const mapDispatchToProps = {
+
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChangePhotoBlock);

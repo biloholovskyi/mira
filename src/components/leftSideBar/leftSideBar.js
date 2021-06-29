@@ -15,7 +15,7 @@ import {
   MobileBackground
 } from './styled';
 import logo from './media/icon/logo-green.svg';
-import avatar from './media/icon/avatar.svg';
+import avatar from './media/icon/userAvatar.svg';
 import closed from './media/icon/close.svg';
 
 import ServerSettings from "../../service/serverSettings";
@@ -64,7 +64,7 @@ const LeftSideBar = ({mobileMenu, closeMenu, user}) => {
         <NavLink className={'logo'} to={'/'}><img src={logo} alt="icon"/></NavLink>
 
         <UserBlock>
-          <Photo src={photo === null ? avatar : photo} alt={'photo'}/>
+          <Photo src={user.photo === null ? avatar : photo} alt={'photo'}/>
           <div className="info">
             <Name>{user.name} {user.surName}</Name>
             <Currency>10 000 MRC</Currency>

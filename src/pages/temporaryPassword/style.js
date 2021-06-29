@@ -147,7 +147,8 @@ const LoginForm = styled.form`
     width: 100%;
     justify-content: flex-end;
     transform: translateY(22px);
-    a {
+    z-index: 2;
+    button {
       margin-left: 5px;
       font-family: 'TTInterfaces-Regular';
       font-style: normal;
@@ -160,6 +161,10 @@ const LoginForm = styled.form`
       justify-content: center;
       cursor: pointer;
       text-decoration: underline;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      z-index: 2;
     }
     @media(max-width: 500px) {
       display: none;
@@ -170,7 +175,7 @@ const LoginForm = styled.form`
     margin-bottom: 32px;
     justify-content: flex-start;
     display: none;
-    a {
+    button {
       font-size: 12px;
       line-height: 18px;
     }

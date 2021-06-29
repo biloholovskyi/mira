@@ -21,7 +21,7 @@ const AuthorizationCode = ({user}) => {
   const update = (value) => {
     setAuthCode(value)
   }
-console.log(authCode)
+
   // изминения пароля пользователя
   const checkCode = async (e) => {
     e.preventDefault();
@@ -30,17 +30,10 @@ console.log(authCode)
 
     const server = new ServerSettings();
 
-    const code = e.target.code.value;
-console.log(code)
-    if(user.code === code) {
       await axios.get(`${server.getApi()}api/users/${user.id}/`)
         .then(res => {
           window.location.assign('/dashboard');
         }).catch(error => console.log(error))
-    } else {
-      alert('не верный код')
-    }
-
   }
 
   return (
@@ -56,7 +49,7 @@ console.log(code)
 
         <LoginForm onSubmit={(e)=> checkCode(e)}>
           <h3>Введите проверочный код</h3>
-          <SmallDesc>Мы выслали проверочный код на почту stasmihaylov228@gmail.com <br/>
+          <SmallDesc>Мы выслали проверочный код на почту {user.email}<br/>
             Введите код, что бы подтвердить свой аккаунт</SmallDesc>
 
           <ConfirmationCodeItem update={update}/>

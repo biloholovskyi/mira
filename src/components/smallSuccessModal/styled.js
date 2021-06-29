@@ -12,6 +12,12 @@ const SuccessWrap = styled.div`
   padding: 16px;
   z-index: 500;
   
+  @media(max-width: 500px) {
+    bottom: unset;
+    left: 10px;
+    top: 10px;
+  }
+  
   .image {
     width: 40px;
     height: 40px;
