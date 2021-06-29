@@ -30,24 +30,34 @@ const Registration = ({loginUser}) => {
     const server = new ServerSettings();
     const email = e.target.email.value;
 
-    await axios.get(`${server.getApi()}api/users/${email}/`)
-      .then(res => {
-        alert(('Email уже занят'))
-      }).catch(error => {
-
-        const data = new FormData();
-        data.set('name', e.target.name.value);
-        data.set('surName', e.target.surname.value);
-        data.set('email', e.target.email.value);
-        data.set('password' , generatePassword())
-
-        axios.post(`${server.getApi()}api/users/`, data)
+        await axios.get(`${server.getApi()}api/users/${email}/`)
           .then(res => {
-            localStorage.setItem('mira_login', JSON.stringify({email: res.data.email}));
-            loginUser(res.data);
-            history.push('/temporaryPassword')
-            console.log(res.data)
-          }).catch(error => console.error(error));
+            alert(('Email уже занят'))
+          }).catch(error => {
+
+            const data = new FormData();
+            data.set('name', e.target.name.value);
+            data.set('surName', e.target.surname.value);
+            data.set('email', e.target.email.value);
+            data.set('password' , generatePassword())
+
+            axios.post(`${server.getApi()}api/users/`, data)
+              .then(res => {
+                loginUser(res.data);
+                console.log(res.data)
+                localStorage.setItem('mira_login', JSON.stringify({email: res.data.email}));
+                history.push('/temporaryPassword')
+
+                // отправляем письмо
+                axios.get(`${server.getApi()}api/user/email/${res.data.id}/`)
+                  .catch(error => {
+                    console.error(error);
+                  });
+
+                axios.get(`${server.getApi()}api/user/email/${res.data.email}/`)
+                  .catch(error => {console.error(error);});
+
+              }).catch(error => console.error(error));
 
     })
 

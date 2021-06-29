@@ -1,4 +1,8 @@
 import React from "react";
+import {connect} from "react-redux";
+import axios from "axios";
+
+import {loginUser} from '../../../actions/index';
 
 import MainInput from '../../../components/mainInput/mainInput';
 import MainButton from '../../../components/mainButton/mainButton';
@@ -8,7 +12,9 @@ import MainDropList from '../../../components/mainDropList/mainDropList';
 import photo from '../media/icon/avatar.svg';
 import {PersonalDateWrap, PersonalDateForm, MyRefs, RefsBlock, Security} from '../styled';
 
-const TabPersonalDate = () => {
+import ServerSettings from "../../../service/serverSettings";
+
+const TabPersonalDate = ({user}) => {
 
   const cityList = [
     {name: 'Казань', value: 1},
@@ -16,29 +22,83 @@ const TabPersonalDate = () => {
     {name: 'ИФ', value: 3}
   ]
 
+  // изминения данных пользователя
+  const changePersonalData = async (e) => {
+    e.preventDefault();
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const server = new ServerSettings();
+
+    const data = new FormData();
+    data.set("name", e.target.name.value);
+    data.set("email", e.target.email.value);
+    data.set("surName", e.target.surname.value);
+
+    await axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
+      .then(res => {
+        // обновляем данные пользователя в сторе
+        loginUser(res.data);
+        window.location.reload();
+      }).catch(error => console.log(error));
+
+  }
+
+  // изминения данных пользователя
+  const changePassword = async (e) => {
+    e.preventDefault();
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const server = new ServerSettings();
+
+    const newPass = e.target.newPass.value;
+    const repeatPass = e.target.repeatPass.value;
+
+    const data = new FormData();
+    data.set("password", e.target.newPass.value);
+
+    await axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
+      .then(res => {
+        //проверяем совпадают ли старый пароль и пароль со стора
+        if (user.password === e.target.oldPass.value) {
+          // проверка паролей новый и повторить новый пароль
+          if(newPass === repeatPass) {
+            // обновляем данные пользователя в сторе
+            loginUser(res.data);
+            window.location.reload();
+          }
+        }
+      }).catch(error => console.log(error));
+
+  }
+
   return (
     <PersonalDateWrap>
       <div className="small_title">Личные данные</div>
 
-      <PersonalDateForm>
+      <PersonalDateForm onSubmit={(e) => changePersonalData(e)}>
         <div className="small_title">Личные данные</div>
 
         <MainInput
           label={'Имя'}
           name={'name'}
           type={'text'}
+          defaultValue={user.name}
         />
 
         <MainInput
           label={'Фамилия'}
-          name={'lastName'}
+          name={'surname'}
           type={'text'}
+          defaultValue={user.surName}
         />
 
         <MainInput
           label={'Почта'}
           name={'email'}
           type={'email'}
+          defaultValue={user.email}
         />
 
         <MainInput
@@ -74,7 +134,7 @@ const TabPersonalDate = () => {
       </MyRefs>
 
       <div id={'security'} className="small_title">Безопасность</div>
-      <PersonalDateForm>
+      <PersonalDateForm onSubmit={(e) => changePassword(e)}>
         <div className="small_title">Смена пароля</div>
 
         <MainInput
@@ -108,8 +168,8 @@ const TabPersonalDate = () => {
         <div className="small_title">Дополнительная безопасность</div>
         <div className="checkBlock">
           <label className="switch">
-            <input type="checkbox"  />
-              <span className="slider round" />
+            <input type="checkbox"/>
+            <span className="slider round"/>
           </label>
           <div className="text_block">
             <p>Двухфакторная аунтификация</p>
@@ -120,5 +180,12 @@ const TabPersonalDate = () => {
     </PersonalDateWrap>
   )
 }
+const mapStateToProps = (state) => {
+  return {}
+};
 
-export default TabPersonalDate;
+const mapDispatchToProps = {
+  loginUser
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TabPersonalDate);

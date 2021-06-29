@@ -5,6 +5,14 @@ const loginUser = (user) => {
   }
 }
 
+const getAllUsers = (users) => {
+  return {
+    type: 'GET_ALL_USERS',
+    users
+  }
+}
+
 export {
-  loginUser
+  loginUser,
+  getAllUsers
 }

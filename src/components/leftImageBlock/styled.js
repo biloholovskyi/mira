@@ -14,20 +14,19 @@ const Left = styled.div`
     object-fit: cover;
     object-position: center;
   }
-
-  a {
-    display: block;
-    position: absolute;
-    top: 32px;
-    left: 39px;
-    max-width: 146px;
-    height: 32px;
-
+  
+  
     .logo {
       object-position: center;
       object-fit: contain;
+      display: block;
+      position: absolute;
+      top: 32px;
+      left: 39px;
+      max-width: 146px;
+      height: 32px;
     }
-  }
+  
   @media (max-width: 920px) {
     display: none;
   }

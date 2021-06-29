@@ -1,7 +1,7 @@
 const initialState = {
   // данные пользователя
   user: {
-    login: '',
+    name: '', // email
     password: '',
     photo: '',
     status: null
@@ -22,6 +22,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         user: newUser
+      }
+
+    case 'GET_ALL_USERS':
+      return {
+        ...state,
+        users: action.users
       }
 
     default:

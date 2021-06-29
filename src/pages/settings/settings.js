@@ -6,7 +6,7 @@ import TabPersonalDate from './tabPersonalDate/tabPersonalDate';
 
 import {TabHeadNav, TabHead, BigTitle, TabBody, TabLink} from './styled';
 
-const Settings = () => {
+const Settings = ({user}) => {
   const [tabStatus, setTabStatus] = useState('personalDate');
 
   // change categories Tab
@@ -14,10 +14,6 @@ const Settings = () => {
     setTabStatus(tab);
     document.querySelector('.tabs-active').classList.remove('tabs-active');
     e.target.classList.add('tabs-active');
-  };
-
-  const scrollToTop = () => {
-    scroll.scrollToTop();
   };
 
   return (
@@ -31,7 +27,7 @@ const Settings = () => {
       <TabBody>
         {
           tabStatus === 'personalDate'
-          ? <TabPersonalDate />
+          ? <TabPersonalDate user={user}/>
           : null
         }
       </TabBody>

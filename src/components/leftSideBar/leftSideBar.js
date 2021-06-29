@@ -16,8 +16,7 @@ import logo from './media/icon/logo-green.svg';
 import avatar from './media/icon/avatar.svg';
 import closed from './media/icon/close.svg';
 
-const LeftSideBar = ({mobileMenu, closeMenu}) => {
-
+const LeftSideBar = ({mobileMenu, closeMenu, user}) => {
   return (
     <>
       {
@@ -38,7 +37,7 @@ const LeftSideBar = ({mobileMenu, closeMenu}) => {
         <UserBlock>
           <Photo src={avatar} alt={'photo'}/>
           <div className="info">
-            <Name>Дмитрий Танец</Name>
+            <Name>{user.name} {user.surName}</Name>
             <Currency>10 000 MRC</Currency>
           </div>
         </UserBlock>

@@ -10,9 +10,7 @@ import image2 from './media/images/r_image.png';
 const LeftImageBlock = ({loginPage}) => {
   return (
     <Left>
-      <NavLink to='/'>
         <img src={logo} alt="logo" className={'logo'}/>
-      </NavLink>
       {
         loginPage
         ?  <img src={image} alt="images"/>

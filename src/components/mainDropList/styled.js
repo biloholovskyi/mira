@@ -92,7 +92,7 @@ const Wrapper = styled.div`
     width: 18px;
     height: 18px;
     top: 50%;
-    margin-top: -12px;
+    margin-top: -7px;
     margin-right: 0 !important;
     right: 12px;
     transform: rotate( ${props => props.fakeBg ? '180deg' : '0deg'};);

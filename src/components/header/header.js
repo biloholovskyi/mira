@@ -8,7 +8,7 @@ import burger from './media/icons/burger.svg';
 import logo from './media/icons/logo-green.svg';
 import LeftSideBar from "../leftSideBar/leftSideBar";
 
-const Header = () => {
+const Header = ({user}) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
@@ -27,6 +27,7 @@ const Header = () => {
       {
         showMenu && (
           <LeftSideBar
+            user={user}
             mobileMenu={showMenu}
             closeMenu={toggleMenu}
           />

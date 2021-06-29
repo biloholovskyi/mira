@@ -30,8 +30,9 @@ const Login = () => {
         if (res.data.password === e.target.password.value) {
           loginUser(res.data);
           createToken(res.data);
-          console.log(res.data)
-          history.push('/dashboard')
+          //console.log(res.data)
+          //history.push('/dashboard')
+          window.location.assign('/dashboard');
         } else {
           alert('wrong password or login');
         }
@@ -63,7 +64,7 @@ const Login = () => {
       <LeftImageBlock loginPage={true}/>
 
       <div className="right">
-        <NavLink to='/'>
+        <NavLink to='/login'>
           <LogoMobile src={logo} alt="logo"/>
         </NavLink>
 
@@ -84,7 +85,7 @@ const Login = () => {
             required={true}
           />
 
-          <NavLink to={'/'} className={'send_again'}>Забыли пароль?</NavLink>
+          <NavLink to={'/forgotPassword'} className={'send_again'}>Забыли пароль?</NavLink>
 
           <MainInput
             label={'Пароль'}
