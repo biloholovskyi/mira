@@ -73,6 +73,8 @@ const LoginForm = styled.form`
     transform: translateY(22px);
     cursor: pointer;
     text-decoration: underline;
+    cursor: pointer;
+    z-index: 2;
   }
 
   & div:nth-child(2){

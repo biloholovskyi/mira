@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import axios from "axios";
 import {useHistory} from "react-router";
 import ReCAPTCHA from "react-google-recaptcha"; // link on docs https://www.npmjs.com/package/react-google-recaptcha
@@ -16,10 +16,12 @@ import logo from "./media/icon/logo-green.svg";
 import ServerSettings from '../../service/serverSettings';
 
 const Registration = ({loginUser}) => {
+  const [captcha, setCaptcha] = useState('');
   const history = useHistory();
 
   const onChange = (value) => {
     console.log("Captcha value:", value);
+    setCaptcha(value)
   }
 
   const createNewUser = async (e) => {
@@ -30,36 +32,42 @@ const Registration = ({loginUser}) => {
     const server = new ServerSettings();
     const email = e.target.email.value;
 
-        await axios.get(`${server.getApi()}api/users/${email}/`)
-          .then(res => {
-            alert(('Email уже занят'))
-          }).catch(error => {
+    await axios.get(`${server.getApi()}api/users/${email}/`)
+      .then(res => {
+        alert(('Email уже занят'))
+      }).catch(error => {
 
-            const data = new FormData();
-            data.set('name', e.target.name.value);
-            data.set('surName', e.target.surname.value);
-            data.set('email', e.target.email.value);
-            data.set('password' , generatePassword())
+        if (captcha) {
+          const data = new FormData();
+          data.set('name', e.target.name.value);
+          data.set('surName', e.target.surname.value);
+          data.set('email', e.target.email.value);
+          data.set('password', generatePassword())
 
-            axios.post(`${server.getApi()}api/users/`, data)
-              .then(res => {
-                loginUser(res.data);
-                console.log(res.data)
-                localStorage.setItem('mira_login', JSON.stringify({email: res.data.email}));
-                history.push('/temporaryPassword')
+          axios.post(`${server.getApi()}api/users/`, data)
+            .then(res => {
+              loginUser(res.data);
+              console.log(res.data)
+              localStorage.setItem('mira_login', JSON.stringify({email: res.data.email}));
+              history.push('/temporaryPassword')
+              window.location.reload();
 
-                // отправляем письмо
-                axios.get(`${server.getApi()}api/user/email/${res.data.id}/`)
-                  .catch(error => {
-                    console.error(error);
-                  });
+              // отправляем письмо
+              axios.get(`${server.getApi()}api/user/email/${res.data.id}/`)
+                .catch(error => {
+                  console.error(error);
+                });
 
-                axios.get(`${server.getApi()}api/user/email/${res.data.email}/`)
-                  .catch(error => {console.error(error);});
+              axios.get(`${server.getApi()}api/user/email/${res.data.email}/`)
+                .catch(error => {
+                  console.error(error);
+                });
 
-              }).catch(error => console.error(error));
-
-    })
+            }).catch(error => console.error(error));
+        } else {
+          alert('checked captcha!')
+        }
+      })
 
   }
 
@@ -156,9 +164,7 @@ const Registration = ({loginUser}) => {
 }
 
 const mapStateToProps = (state) => {
-  return {
-
-  }
+  return {}
 };
 
 const mapDispatchToProps = {
