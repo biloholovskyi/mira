@@ -59,7 +59,7 @@ const AuthorizationCode = ({user}) => {
         <Caption>
           <NavLink to={'/login'}><img src={arrow} alt="icon"/>Назад</NavLink>
         </Caption>
-        <div>{authCode}</div>
+
         <LoginForm onSubmit={(e)=> checkCode(e)}>
           <h3>Введите проверочный код</h3>
           <SmallDesc>Мы выслали проверочный код на почту {user.email}<br/>
