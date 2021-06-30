@@ -22,6 +22,8 @@ const dateFormatter = item => moment(item).format("dd D MMMM");
 const xAxiosDateFormatter = (date) => moment(date).format('D MMMM');
 // форматируем дату для годового графика
 const dateFormatterForMonth = (date) => moment(date).format('MMMM');
+// форматируем дату для графика за все время
+const dateFormatterForYear = (date) => moment(date).format('YYYY');
 
 const LinesChart = ({data, dataMonth, chartsType, changeTab}) => {
 
@@ -66,7 +68,7 @@ const LinesChart = ({data, dataMonth, chartsType, changeTab}) => {
 
           <CartesianGrid vertical={false} stroke={'#424242'} width={'500'}/>
 
-          <XAxis tickFormatter={chartsType === 'year' || chartsType === 'allTime' ? dateFormatterForMonth : xAxiosDateFormatter} dataKey="date"
+          <XAxis tickFormatter={chartsType === 'year' ? dateFormatterForMonth : chartsType === 'allTime' ?  dateFormatterForYear : xAxiosDateFormatter} dataKey="date"
                  tick={{fontSize: '12px', fill: '#C1C1C1'}} allowDataOverflow
                  interval={chartsType === 'week' ? 0 : chartsType === 'month' ? 5 : chartsType === 'year' || chartsType === 'allTime' ? dataMonth.length : null}/>
 

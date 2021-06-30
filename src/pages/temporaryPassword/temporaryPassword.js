@@ -33,7 +33,7 @@ const TemporaryPassword = ({user}) => {
 
     const server = new ServerSettings();
 
-    // отправляем письмо с кодом авторизации
+    // отправляем письмо с кодом
     axios.get(`${server.getApi()}api/user/email/${user.id}/`)
       .catch(error => {
         console.error(error);

@@ -97,7 +97,7 @@ const LoginForm = styled.form`
       line-height: 22px;
       color: #9E9E9E;
 
-      a {
+      button {
         margin-left: 5px;
         font-family: 'TTInterfaces-Regular';
         font-style: normal;
@@ -110,6 +110,7 @@ const LoginForm = styled.form`
         justify-content: center;
         cursor: pointer;
         text-decoration: underline;
+        border: none;
       }
     }
     @media(max-width: 600px) {

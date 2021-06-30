@@ -22,7 +22,7 @@ const AuthorizationCode = ({user}) => {
     setAuthCode(value)
   }
 
-  // изминения пароля пользователя
+  // проверка кода авторизации
   const checkCode = async (e) => {
     e.preventDefault();
     axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
@@ -36,6 +36,19 @@ const AuthorizationCode = ({user}) => {
         }).catch(error => console.log(error))
   }
 
+  // отправляем код еще раз
+  const sendCodeAgain = async (e) => {
+    e.preventDefault();
+
+    const server = new ServerSettings();
+
+    // отправляем письмо с кодом авторизации
+    axios.get(`${server.getApi()}api/user/сщву/${user.id}/`)
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
   return (
     <LoginWrap>
       <LeftImageBlock loginPage={true}/>
@@ -46,7 +59,7 @@ const AuthorizationCode = ({user}) => {
         <Caption>
           <NavLink to={'/login'}><img src={arrow} alt="icon"/>Назад</NavLink>
         </Caption>
-
+        <div>{authCode}</div>
         <LoginForm onSubmit={(e)=> checkCode(e)}>
           <h3>Введите проверочный код</h3>
           <SmallDesc>Мы выслали проверочный код на почту {user.email}<br/>
@@ -62,7 +75,7 @@ const AuthorizationCode = ({user}) => {
             />
             <p>
               Не пришел код?
-             <NavLink to={'#'}>Выслать код еще раз</NavLink>
+             <button type={'button'} onClick={(e)=> sendCodeAgain(e)}>Выслать код еще раз</button>
             </p>
           </div>
         </LoginForm>

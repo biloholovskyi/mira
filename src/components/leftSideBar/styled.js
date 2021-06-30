@@ -15,7 +15,7 @@ const SideBarWrap = styled.div`
   left: 0;
   background-color: #212121;
   z-index: 50;
-  padding: 32px 16px;
+  padding: 20px 16px;
   
   .logo {
     width: 109.73px;
@@ -93,7 +93,7 @@ const Information = styled.div`
   
 `
 
-const Navigation = styled.div`
+const NavigationWrap = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -103,11 +103,11 @@ const Navigation = styled.div`
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    padding: 12px 16px;
+    padding: 10px 16px;
     font-size: 16px;
     line-height: 22px;
     color: #9E9E9E;
-    font-family: 'TTInterfaces-SemiBold';
+    font-family: 'TTInterfaces-SemiBold', sans-serif;
     text-decoration: none;
     svg {
       width: 24px;
@@ -164,6 +164,28 @@ const MobileBackground = styled.div`
   z-index: 49;
 `
 
+const ExitBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  line-height: 22px;
+  color: #9E9E9E;
+  font-family: 'TTInterfaces-SemiBold', sans-serif;
+  text-decoration: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    margin-right: 16px;
+  }
+`
+
 export {
   SideBarWrap,
   UserBlock,
@@ -171,7 +193,8 @@ export {
   Currency,
   Name,
   Information,
-  Navigation,
+  NavigationWrap,
   CloseMenuBtn,
-  MobileBackground
+  MobileBackground,
+  ExitBtn
 }
