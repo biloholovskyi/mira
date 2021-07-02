@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
+import axios from "axios";
 
 import MainInput from '../../../../components/mainInput/mainInput';
 import MainButton from "../../../../components/mainButton/mainButton";
@@ -9,24 +10,15 @@ import ConfirmationCode from "../confirmationCode/confirmationCode";
 import TopUpInfo from "../topUpModal/topUpInfo/topUpInfo";
 import SuccessModal from "../successModal/successModal";
 
-const WithDraw = ({close}) => {
+import ServerSettings from "../../../../service/serverSettings";
+import {loginUser} from "../../../../actions";
+import {connect} from "react-redux";
+
+const WithDraw = ({close, user}) => {
   // модалка успеха
   const [successModal, setSuccessModal] = useState(false)
   // модалка подтверждения операции
   const [confirmation, setConfirmationCode] = useState(false)
-  // // ссылка модалку
-  // const selectEl = useRef(null);
-  //
-  // // закрытие при клике вне елемента
-  // const closeOutsideClick = (e) => {
-  //   if (selectEl.current && !selectEl.current.contains(e.target)) {
-  //     close()
-  //   }
-  // }
-  //
-  // useEffect(() => {
-  //   document.addEventListener("click", (e) => closeOutsideClick(e));
-  // }, []);
 
   // закритие модалки
   const closeModal = () => {
@@ -48,6 +40,23 @@ const WithDraw = ({close}) => {
     setConfirmationCode(true)
   }
 
+  const OnWithDraw = async (e) => {
+    e.preventDefault();
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const server = new ServerSettings();
+
+    await axios.get(`${server.getApi()}api/users/${user.id}/`)
+      .then(res => {
+        // const data = new FormData();
+        // data.set("summa", e.target.summa.value);
+        // data.set("wallet", e.target.wallet.value);
+        // data.set("user_id", user.id);
+
+      }).catch(error => console.log(error));
+  }
+
   return (
     <>
       {
@@ -63,7 +72,8 @@ const WithDraw = ({close}) => {
             <ModalWrapper>
               <div className="title">Вывести средства</div>
               <button onClick={close} className={'close'}><img src={closed} alt="icon"/></button>
-              <form>
+
+              <form onSubmit={(e) => OnWithDraw(e)}>
                 <MainInput
                   label={'Сумма'}
                   iconText={'MRC'}
@@ -74,15 +84,15 @@ const WithDraw = ({close}) => {
 
                 <MainInput
                   label={'Кошелек'}
-                  name={'balance'}
-                  readOnly={true}
+                  name={'wallet'}
                 />
 
                 <MainButton
                   colorBg={true}
                   text={'Далее'}
                   width={'100%'}
-                  func={openConfirmation}
+                  type={'submit'}
+                  //func={openConfirmation}
                 />
 
               </form>
@@ -102,4 +112,12 @@ const WithDraw = ({close}) => {
   )
 }
 
-export default WithDraw;
+const mapStateToProps = (state) => {
+  return {}
+};
+
+const mapDispatchToProps = {
+  loginUser
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(WithDraw);

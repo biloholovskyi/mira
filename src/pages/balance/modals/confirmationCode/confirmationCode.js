@@ -55,7 +55,6 @@ const ConfirmationCode = ({close, back, title, openSuccessModal, transferModal})
                   width={'100%'}
                   func={transferModal ? openSmallSuccessModal : openSuccessModal}
                 />
-
                 <p className={'send_again'}>
                   Не пришел код?
                   <NavLink to={'#'}>Выслать код еще раз</NavLink>

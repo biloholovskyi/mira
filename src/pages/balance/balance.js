@@ -1,4 +1,6 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import axios from "axios";
+import {connect} from "react-redux";
 
 import MainInput from '../../components/mainInput/mainInput';
 import MainButton from "../../components/mainButton/mainButton";
@@ -8,7 +10,9 @@ import TopUpModal from "./modals/topUpModal/topUpModal";
 
 import {Top, BalanceBlock, InfoBlock, TableWrap} from './styled';
 import search from './media/icon/search.svg';
-import {connect} from "react-redux";
+
+import {loginUser} from "../../actions";
+import ServerSettings from "../../service/serverSettings";
 
 const Balance = ({user}) => {
   // модалка вывода средств
@@ -17,134 +21,158 @@ const Balance = ({user}) => {
   const [topUpModal, setTopUpModal] = useState(false)
   // модалка перевода средств
   const [transferModal, setTransferModal] = useState(false)
+  // записиваем баланс пользователя
+  const [balanceList, setBalanceList] = useState([])
+
   // закритие модалок
   const closeModal = () => {
     setWithDraw(false)
     setTopUpModal(false)
     setTransferModal(false)
   }
-  
+
+  // получаем баланс текущого пользователя
+  const getUserBalance = async () => {
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const server = new ServerSettings();
+    await axios.get(`${server.getApi()}api/balance/`)
+      .then(res => {
+        const userBalance = res.data.filter(balance => parseInt(balance.user_id) === parseInt(user.id))
+        if(userBalance) {
+          setBalanceList(userBalance)
+        }
+      }).catch(error => console.log(error));
+  }
+
+  useEffect(() => {
+    getUserBalance().catch(error => console.error(error));
+  }, [])
+
+  // формат даты
+  const formatDate = (string) => {
+    let options = {year: 'numeric', month: 'numeric', day: 'numeric'};
+    return new Date(string).toLocaleDateString(['ru'], options);
+  }
+
   return (
-   <>
-     <div className={'main_container'}>
-       <Top>
-         <BalanceBlock>
-           <div className="small_title">Баланс</div>
-           <div className="info">{user.user_balance} MRC <span>151 217,89 ₽</span></div>
-           <div className="btn_section">
+    <>
+      <div className={'main_container'}>
+        <Top>
+          <BalanceBlock>
+            <div className="small_title">Баланс</div>
+            <div className="info">{user.user_balance}  MRC <span>151 217,89 ₽</span></div>
+            <div className="btn_section">
 
-             <MainButton
-               type={'button'}
-               text={'Вывести'}
-               width={'50%'}
-               func={()=> setWithDraw(true)}
-             />
+              <MainButton
+                type={'button'}
+                text={'Вывести'}
+                width={'50%'}
+                func={() => setWithDraw(true)}
+              />
 
-             <MainButton
-               type={'button'}
-               text={'Пополнить'}
-               colorBg={true}
-               width={'50%'}
-               func={()=> setTopUpModal(true)}
-             />
+              <MainButton
+                type={'button'}
+                text={'Пополнить'}
+                colorBg={true}
+                width={'50%'}
+                func={() => setTopUpModal(true)}
+              />
 
-           </div>
-         </BalanceBlock>
+            </div>
+          </BalanceBlock>
 
-         <InfoBlock>
-           <div className="title">Перевод другому пользователю</div>
+          <InfoBlock>
+            <div className="title">Перевод другому пользователю</div>
 
-           <MainInput
-             label={'Выберите пользователя'}
-             type={'text'}
-             name={'selectUser'}
-             placeholder={'Введите имя или Email'}
-             icon={search}
-           />
+            <MainInput
+              label={'Выберите пользователя'}
+              type={'text'}
+              name={'selectUser'}
+              placeholder={'Введите имя или Email'}
+              icon={search}
+            />
 
-           <MainInput
-             label={'Сумма перевода'}
-             type={'number'}
-             name={'selectUser'}
-             iconText={'MRC'}
-           />
+            <MainInput
+              label={'Сумма перевода'}
+              type={'number'}
+              name={'selectUser'}
+              iconText={'MRC'}
+            />
 
-           <MainButton
-             text={'Перевести'}
-             colorBg={true}
-             width={'100%'}
-             func={()=> setTransferModal(true)}
-           />
-         </InfoBlock>
-       </Top>
+            <MainButton
+              text={'Перевести'}
+              colorBg={true}
+              width={'100%'}
+              func={() => setTransferModal(true)}
+            />
+          </InfoBlock>
+        </Top>
 
-       <TableWrap>
-         <div className="small_title">История операций</div>
-         <table>
-           <thead>
-           <tr>
-             <th>Операция</th>
-             <th>Статус</th>
-             <th>Дата</th>
-             <th>Сумма</th>
-             <th>Коментарий к платежу</th>
-           </tr>
-           </thead>
-           <tbody>
-           <tr>
-             <td>
-               <div className="info">
-                 <div className="indicator"/>
-                 <div className="name">Оплата программы “Mira Auto”</div>
-                 <div className="mobile_summ">20 000,00 MRc</div>
-               </div>
-             </td>
-             <td>Проведено</td>
-             <td>21.06.1995</td>
-             <td>20 000,00</td>
-             <td>Договірне списання комісії за тарифним пакетом за період з 01/04/2021 по 30/0...</td>
-           </tr>
-           <tr>
-             <td>
-               <div className="info">
-                 <div className="indicator"/>
-                 <div className="name">Начисление процентов</div>
-                 <div className="mobile_summ">40 000,00 MRc</div>
-               </div>
-             </td>
-             <td>Проведено</td>
-             <td>21.06.1995</td>
-             <td>20 000,00</td>
-             <td>Договірне списання комісії за тарифним пакетом за період з 01/04/2021 по 30/0...</td>
-           </tr>
-           </tbody>
-         </table>
-       </TableWrap>
-     </div>
-     {
-       withDraw && (
-         <WithDraw
-          close={closeModal}
-         />
-       )
-     }
-     {
-       topUpModal && (
-         <TopUpModal
-           close={closeModal}
-         />
-       )
-     }
-     {
-       transferModal && (
-         <ConfirmationCode
-           transferModal={transferModal}
-           title={'Подтвердите перевод'}
-           close={closeModal}
-         />
-       )
-     }
-   </>
+        <TableWrap>
+          <div className="small_title">История операций</div>
+          <table>
+            <thead>
+            <tr>
+              <th>Операция</th>
+              <th>Статус</th>
+              <th>Дата</th>
+              <th>Сумма</th>
+              <th>Коментарий к платежу</th>
+            </tr>
+            </thead>
+            <tbody>
+            {
+              balanceList.map(item => {
+                const MyNewDate = item.date.split('T')[0]
+                const dateNormal = formatDate(MyNewDate);
+                return (
+                  <tr key={item.id}>
+                    <td>
+                      <div className="info">
+                        <div className="indicator"/>
+                        <div className="name">{item.operation}</div>
+                        <div className="mobile_summ">{item.summa} MRC</div>
+                      </div>
+                    </td>
+                    <td>{item.status === 'Conducted' ? 'Проведено' : 'Не Проведено'}</td>
+                    <td>{dateNormal}</td>
+                    <td>{item.summa}</td>
+                    <td>Коментарий</td>
+                  </tr>
+                )
+              })
+            }
+            </tbody>
+          </table>
+        </TableWrap>
+      </div>
+      {
+        withDraw && (
+          <WithDraw
+            user={user}
+            close={closeModal}
+          />
+        )
+      }
+      {
+        topUpModal && (
+          <TopUpModal
+            close={closeModal}
+          />
+        )
+      }
+      {
+        transferModal && (
+          <ConfirmationCode
+            transferModal={transferModal}
+            title={'Подтвердите перевод'}
+            close={closeModal}
+          />
+        )
+      }
+    </>
   )
 }
 
@@ -154,6 +182,8 @@ const mapStateToProps = (state) => {
   }
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  loginUser
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Balance);

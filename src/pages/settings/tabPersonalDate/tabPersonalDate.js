@@ -203,6 +203,7 @@ console.log(user)
     </PersonalDateWrap>
   )
 }
+
 const mapStateToProps = (state) => {
   return {
     user: state.user
