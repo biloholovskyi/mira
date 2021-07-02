@@ -76,7 +76,7 @@ const LeftSideBar = ({mobileMenu, closeMenu, user}) => {
           <Photo src={user.photo === null ? avatar : photo} alt={'photo'}/>
           <div className="info">
             <Name>{user.name} {user.surName}</Name>
-            <Currency>10 000 MRC</Currency>
+            <Currency>{user.user_balance} MRC</Currency>
           </div>
         </UserBlock>
 

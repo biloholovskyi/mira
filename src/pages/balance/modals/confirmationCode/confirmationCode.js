@@ -12,6 +12,11 @@ import arrow from '../../media/icon/arrow.svg'
 
 const ConfirmationCode = ({close, back, title, openSuccessModal, transferModal}) => {
   const [smallSuccess, setSmallSuccess] = useState(false)
+  const [authCode, setAuthCode] = useState('');
+
+  const update = (value) => {
+    setAuthCode(value)
+  }
 
   const openSmallSuccessModal = () => {
     setSmallSuccess(true)
@@ -42,7 +47,7 @@ const ConfirmationCode = ({close, back, title, openSuccessModal, transferModal})
                 Введите код, что бы вывести средства</div>
               <form>
 
-                <ConfirmationCodeItem/>
+                <ConfirmationCodeItem update={update}/>
 
                 <MainButton
                   text={'Подтвердить'}

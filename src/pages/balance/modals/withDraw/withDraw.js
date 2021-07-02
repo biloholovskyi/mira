@@ -75,7 +75,6 @@ const WithDraw = ({close}) => {
                 <MainInput
                   label={'Кошелек'}
                   name={'balance'}
-                  defaultValue={'1FfmbHfnpaZjKFvyi1okTjJJusN455paPH'}
                   readOnly={true}
                 />
 

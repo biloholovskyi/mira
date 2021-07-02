@@ -41,7 +41,7 @@ const TopUpModal = ({close}) => {
   const openInfoModal = () => {
     setTopUpInfo(true)
   }
-console.log(topUpInfo)
+
   return (
     <>
       {

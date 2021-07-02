@@ -8,8 +8,9 @@ import TopUpModal from "./modals/topUpModal/topUpModal";
 
 import {Top, BalanceBlock, InfoBlock, TableWrap} from './styled';
 import search from './media/icon/search.svg';
+import {connect} from "react-redux";
 
-const Balance = () => {
+const Balance = ({user}) => {
   // модалка вывода средств
   const [withDraw, setWithDraw] = useState(false);
   // модалка пополнения стеча
@@ -29,7 +30,7 @@ const Balance = () => {
        <Top>
          <BalanceBlock>
            <div className="small_title">Баланс</div>
-           <div className="info">10 000 MRC <span>151 217,89 ₽</span></div>
+           <div className="info">{user.user_balance} MRC <span>151 217,89 ₽</span></div>
            <div className="btn_section">
 
              <MainButton
@@ -147,4 +148,12 @@ const Balance = () => {
   )
 }
 
-export default Balance;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+};
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Balance);
