@@ -36,6 +36,20 @@ const CodeBlock = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 36px;
+  & div:nth-child(4){
+    margin-left: 30px;
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      left: -29px;
+      width: 20px;
+      height: 3px;
+      background-color: #424242;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
 `
 
 export {

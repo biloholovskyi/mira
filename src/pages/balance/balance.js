@@ -56,6 +56,11 @@ const Balance = ({user}) => {
     return new Date(string).toLocaleDateString(['ru'], options);
   }
 
+  // обновляем баланс
+  const updateBalance = (event) =>{
+    setBalanceList([...balanceList, event])
+  }
+
   return (
     <>
       <div className={'main_container'}>
@@ -152,6 +157,7 @@ const Balance = ({user}) => {
         withDraw && (
           <WithDraw
             user={user}
+            update={updateBalance}
             close={closeModal}
           />
         )

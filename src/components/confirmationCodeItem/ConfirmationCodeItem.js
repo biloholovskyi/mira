@@ -17,15 +17,14 @@ const ConfirmationCodeItem = ({update}) => {
       inputRefs[index + 1].select();
     }
   };
-console.log(values)
+
   const inputRefs = [];
 
   return (
     <CodeBlock>
       {values.map((n, i) => (
-        <div>
+        <div key={i}>
           <CodeItem
-            key={i}
             type={'text'}
             name={'code'}
             maxLength={'1'}

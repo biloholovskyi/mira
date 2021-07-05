@@ -25,7 +25,7 @@ const TabPersonalDate = ({user, loginUser}) => {
     {name: 'Киев', value: 2},
     {name: 'ИФ', value: 3}
   ]
-console.log(user)
+
   // изминения данных пользователя
   const changePersonalData = async (e) => {
     e.preventDefault();

@@ -43,7 +43,7 @@ const AuthorizationCode = ({user}) => {
     const server = new ServerSettings();
 
     // отправляем письмо с кодом авторизации
-    axios.get(`${server.getApi()}api/user/сщву/${user.id}/`)
+    axios.get(`${server.getApi()}api/user/code/${user.id}/`)
       .catch(error => {
         console.error(error);
       });
