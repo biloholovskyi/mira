@@ -40,7 +40,7 @@ const LeftSideBar = ({mobileMenu, closeMenu, user}) => {
     await axios.get(`${server.getApi()}${newAva}/`)
       .then(res => {
         setPhoto(res.config.url)
-      }).catch(error => console.log(error))
+      }).catch(error => console.error(error))
   }
 
   useEffect(() => {

@@ -243,7 +243,7 @@ const ModalOverlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 55;
+  z-index: ${props => props.transferModal ? 56 : 55};
 `
 
 const ConfirmModalWrapper = styled.div`
@@ -253,15 +253,18 @@ const ConfirmModalWrapper = styled.div`
   max-width: 640px;
   width: 100%;
   padding: 0 32px 32px 32px;
-  left: 0;
+  padding-top: ${props => props.transferModal ? '32px' : 0};
   position: absolute;
-  z-index: ${props => props.confirmation ? 1 : -1};
+  z-index: ${props => props.confirmation ? 1 : props.transferModal ? 56 : -1};
+  left: ${props => props.transferModal ? '50%' : 0};
+  top: ${props => props.transferModal ? '50%' : 'unset'};
+  transform: ${props => props.transferModal ? 'translate(-50%, -50%)' : 'none'};
   .close {
     position: absolute;
     border: none;
     background-color: transparent;
     right: 32px;
-    top: 0;
+    top: ${props => props.transferModal ? '32px' : 0};
     width: 24px;
     height: 24px;
     cursor: pointer;

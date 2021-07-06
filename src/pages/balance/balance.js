@@ -11,10 +11,11 @@ import TopUpModal from "./modals/topUpModal/topUpModal";
 import {Top, BalanceBlock, InfoBlock, TableWrap} from './styled';
 import search from './media/icon/search.svg';
 
-import {loginUser} from "../../actions";
+import {loginUser, setSuccessModalText} from "../../actions";
 import ServerSettings from "../../service/serverSettings";
+import SmallSuccessModal from "../../components/smallSuccessModal/smallSuccessModal";
 
-const Balance = ({user}) => {
+const Balance = ({user, setSuccessModalText}) => {
   // модалка вывода средств
   const [withDraw, setWithDraw] = useState(false);
   // модалка пополнения стеча
@@ -23,6 +24,16 @@ const Balance = ({user}) => {
   const [transferModal, setTransferModal] = useState(false)
   // записиваем баланс пользователя
   const [balanceList, setBalanceList] = useState([])
+
+  useEffect(() => {
+    return () => {
+      setSuccessModalText(false)
+    }
+  }, []);
+
+  setTimeout(() => {
+    setSuccessModalText(false)
+  }, 1500)
 
   // закритие модалок
   const closeModal = () => {
@@ -40,10 +51,10 @@ const Balance = ({user}) => {
     await axios.get(`${server.getApi()}api/balance/`)
       .then(res => {
         const userBalance = res.data.filter(balance => parseInt(balance.user_id) === parseInt(user.id))
-        if(userBalance) {
+        if (userBalance) {
           setBalanceList(userBalance)
         }
-      }).catch(error => console.log(error));
+      }).catch(error => console.error(error))
   }
 
   useEffect(() => {
@@ -57,8 +68,97 @@ const Balance = ({user}) => {
   }
 
   // обновляем баланс
-  const updateBalance = (event) =>{
+  const updateBalance = (event) => {
     setBalanceList([...balanceList, event])
+  }
+
+  // делаем перевод другому пользователю
+  const makeTransfer = async (e) => {
+    e.preventDefault();
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+    // получаем код подтверджения
+    const code = document.getElementById('code')
+
+    const server = new ServerSettings();
+
+    await axios.get(`${server.getApi()}api/users/`)
+      .then(res => {
+        // получаем пользователя которому будет перевод
+        const needUser = e.target.selectUser.value;
+        const getUser = res.data.find(u => u.email === needUser);
+
+        const data = new FormData();
+        data.set('email', e.target.selectUser.value);
+        data.set('summa', e.target.transferSumma.value);
+        data.set('operation', 'перевод')
+        data.set('user_id', getUser.id)
+
+        // проверяем совпадают ли коды
+        if (user.code === code.textContent) {
+          // баланс текущого пользователя
+          const newBalance = parseInt(user.user_balance) - parseInt(e.target.transferSumma.value);
+          // баланс пользователя которому перевели деньги
+          const otherBalance = parseInt(getUser.user_balance) + parseInt(e.target.transferSumma.value);
+
+          const data2 = new FormData();
+          data2.set("user_balance", newBalance);
+
+          const data4 = new FormData();
+          data4.set("user_balance", otherBalance);
+
+          // обновляем баланс текущого пользователя
+          axios.put(`${server.getApi()}api/users/${user.id}/update/`, data2)
+            .catch(error => console.error(error))
+
+          // обновляем баланс пользователя которому перевели
+          axios.put(`${server.getApi()}api/users/${getUser.id}/update/`, data4)
+            .catch(error => console.error(error))
+
+          const data3 = new FormData();
+          data3.set('email', e.target.selectUser.value);
+          data3.set('summa', e.target.transferSumma.value);
+          data3.set('operation', 'перевод')
+          data3.set('user_id', user.id)
+
+          // обновляем список транзакий текущого пользователя
+          axios.post(`${server.getApi()}api/balance/`, data3)
+            .then(res => {
+              updateBalance(res.data)
+            }).catch(error => console.error(error))
+
+          // обновляем список транзакций пользователя которому перевели
+          axios.post(`${server.getApi()}api/balance/`, data)
+            .then(res => {
+              updateBalance(res.data)
+            }).catch(error => console.error(error))
+        } else {
+          alert('Не верный пароль!')
+        }
+      })
+      .then(res => {
+        // закриваем модалки и очищаем инпуты
+        closeModal()
+        window.location.assign('/balance')
+        e.target.selectUser.value = ''
+        e.target.transferSumma.value = ''
+        setSuccessModalText('Средства были отправлены')
+      })
+      .catch(error => console.error(error))
+  }
+
+  // отправляем письмо и откриваем модалку подтверджения для перевода
+  const openTransferModal = async () => {
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const server = new ServerSettings();
+
+    // отправляем письмо
+    await axios.get(`${server.getApi()}api/user/code/${user.id}/`)
+      .then(res => {
+        setTransferModal(true)
+      }).catch(error => {console.error(error);});
   }
 
   return (
@@ -67,7 +167,7 @@ const Balance = ({user}) => {
         <Top>
           <BalanceBlock>
             <div className="small_title">Баланс</div>
-            <div className="info">{user.user_balance}  MRC <span>151 217,89 ₽</span></div>
+            <div className="info">{user.user_balance} MRC <span>151 217,89 ₽</span></div>
             <div className="btn_section">
 
               <MainButton
@@ -89,29 +189,41 @@ const Balance = ({user}) => {
           </BalanceBlock>
 
           <InfoBlock>
-            <div className="title">Перевод другому пользователю</div>
+            <form onSubmit={(e) => makeTransfer(e)}>
+              <div className="title">Перевод другому пользователю</div>
 
-            <MainInput
-              label={'Выберите пользователя'}
-              type={'text'}
-              name={'selectUser'}
-              placeholder={'Введите имя или Email'}
-              icon={search}
-            />
+              <MainInput
+                label={'Выберите пользователя'}
+                type={'text'}
+                name={'selectUser'}
+                placeholder={'Введите имя или Email'}
+                icon={search}
+              />
 
-            <MainInput
-              label={'Сумма перевода'}
-              type={'number'}
-              name={'selectUser'}
-              iconText={'MRC'}
-            />
+              <MainInput
+                label={'Сумма перевода'}
+                type={'number'}
+                name={'transferSumma'}
+                iconText={'MRC'}
+              />
 
-            <MainButton
-              text={'Перевести'}
-              colorBg={true}
-              width={'100%'}
-              func={() => setTransferModal(true)}
-            />
+              <MainButton
+                text={'Перевести'}
+                colorBg={true}
+                width={'100%'}
+                type={'button'}
+                func={openTransferModal}
+              />
+              {
+                transferModal && (
+                  <ConfirmationCode
+                    transferModal={transferModal}
+                    title={'Подтвердите перевод'}
+                    close={closeModal}
+                  />
+                )
+              }
+            </form>
           </InfoBlock>
         </Top>
 
@@ -152,6 +264,7 @@ const Balance = ({user}) => {
             </tbody>
           </table>
         </TableWrap>
+        <SmallSuccessModal/>
       </div>
       {
         withDraw && (
@@ -169,15 +282,6 @@ const Balance = ({user}) => {
           />
         )
       }
-      {
-        transferModal && (
-          <ConfirmationCode
-            transferModal={transferModal}
-            title={'Подтвердите перевод'}
-            close={closeModal}
-          />
-        )
-      }
     </>
   )
 }
@@ -189,7 +293,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  loginUser
+  loginUser,
+  setSuccessModalText
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Balance);

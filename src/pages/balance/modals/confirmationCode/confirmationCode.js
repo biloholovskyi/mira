@@ -38,10 +38,13 @@ const ConfirmationCode = ({close, back, title, transferModal, confirmation, user
   return (
     <>
       {
-        smallSuccess ? (
-          <SmallSuccessModal/>
-        ) : (
-          <ConfirmModalWrapper confirmation={confirmation}>
+        <>
+          {
+            transferModal && (
+              <ModalOverlay transferModal={transferModal}/>
+            )
+          }
+          <ConfirmModalWrapper confirmation={confirmation} transferModal={transferModal}>
             <div className="title">
               {
                 transferModal
@@ -65,12 +68,12 @@ const ConfirmationCode = ({close, back, title, transferModal, confirmation, user
             />
             <p className={'send_again'}>
               Не пришел код?
-              <button onClick={(e)=> sendCodeAgain(e)}>Выслать код еще раз</button>
+              <button onClick={(e) => sendCodeAgain(e)}>Выслать код еще раз</button>
             </p>
 
             <div id={'code'} style={{visibility: "hidden"}}>{authCode}</div>
           </ConfirmModalWrapper>
-        )
+        </>
       }
     </>
   )

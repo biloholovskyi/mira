@@ -93,7 +93,7 @@ const WithDraw = ({close, user, update}) => {
           axios.put(`${server.getApi()}api/users/${user.id}/update/`, data2)
             .then(res => {
               console.log(res.data)
-            }).catch(error => console.log(error));
+            }).catch(error => console.error(error))
 
           // обновляем список транзакций
           axios.post(`${server.getApi()}api/balance/`, data)
@@ -106,7 +106,7 @@ const WithDraw = ({close, user, update}) => {
         } else {
           console.log('error')
         }
-      }).catch(error => console.log(error));
+      }).catch(error => console.error(error))
   }
 
   return (
