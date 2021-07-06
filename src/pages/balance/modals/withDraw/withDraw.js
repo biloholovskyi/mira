@@ -20,11 +20,17 @@ const WithDraw = ({close, user, update}) => {
   // модалка подтверждения операции
   const [confirmation, setConfirmationCode] = useState(false)
   const [sumValue, setSumValue] = useState('');
+  const [wallet, setWallet] = useState('');
 
   // получаем суму что б пощитать комисию
   const getCommission = (value) => {
     setSumValue(value)
   }
+
+  const getWalletValue = (value) => {
+    setWallet(value)
+  }
+
   // закритие модалки
   const closeModal = () => {
     setSuccessModal(false);
@@ -139,6 +145,7 @@ const WithDraw = ({close, user, update}) => {
               <MainInput
                 label={'Кошелек'}
                 name={'wallet'}
+                updateValue={getWalletValue}
               />
 
               <MainButton
@@ -146,7 +153,7 @@ const WithDraw = ({close, user, update}) => {
                 text={'Далее'}
                 width={'100%'}
                 type={'button'}
-                func={openConfirmation}
+                func={sumValue && wallet === '' ? undefined : openConfirmation}
               />
 
             </form>

@@ -30,9 +30,14 @@ const AuthorizationCode = ({user}) => {
 
     const server = new ServerSettings();
 
+    // получаем код подтверджения
+    const code = document.getElementById('code')
+
       await axios.get(`${server.getApi()}api/users/${user.id}/`)
         .then(res => {
-          window.location.assign('/dashboard');
+          if (user.code === code.textContent) {
+            window.location.assign('/dashboard');
+          }
         }).catch(error => console.log(error))
   }
 
@@ -78,6 +83,7 @@ const AuthorizationCode = ({user}) => {
              <button type={'button'} onClick={(e)=> sendCodeAgain(e)}>Выслать код еще раз</button>
             </p>
           </div>
+          <div id={'code'} style={{visibility: "hidden"}}>{authCode}</div>
         </LoginForm>
       </div>
     </LoginWrap>
