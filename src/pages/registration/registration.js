@@ -43,6 +43,7 @@ const Registration = ({loginUser}) => {
           data.set('surName', e.target.surname.value);
           data.set('email', e.target.email.value);
           data.set('password', generatePassword())
+          data.set('code', generateCode())
 
           axios.post(`${server.getApi()}api/users/`, data)
             .then(res => {
@@ -72,6 +73,17 @@ const Registration = ({loginUser}) => {
     let passLength = (Math.random() * 15) + 5;
 
     for (let i = 0; i < passLength; i++)
+      pass += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return pass;
+  }
+
+  // генерируем пароль
+  const generateCode = () => {
+    let pass = "";
+    let possible = "0123456789";
+
+    for (let i = 0; i < 6; i++)
       pass += possible.charAt(Math.floor(Math.random() * possible.length));
 
     return pass;

@@ -37,6 +37,8 @@ const AuthorizationCode = ({user}) => {
         .then(res => {
           if (user.code === code.textContent) {
             window.location.assign('/dashboard');
+          } else {
+            alert('неверный код!')
           }
         }).catch(error => console.log(error))
   }

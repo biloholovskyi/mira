@@ -45,9 +45,9 @@ const TemporaryPassword = ({user}) => {
       <LeftImageBlock/>
 
       <div className="right">
-        <Caption>
-          <NavLink to={'/registration'}><img src={arrow} alt="icon"/>Назад</NavLink>
-        </Caption>
+        {/*<Caption>*/}
+        {/*  <NavLink to={'/registration'}><img src={arrow} alt="icon"/>Назад</NavLink>*/}
+        {/*</Caption>*/}
 
         <LoginForm onSubmit={(e)=> checkPassword(e)}>
           <h3>Введите временный пароль</h3>
