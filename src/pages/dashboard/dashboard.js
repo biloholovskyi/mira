@@ -6,8 +6,10 @@ import PieCharts from './pieCharts/pieCharts';
 import ActiveProgram from './activeProgram/activeProgram';
 
 import {TopBlock, Balance, RefLink, MyIncome, ActivePrograms} from './styled';
+import {loginUser, setSuccessModalText} from "../../actions";
+import {connect} from "react-redux";
 
-const Dashboard = () => {
+const Dashboard = ({user}) => {
   const [chartsType, setChartsType] = useState('week');
 
   const changeTab = (e, tab) => {
@@ -181,7 +183,7 @@ const Dashboard = () => {
       <TopBlock>
         <Balance>
           <div className="small_title">Баланс</div>
-          <div className="info">10 000 MRC <span>151 217,89 ₽</span></div>
+          <div className="info">{user.user_balance} MRC <span>151 217,89 ₽</span></div>
           <div className="btn_section">
 
             <MainButton
@@ -247,4 +249,14 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+};
+
+const mapDispatchToProps = {
+
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

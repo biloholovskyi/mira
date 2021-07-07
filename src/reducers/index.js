@@ -4,7 +4,8 @@ const initialState = {
     name: '',
     email: '',
     password: '',
-    photo: ''
+    photo: '',
+    user_balance: ''
   },
 
   users: [],

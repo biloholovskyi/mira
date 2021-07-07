@@ -9,6 +9,7 @@ const ModalWrapper = styled.div`
   padding: 32px;
   position: relative;
   min-width: 640px;
+  min-height: 300px;
   .close {
     position: absolute;
     border: none;

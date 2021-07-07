@@ -22,11 +22,11 @@ const SuccessModal = ({close, title, data}) => {
 
   const closeAll = () => {
     close()
-    window.location.assign('/balance')
+    //window.location.assign('/balance')
   }
 
   return(
-    <ModalOverlay>
+    <ModalOverlay style={{background: 'none'}}>
       <ModalWrapper>
         <button onClick={close} className={'close'}><img src={closed} alt="icon"/></button>
         <div className="content">

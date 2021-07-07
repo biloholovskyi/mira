@@ -14,7 +14,7 @@ import ServerSettings from "../../../../service/serverSettings";
 import {loginUser} from "../../../../actions";
 import {connect} from "react-redux";
 
-const WithDraw = ({close, user, update}) => {
+const WithDraw = ({close, user, update, loginUser}) => {
   // модалка успеха
   const [successModal, setSuccessModal] = useState(false)
   // модалка подтверждения операции
@@ -91,9 +91,7 @@ const WithDraw = ({close, user, update}) => {
 
           // обновляем баланс юзера
           axios.put(`${server.getApi()}api/users/${user.id}/update/`, data2)
-            .then(res => {
-              console.log(res.data)
-            }).catch(error => console.error(error))
+            .catch(error => console.error(error))
 
           // обновляем список транзакций
           axios.post(`${server.getApi()}api/balance/`, data)

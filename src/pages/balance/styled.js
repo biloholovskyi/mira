@@ -125,8 +125,7 @@ const TableWrap = styled.div`
         }
       }
 
-      & tr th:first-child,
-      & tr th:last-child {
+      & tr th:first-child {
         text-align: left;
       }
       @media (max-width: 1170px) {
@@ -195,10 +194,10 @@ const TableWrap = styled.div`
             min-height: 82px;
           }
         }
-        & td:last-child {
-          max-width: 300px;
-          text-align: left;
-        }
+        //& td:last-child {
+        //  max-width: 300px;
+        //  text-align: left;
+        //}
         @media (max-width: 1170px) {
           & {
             display: flex;

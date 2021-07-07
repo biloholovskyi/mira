@@ -5,18 +5,18 @@ import MainButton from "../../../../../components/mainButton/mainButton";
 import {ModalOverlay, ModalWrapper} from "../../styled";
 import closed from "../../../media/icon/close.svg";
 
-const TopUpInfo = ({close, openSuccessModal}) => {
+const TopUpInfo = ({close, sum}) => {
 
   return (
-    <ModalOverlay>
-      <ModalWrapper >
+    <ModalOverlay style={{background: 'none'}}>
+      <ModalWrapper>
         <div className="title">Выполните перевод</div>
         <button onClick={close} className={'close'}><img src={closed} alt="icon"/></button>
         <div className="information">
           <div className="top">
             <div className="item">
               <div className="small_title">Сумма пополнения</div>
-              <div className="text">0.000123456789 BTC</div>
+              <div className="text">{sum} MRC</div>
             </div>
             <div className="item">
               <div className="small_title">Осталось времени</div>
@@ -29,10 +29,10 @@ const TopUpInfo = ({close, openSuccessModal}) => {
               <div className="wallet_value">1FfmbHfnpaZjKFvyi1okTjJJusN455paPH</div>
 
               <MainButton
-                type={'button'}
+                type={'submit'}
                 text={'Скопировать адресс'}
                 width={'195px'}
-                func={openSuccessModal}
+                //func={openSuccessModal}
                 colorBg={true}
               />
 

@@ -22,8 +22,13 @@ const Balance = ({user, setSuccessModalText}) => {
   const [topUpModal, setTopUpModal] = useState(false)
   // модалка перевода средств
   const [transferModal, setTransferModal] = useState(false)
-  // записиваем баланс пользователя
+  // записываем баланс пользователя для истории
   const [balanceList, setBalanceList] = useState([])
+  const [userEmail, setUserEmail] = useState('');
+
+  const updateValue = (value) => {
+    setUserEmail(value)
+  }
 
   useEffect(() => {
     return () => {
@@ -42,7 +47,7 @@ const Balance = ({user, setSuccessModalText}) => {
     setTransferModal(false)
   }
 
-  // получаем баланс текущого пользователя
+  // получаем историю операций текущого пользователя
   const getUserBalance = async () => {
     axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
     axios.defaults.xsrfCookieName = 'csrftoken';
@@ -59,7 +64,7 @@ const Balance = ({user, setSuccessModalText}) => {
 
   useEffect(() => {
     getUserBalance().catch(error => console.error(error));
-  }, [])
+  })
 
   // формат даты
   const formatDate = (string) => {
@@ -154,10 +159,18 @@ const Balance = ({user, setSuccessModalText}) => {
 
     const server = new ServerSettings();
 
-    // отправляем письмо
-    await axios.get(`${server.getApi()}api/user/code/${user.id}/`)
+    await axios.get(`${server.getApi()}api/users/`)
       .then(res => {
-        setTransferModal(true)
+        const mail = res.data.find(u => u.email === userEmail);
+        if(mail){
+          // отправляем письмо
+          axios.get(`${server.getApi()}api/user/code/${user.id}/`)
+            .then(res => {
+              setTransferModal(true)
+            }).catch(error => {console.error(error);});
+        } else {
+          alert('user not found')
+        }
       }).catch(error => {console.error(error);});
   }
 
@@ -196,8 +209,9 @@ const Balance = ({user, setSuccessModalText}) => {
                 label={'Выберите пользователя'}
                 type={'text'}
                 name={'selectUser'}
-                placeholder={'Введите имя или Email'}
+                placeholder={'Введите Email'}
                 icon={search}
+                updateValue={updateValue}
               />
 
               <MainInput
@@ -227,7 +241,7 @@ const Balance = ({user, setSuccessModalText}) => {
           </InfoBlock>
         </Top>
 
-        <TableWrap>
+        <TableWrap >
           <div className="small_title">История операций</div>
           <table>
             <thead>
@@ -236,7 +250,7 @@ const Balance = ({user, setSuccessModalText}) => {
               <th>Статус</th>
               <th>Дата</th>
               <th>Сумма</th>
-              <th>Коментарий к платежу</th>
+              {/*<th>Коментарий к платежу</th>*/}
             </tr>
             </thead>
             <tbody>
@@ -248,7 +262,7 @@ const Balance = ({user, setSuccessModalText}) => {
                   <tr key={item.id}>
                     <td>
                       <div className="info">
-                        <div className="indicator"/>
+                        <div className="indicator" style={{backgroundColor: item.background}}/>
                         <div className="name">{item.operation}</div>
                         <div className="mobile_summ">{item.summa} MRC</div>
                       </div>
@@ -256,7 +270,7 @@ const Balance = ({user, setSuccessModalText}) => {
                     <td>{item.status === 'Conducted' ? 'Проведено' : 'Не Проведено'}</td>
                     <td>{dateNormal}</td>
                     <td>{item.summa}</td>
-                    <td>Коментарий</td>
+                    {/*<td>Коментарий</td>*/}
                   </tr>
                 )
               })
@@ -264,6 +278,7 @@ const Balance = ({user, setSuccessModalText}) => {
             </tbody>
           </table>
         </TableWrap>
+        {/*маленькая модалка успеха*/}
         <SmallSuccessModal/>
       </div>
       {
@@ -279,6 +294,7 @@ const Balance = ({user, setSuccessModalText}) => {
         topUpModal && (
           <TopUpModal
             close={closeModal}
+            update={updateBalance}
           />
         )
       }
