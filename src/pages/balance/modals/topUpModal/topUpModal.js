@@ -115,7 +115,7 @@ const TopUpModal = ({close, update, user}) => {
               iconText={'MRC'}
               name={'summa'}
               type={'number'}
-              minValue={100}
+              minValue={'100'}
               updateValue={updateValue}
             />
             <div className={'small_info'}>Минимальная сумма пополнения: 100MRC</div>

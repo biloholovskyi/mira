@@ -54,13 +54,24 @@ const WithDraw = ({close, user, update, loginUser}) => {
 
     const server = new ServerSettings();
 
-    // отправляем письмо
-    await axios.get(`${server.getApi()}api/user/code/${user.id}/`)
+    await axios.get(`${server.getApi()}api/users/${user.id}/`)
       .then(res => {
-        setConfirmationCode(true)
-      }).catch(error => {
-        console.error(error);
-      });
+        const summa = parseInt(sumValue) + parseInt(sumValue * 8 / 100);
+
+        if(summa < user.user_balance){
+          // отправляем письмо
+          axios.get(`${server.getApi()}api/user/code/${user.id}/`)
+            .then(res => {
+              setConfirmationCode(true)
+            }).catch(error => {
+            console.error(error);
+          });
+        }else {
+          alert('у вас недостаточно средств')
+        }
+
+
+      }).catch(error => {console.error(error);})
   }
 
   // проводим операцию транзакций
@@ -81,10 +92,11 @@ const WithDraw = ({close, user, update, loginUser}) => {
         data.set("wallet", e.target.wallet.value);
         data.set("user_id", user.id);
         data.set('operation', 'вывод средств')
+        data.set('background', '#FF3842')
 
         // проверяем совпадают ли коды
         if (user.code === code.textContent) {
-          const newBalance = parseInt(user.user_balance) - parseInt(e.target.summa.value);
+          const newBalance = parseInt(user.user_balance) - (parseInt(e.target.summa.value) + (e.target.summa.value * 8 / 100));
 
           const data2 = new FormData();
           data2.set("user_balance", newBalance);

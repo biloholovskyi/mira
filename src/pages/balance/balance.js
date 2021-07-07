@@ -25,9 +25,14 @@ const Balance = ({user, setSuccessModalText}) => {
   // записываем баланс пользователя для истории
   const [balanceList, setBalanceList] = useState([])
   const [userEmail, setUserEmail] = useState('');
+  const [transferSum, setTransferSUm] = useState('')
 
   const updateValue = (value) => {
     setUserEmail(value)
+  }
+
+  const updateTransferSum = (value) => {
+    setTransferSUm(value)
   }
 
   useEffect(() => {
@@ -125,6 +130,7 @@ const Balance = ({user, setSuccessModalText}) => {
           data3.set('summa', e.target.transferSumma.value);
           data3.set('operation', 'перевод')
           data3.set('user_id', user.id)
+          data3.set('background', '#FF3842')
 
           // обновляем список транзакий текущого пользователя
           axios.post(`${server.getApi()}api/balance/`, data3)
@@ -163,11 +169,17 @@ const Balance = ({user, setSuccessModalText}) => {
       .then(res => {
         const mail = res.data.find(u => u.email === userEmail);
         if(mail){
-          // отправляем письмо
-          axios.get(`${server.getApi()}api/user/code/${user.id}/`)
-            .then(res => {
-              setTransferModal(true)
-            }).catch(error => {console.error(error);});
+          if(transferSum <= user.user_balance) {
+
+            // отправляем письмо
+            axios.get(`${server.getApi()}api/user/code/${user.id}/`)
+              .then(res => {
+                setTransferModal(true)
+              }).catch(error => {console.error(error);});
+
+          } else {
+            alert('у вас недостаточно средств')
+          }
         } else {
           alert('user not found')
         }
@@ -219,6 +231,7 @@ const Balance = ({user, setSuccessModalText}) => {
                 type={'number'}
                 name={'transferSumma'}
                 iconText={'MRC'}
+                updateValue={updateTransferSum}
               />
 
               <MainButton
