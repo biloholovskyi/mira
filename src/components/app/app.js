@@ -65,7 +65,7 @@ const App = ({loginUser}) => {
           loginUser(res.data);
           setLoading(true);
         }).catch(error => {
-          console.log(error)
+          console.error(error)
           localStorage.removeItem('mira_login');
           setLoading(false);
         });
@@ -114,13 +114,7 @@ const App = ({loginUser}) => {
               :   <Redirect to={'/login'}/>
           }
         </Route>
-        <Route path='/settings' exact>
-          {
-            loading
-              ? <Settings/>
-              :   <Redirect to={'/login'}/>
-          }
-        </Route>
+        <Route path='/settings' exact component={Settings} />
         <Route path='/balance' exact component={Balance}/>
         <Route path='/faq' exact component={Faq}/>
         <Route path='/deposit' exact component={Deposit}/>

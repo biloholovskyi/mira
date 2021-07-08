@@ -5,7 +5,8 @@ const initialState = {
     email: '',
     password: '',
     photo: '',
-    user_balance: ''
+    user_balance: '',
+    instagram: ''
   },
 
   users: [],

@@ -15,7 +15,7 @@ import {loginUser, setSuccessModalText} from "../../actions";
 import ServerSettings from "../../service/serverSettings";
 import SmallSuccessModal from "../../components/smallSuccessModal/smallSuccessModal";
 
-const Balance = ({user, setSuccessModalText}) => {
+const Balance = ({user, setSuccessModalText, loginUser}) => {
   // модалка вывода средств
   const [withDraw, setWithDraw] = useState(false);
   // модалка пополнения стеча
@@ -69,7 +69,7 @@ const Balance = ({user, setSuccessModalText}) => {
 
   useEffect(() => {
     getUserBalance().catch(error => console.error(error));
-  })
+  }, [])
 
   // формат даты
   const formatDate = (string) => {
@@ -116,10 +116,14 @@ const Balance = ({user, setSuccessModalText}) => {
 
           const data4 = new FormData();
           data4.set("user_balance", otherBalance);
-
           // обновляем баланс текущого пользователя
           axios.put(`${server.getApi()}api/users/${user.id}/update/`, data2)
             .catch(error => console.error(error))
+
+          axios.get(`${server.getApi()}api/users/${user.id}/`)
+            .then(res => {
+              console.log(res.data)
+            }).catch(error => console.error(error))
 
           // обновляем баланс пользователя которому перевели
           axios.put(`${server.getApi()}api/users/${getUser.id}/update/`, data4)
@@ -132,7 +136,7 @@ const Balance = ({user, setSuccessModalText}) => {
           data3.set('user_id', user.id)
           data3.set('background', '#FF3842')
 
-          // обновляем список транзакий текущого пользователя
+          // обновляем список транзакций текущого пользователя
           axios.post(`${server.getApi()}api/balance/`, data3)
             .then(res => {
               updateBalance(res.data)
@@ -143,19 +147,17 @@ const Balance = ({user, setSuccessModalText}) => {
             .then(res => {
               updateBalance(res.data)
             }).catch(error => console.error(error))
+
+          // закриваем модалки и очищаем инпуты
+          closeModal()
+          //window.location.assign('/balance')
+          e.target.selectUser.value = ''
+          e.target.transferSumma.value = ''
+          setSuccessModalText('Средства были отправлены')
         } else {
           alert('Не верный пароль!')
         }
-      })
-      .then(res => {
-        // закриваем модалки и очищаем инпуты
-        closeModal()
-        window.location.assign('/balance')
-        e.target.selectUser.value = ''
-        e.target.transferSumma.value = ''
-        setSuccessModalText('Средства были отправлены')
-      })
-      .catch(error => console.error(error))
+      }).catch(error => console.error(error))
   }
 
   // отправляем письмо и откриваем модалку подтверджения для перевода
@@ -168,14 +170,18 @@ const Balance = ({user, setSuccessModalText}) => {
     await axios.get(`${server.getApi()}api/users/`)
       .then(res => {
         const mail = res.data.find(u => u.email === userEmail);
-        if(mail){
-          if(transferSum <= user.user_balance) {
+        // проверяем найден ли юзер
+        if (mail) {
+          // проверяем что б невозмоно было зайти в минус
+          if (parseInt(transferSum) <= user.user_balance) {
 
             // отправляем письмо
             axios.get(`${server.getApi()}api/user/code/${user.id}/`)
               .then(res => {
                 setTransferModal(true)
-              }).catch(error => {console.error(error);});
+              }).catch(error => {
+              console.error(error);
+            });
 
           } else {
             alert('у вас недостаточно средств')
@@ -183,7 +189,9 @@ const Balance = ({user, setSuccessModalText}) => {
         } else {
           alert('user not found')
         }
-      }).catch(error => {console.error(error);});
+      }).catch(error => {
+        console.error(error);
+      });
   }
 
   return (
@@ -254,7 +262,7 @@ const Balance = ({user, setSuccessModalText}) => {
           </InfoBlock>
         </Top>
 
-        <TableWrap >
+        <TableWrap>
           <div className="small_title">История операций</div>
           <table>
             <thead>

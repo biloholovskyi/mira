@@ -20,12 +20,6 @@ const TabPersonalDate = ({user, loginUser}) => {
 
   const [photo, setPhoto] = useState();
 
-  const cityList = [
-    {name: 'Казань', value: 1},
-    {name: 'Киев', value: 2},
-    {name: 'ИФ', value: 3}
-  ]
-
   // изминения данных пользователя
   const changePersonalData = async (e) => {
     e.preventDefault();
@@ -38,12 +32,14 @@ const TabPersonalDate = ({user, loginUser}) => {
     data.set("name", e.target.name.value);
     data.set("email", e.target.email.value);
     data.set("surName", e.target.surname.value);
+    data.set('city', e.target.city.value)
+    data.set('instagram', e.target.instagram.value)
 
     await axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
       .then(res => {
         // обновляем данные пользователя в сторе
         loginUser(res.data);
-        window.location.reload();
+        window.location.assign('/settings')
       }).catch(error => console.log(error));
 
   }
@@ -126,15 +122,16 @@ const TabPersonalDate = ({user, loginUser}) => {
 
         <MainInput
           label={'Instagram'}
-          name={'text'}
-          type={'instagram'}
+          name={'instagram'}
+          type={'text'}
+          defaultValue={user.instagram}
         />
 
-        <MainDropList
-          name={'city'}
-          required={true}
-          options={cityList}
+        <MainInput
           label={'Город'}
+          name={'city'}
+          type={'city'}
+          defaultValue={user.city}
         />
 
         <MainButton
@@ -195,8 +192,8 @@ const TabPersonalDate = ({user, loginUser}) => {
             <span className="slider round"/>
           </label>
           <div className="text_block">
-            <p>Двухфакторная аунтификация</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+            <p>двухфакторная аутентификация</p>
+            <p>включите дополнительную защиту для всех функций вашего личного кабинета</p>
           </div>
         </div>
       </Security>

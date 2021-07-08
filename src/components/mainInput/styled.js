@@ -62,6 +62,11 @@ const Wrapper = styled.div`
     }
   }
   
+  .valid {
+    background: linear-gradient(0deg, #291615, #291615), #121212!important;
+    border: 1px solid #FF3F35!important;
+  }
+  
   .icon {
     position: absolute;
     left: 15px;

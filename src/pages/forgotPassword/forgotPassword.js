@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {NavLink} from "react-router-dom";
 import axios from "axios";
 import {loginUser} from "../../actions";
@@ -17,7 +17,12 @@ import {setSuccessModalText} from '../../actions'
 import ServerSettings from "../../service/serverSettings";
 
 const ForgotPassword = ({setSuccessModalText}) => {
+  const [validation, setValidation] = useState(false);
   const history = useHistory();
+
+  const validationInput = () => {
+    setValidation(true)
+  }
 
   const createNewPassword = async (e) => {
     e.preventDefault();
@@ -25,31 +30,40 @@ const ForgotPassword = ({setSuccessModalText}) => {
     axios.defaults.xsrfCookieName = 'csrftoken';
 
     const server = new ServerSettings();
-    const email = e.target.email.value;
 
-    await axios.get(`${server.getApi()}api/users/${email}/`)
+    await axios.get(`${server.getApi()}api/users/`)
       .then(res => {
-        // get user id
-        const userId = res.data.id;
+        const email = e.target.email.value;
+        const getUser = res.data.find(u => u.email === email)
 
         const data = new FormData();
         data.set('email', e.target.email.value);
         data.set('password', generatePassword())
 
-        axios.put(`${server.getApi()}api/users/${res.data.id}/update/`, data)
-          .then(res => {
-            loginUser(res.data);
-            localStorage.setItem('mira_login', JSON.stringify({email: res.data.email}));
-            history.push('/login')
+        if (getUser){
+          axios.get(`${server.getApi()}api/users/${email}/`)
+            .then(res => {
+              const  userId = res.data.id;
 
-            setSuccessModalText('Пароль был успешно сброшен')
-            // отправка письма с новым паролем
-            axios.get(`${server.getApi()}api/user/email/${userId}/`)
-              .catch(error => {
-                console.error(error);
-              });
+              axios.put(`${server.getApi()}api/users/${res.data.id}/update/`, data)
+                .then(res => {
+                  loginUser(res.data);
+                  localStorage.setItem('mira_login', JSON.stringify({email: res.data.email}));
+                  history.push('/login')
 
-          }).catch(error => console.error(error));
+                  setSuccessModalText('Пароль был успешно сброшен')
+                  // отправка письма с новым паролем
+                  axios.get(`${server.getApi()}api/user/email/${userId}/`)
+                    .catch(error => {
+                      console.error(error);
+                    });
+
+                }).catch(error => console.error(error));
+
+            }).catch(error => {console.log(error)})
+        } else {
+          validationInput();
+        }
       }).catch(error => {console.log(error)})
   }
 
@@ -82,6 +96,7 @@ const ForgotPassword = ({setSuccessModalText}) => {
             type={'Email'}
             name={'email'}
             required={true}
+            validation={validation}
           />
 
           <MainButton
