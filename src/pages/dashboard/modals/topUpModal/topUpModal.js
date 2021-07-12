@@ -15,7 +15,7 @@ import ServerSettings from "../../../../service/serverSettings";
 
 
 
-const TopUpModal = ({close, update, user}) => {
+const TopUpModal = ({close, update, user, loginUser}) => {
   // модалка успеха
   const [successModal, setSuccessModal] = useState(false)
   // модалка подтверждения пополнения
@@ -80,6 +80,12 @@ const TopUpModal = ({close, update, user}) => {
 
         // обновляем баланс юзера
         axios.put(`${server.getApi()}api/users/${user.id}/update/`, data2)
+          .then(res => {
+            axios.get(`${server.getApi()}api/users/${user.id}/`)
+              .then(res => {
+                loginUser(res.data)
+              }).catch(error => console.error(error))
+          })
           .catch(error => console.error(error))
 
         // обновляем список транзакций

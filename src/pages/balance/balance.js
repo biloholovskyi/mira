@@ -118,12 +118,13 @@ const Balance = ({user, setSuccessModalText, loginUser}) => {
           data4.set("user_balance", otherBalance);
           // обновляем баланс текущого пользователя
           axios.put(`${server.getApi()}api/users/${user.id}/update/`, data2)
-            .catch(error => console.error(error))
-
-          axios.get(`${server.getApi()}api/users/${user.id}/`)
             .then(res => {
-              console.log(res.data)
-            }).catch(error => console.error(error))
+              axios.get(`${server.getApi()}api/users/${user.id}/`)
+                .then(res => {
+                  loginUser(res.data)
+                }).catch(error => console.error(error))
+            })
+            .catch(error => console.error(error))
 
           // обновляем баланс пользователя которому перевели
           axios.put(`${server.getApi()}api/users/${getUser.id}/update/`, data4)

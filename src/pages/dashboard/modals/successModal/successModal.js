@@ -22,7 +22,6 @@ const SuccessModal = ({close, title, data}) => {
 
   const closeAll = () => {
     close()
-    window.location.assign('/balance')
   }
 
   return(

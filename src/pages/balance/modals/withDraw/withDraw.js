@@ -103,6 +103,12 @@ const WithDraw = ({close, user, update, loginUser}) => {
 
           // обновляем баланс юзера
           axios.put(`${server.getApi()}api/users/${user.id}/update/`, data2)
+            .then(res => {
+              axios.get(`${server.getApi()}api/users/${user.id}/`)
+                .then(res => {
+                  loginUser(res.data)
+                }).catch(error => console.error(error))
+            })
             .catch(error => console.error(error))
 
           // обновляем список транзакций
