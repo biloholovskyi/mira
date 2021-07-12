@@ -194,6 +194,18 @@ const Balance = ({user, setSuccessModalText, loginUser}) => {
       });
   }
 
+  // получаем дату и меняем в нужном формате
+  const sortList = balanceList.map(event => {
+    const date = event.date.split('T')[0]
+    const myDate = formatDate(date)
+    return {...event, sortTime: myDate};
+  })
+
+  // соритруем по дате
+  sortList.sort((a, b) => {
+    return new Date(a.sortTime).getTime() - new Date(b.sortTime).getTime()
+  }).reverse();
+
   return (
     <>
       <div className={'main_container'}>
@@ -276,7 +288,7 @@ const Balance = ({user, setSuccessModalText, loginUser}) => {
             </thead>
             <tbody>
             {
-              balanceList.map(item => {
+              sortList.map(item => {
                 const MyNewDate = item.date.split('T')[0]
                 const dateNormal = formatDate(MyNewDate);
                 return (
