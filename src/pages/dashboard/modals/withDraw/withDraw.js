@@ -55,24 +55,48 @@ const WithDraw = ({close, user, update, loginUser}) => {
 
     const server = new ServerSettings();
 
+    const data = new FormData();
+    data.set('code' , generatePassword())
+
     await axios.get(`${server.getApi()}api/users/${user.id}/`)
       .then(res => {
         const summa = parseInt(sumValue) + parseInt(sumValue * 8 / 100);
 
         if(summa < user.user_balance){
-          // отправляем письмо
-          axios.get(`${server.getApi()}api/user/code/${user.id}/`)
+
+          axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
             .then(res => {
-              setConfirmationCode(true)
-            }).catch(error => {
-            console.error(error);
-          });
-        }else {
+
+              axios.get(`${server.getApi()}api/users/${user.id}/`)
+                .then(res => {
+                  loginUser(res.data)
+                }).catch(error => console.error(error))
+
+              // отправляем письмо
+              axios.get(`${server.getApi()}api/user/code/${user.id}/`)
+                .then(res => {
+                  setConfirmationCode(true)
+                }).catch(error => {console.error(error);});
+
+            }).catch(error => {console.error(error);});
+
+        } else {
           alert('у вас недостаточно средств')
         }
 
 
       }).catch(error => {console.error(error);})
+  }
+
+  // генерируем пароль
+  const generatePassword = () => {
+    let pass = "";
+    let possible = "0123456789";
+
+    for (let i = 0; i < 6; i++)
+      pass += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return pass;
   }
 
   // проводим операцию транзакций

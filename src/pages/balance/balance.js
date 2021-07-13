@@ -176,14 +176,28 @@ const Balance = ({user, setSuccessModalText, loginUser}) => {
           // проверяем что б невозмоно было зайти в минус
           if (parseInt(transferSum) <= user.user_balance) {
 
-            // отправляем письмо
-            axios.get(`${server.getApi()}api/user/code/${user.id}/`)
+            const data = new FormData();
+            data.set('code', generatePassword())
+
+            axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
               .then(res => {
-                setTransferModal(true)
+
+                axios.get(`${server.getApi()}api/users/${user.id}/`)
+                  .then(res => {
+                    loginUser(res.data)
+                  }).catch(error => console.error(error))
+
+                // отправляем письмо
+                axios.get(`${server.getApi()}api/user/code/${user.id}/`)
+                  .then(res => {
+                    setTransferModal(true)
+                  }).catch(error => {
+                  console.error(error);
+                });
+
               }).catch(error => {
               console.error(error);
             });
-
           } else {
             alert('у вас недостаточно средств')
           }
@@ -193,6 +207,17 @@ const Balance = ({user, setSuccessModalText, loginUser}) => {
       }).catch(error => {
         console.error(error);
       });
+  }
+
+  // генерируем код
+  const generatePassword = () => {
+    let pass = "";
+    let possible = "0123456789";
+
+    for (let i = 0; i < 6; i++)
+      pass += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return pass;
   }
 
   // получаем дату и меняем в нужном формате
