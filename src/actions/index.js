@@ -17,8 +17,14 @@ const setSuccessModalText = (text) => {
   return {type: 'SHOW_SUCCESS_MODAL', text}
 }
 
+// передаем текст в success modal
+const setErrorModalText = (text) => {
+  return {type: 'SHOW_ERROR_MODAL', text}
+}
+
 export {
   loginUser,
   getAllUsers,
-  setSuccessModalText
+  setSuccessModalText,
+  setErrorModalText
 }

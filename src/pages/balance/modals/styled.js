@@ -252,6 +252,7 @@ const ConfirmModalWrapper = styled.div`
   //box-shadow: 0px 100px 179px rgba(0, 0, 0, 0.16), 0px 22.3363px 39.982px rgba(0, 0, 0, 0.0953772), 0px 6.6501px 11.9037px rgba(0, 0, 0, 0.0646228);
   //border-radius: 12px;
   max-width: 640px;
+  min-height: 350px;
   width: 100%;
   padding: 0 32px 32px 32px;
   padding-top: ${props => props.transferModal ? '32px' : 0};

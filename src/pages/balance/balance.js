@@ -11,11 +11,12 @@ import TopUpModal from "./modals/topUpModal/topUpModal";
 import {Top, BalanceBlock, InfoBlock, TableWrap} from './styled';
 import search from './media/icon/search.svg';
 
-import {loginUser, setSuccessModalText} from "../../actions";
+import {loginUser, setSuccessModalText, setErrorModalText} from "../../actions";
 import ServerSettings from "../../service/serverSettings";
 import SmallSuccessModal from "../../components/smallSuccessModal/smallSuccessModal";
+import SmallErrorModal from "../../components/smallErrorModal/smallErrorModal";
 
-const Balance = ({user, setSuccessModalText, loginUser}) => {
+const Balance = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   // модалка вывода средств
   const [withDraw, setWithDraw] = useState(false);
   // модалка пополнения стеча
@@ -26,6 +27,26 @@ const Balance = ({user, setSuccessModalText, loginUser}) => {
   const [balanceList, setBalanceList] = useState([])
   const [userEmail, setUserEmail] = useState('');
   const [transferSum, setTransferSUm] = useState('')
+  const [validation, setValidation] = useState(false);
+  const [validationSum, setValidationSum] = useState(false);
+
+  const validationInput = () => {
+    setValidation(true)
+  }
+
+  const validationSumma = () => {
+    setValidationSum(true)
+  }
+
+  useEffect(() => {
+    return () => {
+      setErrorModalText(false)
+    }
+  }, []);
+
+  setTimeout(() => {
+    setErrorModalText(false)
+  }, 1500)
 
   const updateValue = (value) => {
     setUserEmail(value)
@@ -155,8 +176,12 @@ const Balance = ({user, setSuccessModalText, loginUser}) => {
           e.target.selectUser.value = ''
           e.target.transferSumma.value = ''
           setSuccessModalText('Средства были отправлены')
+          setValidation(false)
         } else {
-          alert('Не верный пароль!')
+          //alert('Не верный пароль!')
+          validationInput();
+          setErrorModalText('Не верный код!')
+
         }
       }).catch(error => console.error(error))
   }
@@ -198,11 +223,17 @@ const Balance = ({user, setSuccessModalText, loginUser}) => {
               }).catch(error => {
               console.error(error);
             });
+            setValidationSum(false)
           } else {
-            alert('у вас недостаточно средств')
+            //alert('у вас недостаточно средств')
+            validationSumma();
+            setErrorModalText('у вас недостаточно средств')
           }
+          setValidation(false)
         } else {
-          alert('user not found')
+          //alert('user not found')
+          validationInput()
+          setErrorModalText('Пользователь не найден!')
         }
       }).catch(error => {
         console.error(error);
@@ -270,6 +301,7 @@ const Balance = ({user, setSuccessModalText, loginUser}) => {
                 placeholder={'Введите Email'}
                 icon={search}
                 updateValue={updateValue}
+                validation={validation}
               />
 
               <MainInput
@@ -278,6 +310,7 @@ const Balance = ({user, setSuccessModalText, loginUser}) => {
                 name={'transferSumma'}
                 iconText={'MRC'}
                 updateValue={updateTransferSum}
+                validation={validationSum}
               />
 
               <MainButton
@@ -293,6 +326,7 @@ const Balance = ({user, setSuccessModalText, loginUser}) => {
                     transferModal={transferModal}
                     title={'Подтвердите перевод'}
                     close={closeModal}
+                    validation={validation}
                   />
                 )
               }
@@ -339,6 +373,7 @@ const Balance = ({user, setSuccessModalText, loginUser}) => {
         </TableWrap>
         {/*маленькая модалка успеха*/}
         <SmallSuccessModal/>
+        <SmallErrorModal/>
       </div>
       {
         withDraw && (
@@ -369,7 +404,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   loginUser,
-  setSuccessModalText
+  setSuccessModalText,
+  setErrorModalText
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Balance);

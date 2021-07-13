@@ -11,7 +11,9 @@ const initialState = {
 
   users: [],
   // success message
-  successModal: false
+  successModal: false,
+  // error message
+  errorModal: false
 };
 
 const reducer = (state= initialState, action) => {
@@ -34,6 +36,12 @@ const reducer = (state= initialState, action) => {
       return {
         ...state,
         successModal: action.text
+      }
+
+    case 'SHOW_ERROR_MODAL':
+      return {
+        ...state,
+        errorModal: action.text
       }
 
     default:

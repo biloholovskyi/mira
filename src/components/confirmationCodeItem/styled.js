@@ -22,6 +22,11 @@ const CodeItem = styled.input`
     margin: 0;
   }
   
+  &.valid {
+    background: linear-gradient(0deg, #291615, #291615), #121212!important;
+    border: 1px solid #FF3F35!important;
+  }
+  
 `
 
 const Border = styled.div`

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {NavLink} from "react-router-dom";
 import {useHistory} from "react-router";
 
@@ -9,14 +9,30 @@ import LeftImageBlock from "../../components/leftImageBlock/leftImageBlock";
 import arrow from './media/icon/small_arrow.svg';
 import {Caption, LoginForm, LoginWrap, SmallDesc, LogoMobile} from "./style";
 import logo from "../registration/media/icon/logo-green.svg";
-import {loginUser} from "../../actions";
+import {loginUser, setErrorModalText} from "../../actions";
 import {connect} from "react-redux";
 import axios from "axios";
 import ServerSettings from "../../service/serverSettings";
+import SmallErrorModal from "../../components/smallErrorModal/smallErrorModal";
 
-const AuthorizationCode = ({user}) => {
+const AuthorizationCode = ({user, setErrorModalText}) => {
   const history = useHistory();
   const [authCode, setAuthCode] = useState('');
+  const [validation, setValidation] = useState(false);
+
+  const validationInput = () => {
+    setValidation(true)
+  }
+
+  useEffect(() => {
+    return () => {
+      setErrorModalText(false)
+    }
+  }, []);
+
+  setTimeout(() => {
+    setErrorModalText(false)
+  }, 3000)
 
   const update = (value) => {
     setAuthCode(value)
@@ -38,7 +54,9 @@ const AuthorizationCode = ({user}) => {
           if (user.code === code.textContent) {
             window.location.assign('/dashboard');
           } else {
-            alert('неверный код!')
+            //alert('неверный код!')
+            validationInput();
+            setErrorModalText('неверный код!')
           }
         }).catch(error => console.log(error))
   }
@@ -57,38 +75,41 @@ const AuthorizationCode = ({user}) => {
   }
 
   return (
-    <LoginWrap>
-      <LeftImageBlock loginPage={true}/>
+   <>
+     <LoginWrap>
+       <LeftImageBlock loginPage={true}/>
 
-      <div className="right">
-        <LogoMobile src={logo} alt="logo"/>
+       <div className="right">
+         <LogoMobile src={logo} alt="logo"/>
 
-        <Caption>
-          <NavLink to={'/login'}><img src={arrow} alt="icon"/>Назад</NavLink>
-        </Caption>
+         <Caption>
+           <NavLink to={'/login'}><img src={arrow} alt="icon"/>Назад</NavLink>
+         </Caption>
 
-        <LoginForm onSubmit={(e)=> checkCode(e)}>
-          <h3>Введите проверочный код</h3>
-          <SmallDesc>Мы выслали проверочный код на почту {user.email}<br/>
-            Введите код, что бы подтвердить свой аккаунт</SmallDesc>
+         <LoginForm onSubmit={(e)=> checkCode(e)}>
+           <h3>Введите проверочный код</h3>
+           <SmallDesc>Мы выслали проверочный код на почту {user.email}<br/>
+             Введите код, что бы подтвердить свой аккаунт</SmallDesc>
 
-          <ConfirmationCodeItem update={update}/>
+           <ConfirmationCodeItem update={update} validation={validation}/>
 
-          <div className="btn_section">
-            <MainButton
-              type={'submit'}
-              text={'Подтвердить'}
-              colorBg={true}
-            />
-            <p>
-              Не пришел код?
-             <button type={'button'} onClick={(e)=> sendCodeAgain(e)}>Выслать код еще раз</button>
-            </p>
-          </div>
-          <div id={'code'} style={{visibility: "hidden"}}>{authCode}</div>
-        </LoginForm>
-      </div>
-    </LoginWrap>
+           <div className="btn_section">
+             <MainButton
+               type={'submit'}
+               text={'Подтвердить'}
+               colorBg={true}
+             />
+             <p>
+               Не пришел код?
+               <button type={'button'} onClick={(e)=> sendCodeAgain(e)}>Выслать код еще раз</button>
+             </p>
+           </div>
+           <div id={'code'} style={{visibility: "hidden"}}>{authCode}</div>
+         </LoginForm>
+       </div>
+     </LoginWrap>
+     <SmallErrorModal/>
+   </>
   )
 }
 
@@ -100,7 +121,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  loginUser
+  loginUser,
+  setErrorModalText
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthorizationCode);

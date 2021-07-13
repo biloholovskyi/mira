@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {loginUser} from "../../../../actions";
+import {loginUser, setErrorModalText} from "../../../../actions";
 import {connect} from "react-redux";
 
 import MainInput from '../../../../components/mainInput/mainInput';
@@ -13,15 +13,31 @@ import {ModalOverlay, ModalWrapper} from "../../../balance/modals/styled";
 import closed from '../../media/icon/close.svg';
 
 import ServerSettings from "../../../../service/serverSettings";
+import SmallErrorModal from "../../../../components/smallErrorModal/smallErrorModal";
 
 
-const WithDraw = ({close, user, update, loginUser}) => {
+const WithDraw = ({close, user, update, loginUser, setErrorModalText}) => {
   // модалка успеха
   const [successModal, setSuccessModal] = useState(false)
   // модалка подтверждения операции
   const [confirmation, setConfirmationCode] = useState(false)
   const [sumValue, setSumValue] = useState('');
   const [wallet, setWallet] = useState('');
+  const [validation, setValidation] = useState(false);
+
+  const validationInput = () => {
+    setValidation(true)
+  }
+
+  useEffect(() => {
+    return () => {
+      setErrorModalText(false)
+    }
+  }, []);
+
+  setTimeout(() => {
+    setErrorModalText(false)
+  }, 1500)
 
   // получаем суму что б пощитать комисию
   const getCommission = (value) => {
@@ -79,9 +95,11 @@ const WithDraw = ({close, user, update, loginUser}) => {
                 }).catch(error => {console.error(error);});
 
             }).catch(error => {console.error(error);});
-
+          setValidation(false)
         } else {
-          alert('у вас недостаточно средств')
+          //alert('у вас недостаточно средств')
+          validationInput();
+          setErrorModalText('у вас недостаточно средств')
         }
 
 
@@ -145,6 +163,8 @@ const WithDraw = ({close, user, update, loginUser}) => {
           });
         } else {
           console.log('error')
+          validationInput();
+          setErrorModalText('Не верный код')
         }
       }).catch(error => console.error(error))
   }
@@ -166,6 +186,7 @@ const WithDraw = ({close, user, update, loginUser}) => {
                     title={'Введите проверочный код'}
                     onConfirmation={OnWithDraw}
                     confirmation={confirmation}
+                    validation={validation}
                   />
                 )
               }
@@ -179,6 +200,7 @@ const WithDraw = ({close, user, update, loginUser}) => {
                 name={'summa'}
                 type={'number'}
                 updateValue={getCommission}
+                validation={validation}
               />
               <div className={'small_info'}>Комиссия: 8% / {sumValue * 8 / 100} MRC</div>
 
@@ -209,6 +231,7 @@ const WithDraw = ({close, user, update, loginUser}) => {
           />
         )
       }
+      <SmallErrorModal/>
     </>
   )
 }
@@ -218,7 +241,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  loginUser
+  loginUser,
+  setErrorModalText
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WithDraw);

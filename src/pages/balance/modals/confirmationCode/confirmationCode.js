@@ -14,7 +14,7 @@ import ServerSettings from "../../../../service/serverSettings";
 import axios from "axios";
 
 
-const ConfirmationCode = ({close, back, title, transferModal, confirmation, user}) => {
+const ConfirmationCode = ({close, back, title, transferModal, confirmation, user, validation}) => {
   const [smallSuccess, setSmallSuccess] = useState(false)
   const [authCode, setAuthCode] = useState('');
 
@@ -58,7 +58,7 @@ const ConfirmationCode = ({close, back, title, transferModal, confirmation, user
               Введите код, что бы вывести средства
             </div>
 
-            <ConfirmationCodeItem update={update}/>
+            <ConfirmationCodeItem update={update} validation={validation}/>
 
             <MainButton
               text={'Подтвердить'}

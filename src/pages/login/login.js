@@ -2,30 +2,38 @@ import React, {useEffect, useState} from 'react';
 import {useHistory} from "react-router";
 import {NavLink} from "react-router-dom";
 import axios from "axios";
-import {loginUser, setSuccessModalText} from "../../actions/index";
+import {loginUser, setSuccessModalText, setErrorModalText} from "../../actions/index";
 import {connect} from "react-redux";
 
 import MainButton from '../../components/mainButton/mainButton';
 import MainInput from '../../components/mainInput/mainInput';
 import LeftImageBlock from '../../components/leftImageBlock/leftImageBlock';
+import SmallSuccessModal from "../../components/smallSuccessModal/smallSuccessModal";
+import SmallErrorModal from "../../components/smallErrorModal/smallErrorModal";
 
 import {LoginWrap, Caption, LoginForm, LogoMobile, MobileBtn} from './style';
 import logo from './media/icon/logo-green.svg';
 
 import ServerSettings from '../../service/serverSettings';
-import SmallSuccessModal from "../../components/smallSuccessModal/smallSuccessModal";
 
-const Login = ({setSuccessModalText, loginUser}) => {
+const Login = ({setSuccessModalText, loginUser, setErrorModalText}) => {
+  const [validation, setValidation] = useState(false);
   const history = useHistory();
+
+  const validationInput = () => {
+    setValidation(true)
+  }
 
   useEffect(() => {
     return () => {
       setSuccessModalText(false)
+      setErrorModalText(false)
     }
   }, []);
 
   setTimeout(() => {
     setSuccessModalText(false)
+    setErrorModalText(false)
   }, 1500)
 
   // логин пользователя
@@ -59,7 +67,8 @@ const Login = ({setSuccessModalText, loginUser}) => {
             }).catch(error => console.error(error));
 
         } else {
-          alert('wrong password or login');
+          validationInput();
+          setErrorModalText('Логин или пароль введен неверно!')
         }
       }).catch(error => {
         try {
@@ -74,6 +83,8 @@ const Login = ({setSuccessModalText, loginUser}) => {
           }
         } catch {
           console.log('precess');
+          validationInput();
+          setErrorModalText('Логин или пароль введен неверно!')
         }
       });
   }
@@ -120,6 +131,7 @@ const Login = ({setSuccessModalText, loginUser}) => {
               type={'email'}
               name={'login'}
               required={true}
+              validation={validation}
             />
 
             <NavLink to={'/forgotPassword'} className={'send_again'}>Забыли пароль?</NavLink>
@@ -129,6 +141,7 @@ const Login = ({setSuccessModalText, loginUser}) => {
               type={'password'}
               name={'password'}
               required={true}
+              validation={validation}
             />
             <MainButton
               type={'submit'}
@@ -149,6 +162,7 @@ const Login = ({setSuccessModalText, loginUser}) => {
         </div>
       </LoginWrap>
       <SmallSuccessModal/>
+      <SmallErrorModal/>
     </>
   )
 }
@@ -161,7 +175,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   loginUser,
-  setSuccessModalText
+  setSuccessModalText,
+  setErrorModalText
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
