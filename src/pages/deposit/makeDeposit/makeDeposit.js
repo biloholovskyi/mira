@@ -7,7 +7,7 @@ import NineMonthTab from './nineMonthTab/nineMonthTab';
 
 import {Left, Right, InfoBlock, TabHead, TabHeadNav} from "../styled";
 
-const MakeDeposit = ({updateList}) => {
+const MakeDeposit = ({updateList, onMakeDeposit}) => {
   const [tabStatus, setTabStatus] = useState('month3');
   const [summa, setSumma] = useState('');
 
@@ -48,16 +48,19 @@ const MakeDeposit = ({updateList}) => {
           ? <ThreeMonthTab
               totalSum={summa}
               getInfo={updateList}
+              onMakeDeposit={onMakeDeposit}
             />
           : tabStatus === 'month6'
             ? <SixMonthTab
               totalSum={summa}
               getInfo={updateList}
+              onMakeDeposit={onMakeDeposit}
               />
             : tabStatus === 'month9'
               ? <NineMonthTab
                 totalSum={summa}
                 getInfo={updateList}
+                onMakeDeposit={onMakeDeposit}
                 />
               : null
         }

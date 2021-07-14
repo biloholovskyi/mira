@@ -1,11 +1,19 @@
-import React from "react";
+import React, {useEffect} from "react";
 import CircleProgressBar from './circleProgressBar/circleProgressBar';
 
 import MainButton from "../../../components/mainButton/mainButton";
 
 import {Left, Right, DepositTable, InfoBlock, TabWrap} from "../styled";
+import ServerSettings from "../../../service/serverSettings";
+import axios from "axios";
+import {loginUser} from "../../../actions";
+import {connect} from "react-redux";
 
-const ActiveDeposit = ({deposit}) => {
+const ActiveDeposit = ({deposit, term}) => {
+
+  const onDeleteDeposit = () => {
+  }
+
   return(
    <>
      <InfoBlock>
@@ -13,14 +21,14 @@ const ActiveDeposit = ({deposit}) => {
          <div className="top">
 
           <CircleProgressBar
-            term={deposit.term}
+            term={term}
           />
 
          </div>
          <div className="bottom">
            <div className="item">
              <div className="title">Тело депозита</div>
-             <div className="text">{deposit.total.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')} MRC</div>
+             <div className="text">{deposit.summa.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')} MRC</div>
            </div>
            <div className="item">
              <div className="title">Начислено процентов</div>
@@ -28,7 +36,6 @@ const ActiveDeposit = ({deposit}) => {
            </div>
          </div>
        </Left>
-
        <Right>
          <h3>Подробнее о вашем депозите</h3>
          <TabWrap>
@@ -44,7 +51,7 @@ const ActiveDeposit = ({deposit}) => {
            </div>
            <div className="item">
              <div className="name">Дневная прибыль</div>
-             <div className="value">{deposit.dailyIncome.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')} MRC</div>
+             <div className="value">{deposit.dailyIncome} MRC</div>
              <input type="text" name={'dailyIncome'} value={deposit.dailyIncome} hidden readOnly/>
            </div>
            <div className="item">
@@ -91,4 +98,14 @@ const ActiveDeposit = ({deposit}) => {
   )
 }
 
-export default ActiveDeposit;
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+};
+
+const mapDispatchToProps = {
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActiveDeposit);

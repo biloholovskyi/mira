@@ -4,20 +4,20 @@ import MainButton from "../../../../components/mainButton/mainButton";
 
 import {TabWrap} from "../../styled";
 
-const ThreeMonthTab = ({totalSum, getInfo}) => {
+const ThreeMonthTab = ({totalSum, getInfo, onMakeDeposit}) => {
 
-  const onCreateDeposit = (e) => {
-    e.preventDefault();
-
-    const data = {
-      term: e.target.month.value,
-      rate: e.target.percent.value,
-      dailyIncome: e.target.dailyIncome.value,
-      income: e.target.income.value,
-      total: e.target.total.value
-    }
-    getInfo(data)
-  }
+  // const onCreateDeposit = (e) => {
+  //   e.preventDefault();
+  //
+  //   const data = {
+  //     term: e.target.month.value,
+  //     rate: e.target.percent.value,
+  //     dailyIncome: e.target.dailyIncome.value,
+  //     income: e.target.income.value,
+  //     total: e.target.total.value
+  //   }
+  //   getInfo(data)
+  // }
 
   //Прибыль за весь срок
   let income = ((totalSum * 0.8) / 100) * 90;
@@ -27,7 +27,7 @@ const ThreeMonthTab = ({totalSum, getInfo}) => {
   let formatDailyIncome = dalyIncome.toString();
 
   return(
-    <TabWrap onSubmit={(e)=>onCreateDeposit(e)}>
+    <TabWrap onSubmit={(e)=> onMakeDeposit(e)}>
       <div className="item">
         <div className="name">Срок депозита</div>
         <div className="value">3 месяца</div>
@@ -51,7 +51,7 @@ const ThreeMonthTab = ({totalSum, getInfo}) => {
       <div className="item">
         <div className="name">Итого к оплате</div>
         <div className="value">{totalSum.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')} MRC</div>
-        <input type="text" name={'total'} value={totalSum} hidden readOnly/>
+        <input type="text" name={'summa'} value={totalSum} hidden readOnly/>
       </div>
 
       <MainButton

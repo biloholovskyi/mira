@@ -4,7 +4,7 @@ import MainButton from "../../../../components/mainButton/mainButton";
 
 import {TabWrap} from "../../styled";
 
-const NineMonthTab = ({totalSum, getInfo}) => {
+const NineMonthTab = ({totalSum, getInfo, onMakeDeposit}) => {
 
   const onCreateDeposit = (e) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ const NineMonthTab = ({totalSum, getInfo}) => {
   let formatDailyIncome = dalyIncome.toString();
 
   return(
-    <TabWrap onSubmit={(e)=>onCreateDeposit(e)}>
+    <TabWrap onSubmit={(e)=>onMakeDeposit(e)}>
       <div className="item">
         <div className="name">Срок депозита</div>
         <div className="value">9 месяцей</div>
@@ -51,7 +51,7 @@ const NineMonthTab = ({totalSum, getInfo}) => {
       <div className="item">
         <div className="name">Итого к оплате</div>
         <div className="value">{totalSum.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')} MRC</div>
-        <input type="text" name={'total'} value={totalSum} hidden readOnly/>
+        <input type="text" name={'summa'} value={totalSum} hidden readOnly/>
       </div>
 
       <MainButton
