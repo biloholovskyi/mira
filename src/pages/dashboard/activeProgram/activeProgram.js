@@ -8,7 +8,7 @@ import Car from '../media/images/car.svg';
 import './styles.css';
 
 const ActiveProgram = () => {
-  const days = 28;
+  const days = 90;
 
   return (
     <ActiveTableWrap>

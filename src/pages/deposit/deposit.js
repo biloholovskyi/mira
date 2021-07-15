@@ -102,6 +102,7 @@ const Deposit = ({user, loginUser}) => {
                   key={item.id}
                   deposit={item}
                   term={item.term}
+                  user={user}
                 />
               )
             })

@@ -3,7 +3,7 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 import {TimeWrapper} from './styled';
 
-const daySeconds = 86400;
+const daySeconds = 10; //86400
 
 const timerProps = {
   isPlaying: true,
@@ -12,9 +12,9 @@ const timerProps = {
 };
 
 const renderTime = (dimension, time) => {
-  if (time === 0) {
-    return <div className="time">the end...</div>;
-  }
+  // if (time === 0) {
+  //   return <div className="time">the end...</div>;
+  // }
 
   return (
     <TimeWrapper>
@@ -27,7 +27,7 @@ const renderTime = (dimension, time) => {
 const getTimeDays = (time) => (time / daySeconds) | 0;
 
 const CircleProgressBar = ({term}) => {
-  const remainingTime = term * daySeconds;
+  const remainingTime = 2 * daySeconds;
   const days = Math.ceil(remainingTime / daySeconds);
   const daysDuration = days * daySeconds;
 

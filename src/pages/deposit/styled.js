@@ -73,6 +73,37 @@ const Left = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    .donut {
+      max-width: 220px;
+      &-hole,
+      &-ring,
+      &-segment {
+        min-width: 220px;
+      }
+      .chart-text {
+        fill: #000;
+        transform: translate(-24%,5%);
+        .chart-number {
+          display: flex;
+          align-items: center;
+          font-family: 'TTInterfaces-Bold', sans-serif;
+          font-style: normal;
+          font-weight: bold;
+          font-size: 5px;
+          line-height: 32px;
+          fill: #FFFFFF;
+          transform: translateY(0.30em);
+        }
+        .chart-label {
+          font-style: normal;
+          font-weight: normal;
+          font-size: 3px;
+          line-height: 20px;
+          fill: #FFFFFF;
+          transform: translate(4px, -1.3em);
+        }
+      }
+    }
   }
   .bottom {
     display: flex;
