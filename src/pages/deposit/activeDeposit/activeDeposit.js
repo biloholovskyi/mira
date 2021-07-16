@@ -12,6 +12,7 @@ import ServerSettings from "../../../service/serverSettings";
 const ActiveDeposit = ({deposit, user, onDelete, percent}) => {
   // записиваем разницу в днях от создания депозита до сегодня
   const [days, setDays] = useState('');
+  const [totalPercent, setTotalPercent] = useState('');
 
   const getPercent = async () => {
     // дата создания депозита
@@ -45,11 +46,15 @@ const ActiveDeposit = ({deposit, user, onDelete, percent}) => {
               const depositPercent = res.data.filter(u => u.deposit_percent === myDeposit[0].id);
 
               if (depositPercent) {
-                // if (today !== lastItemDate && today > lastItemDate)
-                  const data = new FormData();
-                  data.set('summa', myDeposit[0].dailyIncome)
-                  data.set('rate', myDeposit[0].rate)
-                  data.set('deposit_percent', myDeposit[0].id)
+                // получаем общее количество всех выплат и записиваем в стейт
+                const allPercent = depositPercent.map(u => parseInt(u.summa))
+                let totalPercent = allPercent.reduce((a, b) => a + b, 0)
+                setTotalPercent(totalPercent)
+
+                const data = new FormData();
+                data.set('summa', myDeposit[0].dailyIncome)
+                data.set('rate', myDeposit[0].rate)
+                data.set('deposit_percent', myDeposit[0].id)
 
                 // получаем разницу в днях между последний начислениям и сегодня и через цикл делаем посты на сервер
                 let promises = [];
@@ -89,7 +94,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent}) => {
                       strokeDashoffset="25"/>
               <g className="chart-text">
 
-                <text x="50%" y="50%" className="chart-number">{180 - days} дней</text>
+                <text x="50%" y="50%" className="chart-number">{parseInt(deposit.term) - days} дней</text>
                 <text x="50%" y="50%" className="chart-label">Осталось</text>
               </g>
             </svg>
@@ -102,7 +107,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent}) => {
             </div>
             <div className="item">
               <div className="title">Начислено процентов</div>
-              <div className="text"> MRC</div>
+              <div className="text">{totalPercent} MRC</div>
             </div>
           </div>
         </Left>

@@ -109,14 +109,19 @@ const Deposit = ({user}) => {
     //
     // const server = new ServerSettings();
     //
-    // await axios.delete(`${server.getApi()}api/deposit/${deposit[0].id}/delete/`)
-    //   .catch(error => console.error(error));
+    // await axios.delete(`${server.getApi()}api/deposit/${deposit[0].id}/delete/`, { body: 'delete' })
+    //   .then(res => {
+    //     axios.get(`${server.getApi()}api/deposit/`)
+    //       .then(res => {
+    //         console.log(res.data)
+    //       }).catch(error => console.error(error));
+    //   }).catch(error => console.error(error));
     console.log('delete')
   }
 
-  // useEffect(() => {
-  //   onDelete().catch(error => console.error(error));
-  // }, [])
+  useEffect(() => {
+    onDelete().catch(error => console.error(error));
+  }, [])
 
   return (
     <div className={'main_container'}>
