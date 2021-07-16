@@ -421,6 +421,43 @@ const TabWrap = styled.form`
   }
 `
 
+const DepositEnd = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(54, 179, 126, 0.2);
+  border-radius: 8px;
+  padding: 8px;
+  max-height: 64px;
+  margin-top: 32px;
+  .text {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+    .top {
+      font-family: 'TTInterfaces-Regular', sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 20px;
+      color: #36B37E;
+    }
+    .bottom {
+      font-family: 'TTInterfaces-Regular', sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 22px;
+      color: #FFFFFF;
+    }
+  }
+  button {
+    padding: 12px 10px;
+    margin-top: 0;
+  }
+`
+
 export {
   DepositWrap,
   Desc,
@@ -431,5 +468,6 @@ export {
   InfoBlock,
   TabHead,
   TabHeadNav,
-  TabWrap
+  TabWrap,
+  DepositEnd
 }

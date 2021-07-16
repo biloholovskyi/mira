@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import CircleProgressBar from './circleProgressBar/circleProgressBar';
 import MainButton from "../../../components/mainButton/mainButton";
 
-import {Left, Right, DepositTable, InfoBlock, TabWrap} from "../styled";
+import {Left, Right, DepositTable, InfoBlock, TabWrap, DepositEnd} from "../styled";
 
 import ServerSettings from "../../../service/serverSettings";
 
@@ -23,14 +23,14 @@ const ActiveDeposit = ({deposit, user, onDelete, percent}) => {
     // сегодняшняя дата
     let today = new Date()
     // получаем количество дней от создания депозита до сегодня
-    let days = Math.floor((today - d1) / 60 / 60 / 24 / 1000)
+    let days = Math.round((today - d1) / 60 / 60 / 24 / 1000)
     //количество дней для диаграмы записиваем в стейт
     setDays(days)
 
     // получаем последний елемент начисленых процентов
     let lastItem = percent.slice(-1)[0].created_at
     let lastItemDate = new Date(lastItem)
-    let days2 = Math.floor((today - lastItemDate) / 60 / 60 / 24 / 1000)
+    let days2 = Math.round((today - lastItemDate) / 60 / 60 / 24 / 1000)
 
     const server = new ServerSettings();
 
@@ -134,15 +134,30 @@ const ActiveDeposit = ({deposit, user, onDelete, percent}) => {
               <div className="value">{deposit.income.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')} MRC</div>
               <input type="text" name={'income'} value={deposit.income} hidden readOnly/>
             </div>
-
-            <MainButton
-              type={'button'}
-              text={'Отменить депозит'}
-              colorBgRed={true}
-              width={'100%'}
-              func={onDelete}
-            />
-
+            {
+              deposit.term ===  days ? (
+                <DepositEnd>
+                  <div className="text">
+                    <div className="top">Программа окончена</div>
+                    <div className="bottom">Вы заработали {totalPercent} MRC</div>
+                  </div>
+                  <MainButton
+                    type={'button'}
+                    text={'Вывести на кошелек'}
+                    colorBg={true}
+                    width={'235px'}
+                  />
+                </DepositEnd>
+              ) : (
+                <MainButton
+                  type={'button'}
+                  text={'Отменить депозит'}
+                  colorBgRed={true}
+                  width={'100%'}
+                  func={(e)=>onDelete(e, deposit.id)}
+                />
+              )
+            }
           </TabWrap>
         </Right>
       </InfoBlock>

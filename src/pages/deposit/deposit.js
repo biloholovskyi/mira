@@ -74,9 +74,9 @@ const Deposit = ({user}) => {
                           const userPercent = res.data.filter(deposit => parseInt(deposit.user_id) === parseInt(user.id))
                           // записиваем начисления в стейт
 
-                          // if (userPercent[0]) {
-                          //   setPercent(userPercent[0].percent)
-                          // }
+                          if (userPercent[0]) {
+                            setPercent(userPercent[0].percent)
+                          }
                         }).catch(error => console.error(error))
                     }).catch(error => console.error(error))
                 }
@@ -100,28 +100,20 @@ const Deposit = ({user}) => {
 
   useEffect(() => {
     getDeposit().catch(error => console.error(error));
+    onMakeDeposit().catch(error => console.error(error));
   }, [])
 
   // удалить дапозит
-  const onDelete = async () => {
-    // axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    // axios.defaults.xsrfCookieName = 'csrftoken';
-    //
-    // const server = new ServerSettings();
-    //
-    // await axios.delete(`${server.getApi()}api/deposit/${deposit[0].id}/delete/`, { body: 'delete' })
-    //   .then(res => {
-    //     axios.get(`${server.getApi()}api/deposit/`)
-    //       .then(res => {
-    //         console.log(res.data)
-    //       }).catch(error => console.error(error));
-    //   }).catch(error => console.error(error));
-    console.log('delete')
-  }
+  const onDelete = async (e ,id) => {
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
 
-  useEffect(() => {
-    onDelete().catch(error => console.error(error));
-  }, [])
+    const server = new ServerSettings();
+
+    await axios.delete(`${server.getApi()}api/deposit/${id}/delete/`, { body: 'delete' })
+      .catch(error => console.error(error));
+
+  }
 
   return (
     <div className={'main_container'}>
