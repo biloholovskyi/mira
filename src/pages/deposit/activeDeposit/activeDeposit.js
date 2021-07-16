@@ -9,41 +9,61 @@ import {Left, Right, DepositTable, InfoBlock, TabWrap} from "../styled";
 
 import ServerSettings from "../../../service/serverSettings";
 
-const ActiveDeposit = ({deposit, term, user}) => {
-  const [percent, setPercent] = useState([]);
-  console.log(percent)
-
+const ActiveDeposit = ({deposit, user, onDelete, percent}) => {
+  // записиваем разницу в днях от создания депозита до сегодня
+  const [days, setDays] = useState('');
 
   const getPercent = async () => {
+    // дата создания депозита
     const depositDate = deposit.created_at.split('T')[0]
 
+    // делаем нужный нам формат для даты создания
     let d1 = new Date(depositDate)
+    // сегодняшняя дата
     let today = new Date()
+    // получаем количество дней от создания депозита до сегодня
     let days = Math.floor((today - d1) / 60 / 60 / 24 / 1000)
+    //количество дней для диаграмы записиваем в стейт
+    setDays(days)
 
-    // let lastItem = percent.slice(-1)[0].created_at
-    // let lastItemDate = new Date(lastItem)
+    // получаем последний елемент начисленых процентов
+    let lastItem = percent.slice(-1)[0].created_at
+    let lastItemDate = new Date(lastItem)
+    let days2 = Math.floor((today - lastItemDate) / 60 / 60 / 24 / 1000)
 
     const server = new ServerSettings();
 
     await axios.get(`${server.getApi()}api/deposit/`)
       .then(res => {
+        // получаем текущый депозит
         const myDeposit = res.data.filter(u => u.user_id === user.id);
-        const percentDate = myDeposit[0].created_at.split('T')[0];
 
         if (myDeposit[0]) {
-          if (1 > 2) {
-            const data = new FormData();
-            data.set('summa', 17)
-            data.set('rate', myDeposit[0].rate)
-            data.set('created_at', percentDate)
-            data.set('deposit_percent', myDeposit[0].id)
+          axios.get(`${server.getApi()}api/percent/`)
+            .then(res => {
+              // получаем проценты текущего депозита
+              const depositPercent = res.data.filter(u => u.deposit_percent === myDeposit[0].id);
 
-            axios.post(`${server.getApi()}api/percent/`, data)
-              .catch(error => console.error(error))
-          }
+              if (depositPercent) {
+                // if (today !== lastItemDate && today > lastItemDate)
+                  const data = new FormData();
+                  data.set('summa', myDeposit[0].dailyIncome)
+                  data.set('rate', myDeposit[0].rate)
+                  data.set('deposit_percent', myDeposit[0].id)
+
+                // получаем разницу в днях между последний начислениям и сегодня и через цикл делаем посты на сервер
+                let promises = [];
+                for (let i = 0; i < days2; i++) {
+                  promises.push(
+                    axios.post(`${server.getApi()}api/percent/`, data)
+                      .catch(error => console.error(error))
+                  )
+                }
+                Promise.all(promises).then(() => console.log('all done'));
+
+              }
+            }).catch(error => console.error(error))
         }
-        setPercent(myDeposit[0].percent)
       }).catch(error => console.error(error))
   }
 
@@ -51,25 +71,25 @@ const ActiveDeposit = ({deposit, term, user}) => {
     getPercent().catch(error => console.error(error));
   }, [])
 
+  // получаем прошедшие депозита дни и переводим в % для диаграмы
+  let dayInPercent = Math.round((days * 100) / parseInt(deposit.term));
+
   return (
     <>
       <InfoBlock>
         <Left>
           <div className="top">
 
-            {/*<CircleProgressBar*/}
-            {/*  term={term}*/}
-            {/*/>*/}
-
             <svg width="100%" height="100%" viewBox="0 0 42 42" className="donut">
               <circle className="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="transparent"/>
               <circle className="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d2d3d4"
                       strokeWidth="1.8"/>
               <circle className="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent"
-                      stroke="#4BA499" strokeWidth="1.8" strokeDasharray="81 19" strokeDashoffset="25"/>
+                      stroke="#4BA499" strokeWidth="1.8" strokeDasharray={`${dayInPercent} ${100 - dayInPercent}`}
+                      strokeDashoffset="25"/>
               <g className="chart-text">
 
-                <text x="50%" y="50%" className="chart-number">180 дней</text>
+                <text x="50%" y="50%" className="chart-number">{180 - days} дней</text>
                 <text x="50%" y="50%" className="chart-label">Осталось</text>
               </g>
             </svg>
@@ -115,8 +135,9 @@ const ActiveDeposit = ({deposit, term, user}) => {
               text={'Отменить депозит'}
               colorBgRed={true}
               width={'100%'}
-              //onClick={console.log('test')}
+              func={onDelete}
             />
+
           </TabWrap>
         </Right>
       </InfoBlock>
@@ -132,11 +153,18 @@ const ActiveDeposit = ({deposit, term, user}) => {
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
+          {
+            percent.map(item => {
+              const date = item.created_at.split('T')[0];
+              return (
+                <tr key={item.id}>
+                  <td>{item.summa}</td>
+                  <td>{item.rate}</td>
+                  <td>{date}</td>
+                </tr>
+              )
+            })
+          }
           </tbody>
         </table>
       </DepositTable>
