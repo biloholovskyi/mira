@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {connect} from "react-redux";
 
-import CircleProgressBar from './circleProgressBar/circleProgressBar';
 import MainButton from "../../../components/mainButton/mainButton";
 import ConfirmationCode from "../confirmationCode/confirmationCode";
 
@@ -10,14 +9,12 @@ import {Left, Right, DepositTable, InfoBlock, TabWrap, DepositEnd} from "../styl
 
 import {loginUser, setSuccessModalText} from '../../../actions/index';
 import ServerSettings from "../../../service/serverSettings";
-import SmallSuccessModal from "../../../components/smallSuccessModal/smallSuccessModal";
 
-const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, updateList, setSuccessModalText}) => {
+const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation, withDrawDeposit}) => {
   // записиваем разницу в днях от создания депозита до сегодня
   const [days, setDays] = useState('');
   const [totalPercent, setTotalPercent] = useState('');
   const [confirmation, setConfirmation] = useState(false)
-  const [validation, setValidation] = useState(false);
 
   const getPercent = async () => {
     // дата создания депозита
@@ -81,15 +78,10 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, updateList,
     getPercent().catch(error => console.error(error));
   }, [])
 
-  useEffect(() => {
-    return () => {
-      setSuccessModalText(false)
-    }
-  }, []);
-
-  setTimeout(() => {
-    setSuccessModalText(false)
-  }, 1500)
+  // закритие модалки
+  const closeModal = () => {
+    setConfirmation(false)
+  }
 
   // отправляем письмо с кодом
   const openConfirmationModal = () => {
@@ -117,67 +109,6 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, updateList,
 
       }).catch(error => {console.error(error);});
   }
-
-  const validationInput = () => {
-    setValidation(true)
-  }
-
-  // закритие модалки
-  const closeModal = () => {
-    setConfirmation(false)
-  }
-
-  //выводим средства на кошелек
-  const withDrawDeposit = async () => {
-
-    const server = new ServerSettings();
-
-    await axios.get(`${server.getApi()}api/deposit/`)
-      .then(res => {
-        const deposit = res.data.filter(d => d.user_id === user.id)
-
-        if(deposit[0]){
-          // получаем код подтверджения
-          const code = document.getElementById('code')
-          // новый баланс
-          const newBalance = parseInt(user.user_balance) + parseInt(deposit[0].total)
-
-          const data = new FormData();
-          data.set('user_balance', newBalance)
-
-          // проверяем совпадают ли коды
-          if (user.code === code.textContent) {
-            // обновляем баланс юзера
-            axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
-              .then(res => {
-                axios.get(`${server.getApi()}api/users/${user.id}/`)
-                  .then(res => {
-                    loginUser(res.data)
-                  }).catch(error => console.error(error))
-              }).catch(error => console.error(error))
-
-            // удаляем депозит
-            axios.delete(`${server.getApi()}api/deposit/${deposit[0].id}/delete/`, { body: 'delete' })
-              .then(res => {
-                axios.get(`${server.getApi()}api/deposit/`)
-                  .then(res => {
-                    const deposit = res.data.filter(u => u.user_id === user.id);
-                    updateList(deposit)
-                  }).catch(error => console.error(error));
-              }).catch(error => console.error(error));
-
-            setSuccessModalText('средства выведены')
-          } else {
-            validationInput()
-          }
-
-        }
-      }).catch(error => console.error(error))
-  }
-
-  useEffect(()=> {
-    withDrawDeposit().catch(error => console.error(error))
-  }, [])
 
   // генерируем пароль
   const generatePassword = () => {
@@ -249,7 +180,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, updateList,
               <input type="text" name={'income'} value={deposit.income} hidden readOnly/>
             </div>
             {
-              1 < 2 ? ( // deposit.term ===  days
+              deposit.term ===  days ? (
                 <DepositEnd>
                   <div className="text">
                     <div className="top">Программа окончена</div>
@@ -304,7 +235,6 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, updateList,
         </table>
       </DepositTable>
 
-      <SmallSuccessModal/>
       {
         confirmation && (
           <ConfirmationCode

@@ -7,7 +7,7 @@ import NineMonthTab from './nineMonthTab/nineMonthTab';
 
 import {Left, Right, InfoBlock, TabHead, TabHeadNav} from "../styled";
 
-const MakeDeposit = ({updateList, onMakeDeposit}) => {
+const MakeDeposit = ({updateList, onMakeDeposit, validation}) => {
   const [tabStatus, setTabStatus] = useState('month3');
   const [summa, setSumma] = useState('');
 
@@ -38,6 +38,8 @@ const MakeDeposit = ({updateList, onMakeDeposit}) => {
           iconText={'MRC'}
           updateValue={updateValue}
           type={'number'}
+          validation={validation}
+          minValue={'100'}
         />
       </Left>
 
