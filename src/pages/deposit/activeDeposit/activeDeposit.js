@@ -4,15 +4,20 @@ import {connect} from "react-redux";
 
 import CircleProgressBar from './circleProgressBar/circleProgressBar';
 import MainButton from "../../../components/mainButton/mainButton";
+import ConfirmationCode from "../confirmationCode/confirmationCode";
 
 import {Left, Right, DepositTable, InfoBlock, TabWrap, DepositEnd} from "../styled";
 
+import {loginUser, setSuccessModalText} from '../../../actions/index';
 import ServerSettings from "../../../service/serverSettings";
+import SmallSuccessModal from "../../../components/smallSuccessModal/smallSuccessModal";
 
-const ActiveDeposit = ({deposit, user, onDelete, percent}) => {
+const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, updateList, setSuccessModalText}) => {
   // записиваем разницу в днях от создания депозита до сегодня
   const [days, setDays] = useState('');
   const [totalPercent, setTotalPercent] = useState('');
+  const [confirmation, setConfirmation] = useState(false)
+  const [validation, setValidation] = useState(false);
 
   const getPercent = async () => {
     // дата создания депозита
@@ -76,6 +81,115 @@ const ActiveDeposit = ({deposit, user, onDelete, percent}) => {
     getPercent().catch(error => console.error(error));
   }, [])
 
+  useEffect(() => {
+    return () => {
+      setSuccessModalText(false)
+    }
+  }, []);
+
+  setTimeout(() => {
+    setSuccessModalText(false)
+  }, 1500)
+
+  // отправляем письмо с кодом
+  const openConfirmationModal = () => {
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const server = new ServerSettings();
+
+    const data = new FormData();
+    data.set('code' , generatePassword())
+
+    axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
+      .then(res => {
+
+        axios.get(`${server.getApi()}api/users/${user.id}/`)
+          .then(res => {
+            loginUser(res.data)
+          }).catch(error => console.error(error))
+
+        // отправляем письмо
+        axios.get(`${server.getApi()}api/user/code/${user.id}/`)
+          .then(res => {
+            setConfirmation(true)
+          }).catch(error => {console.error(error);});
+
+      }).catch(error => {console.error(error);});
+  }
+
+  const validationInput = () => {
+    setValidation(true)
+  }
+
+  // закритие модалки
+  const closeModal = () => {
+    setConfirmation(false)
+  }
+
+  //выводим средства на кошелек
+  const withDrawDeposit = async () => {
+
+    const server = new ServerSettings();
+
+    await axios.get(`${server.getApi()}api/deposit/`)
+      .then(res => {
+        const deposit = res.data.filter(d => d.user_id === user.id)
+
+        if(deposit[0]){
+          // получаем код подтверджения
+          const code = document.getElementById('code')
+          // новый баланс
+          const newBalance = parseInt(user.user_balance) + parseInt(deposit[0].total)
+
+          const data = new FormData();
+          data.set('user_balance', newBalance)
+
+          // проверяем совпадают ли коды
+          if (user.code === code.textContent) {
+            // обновляем баланс юзера
+            axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
+              .then(res => {
+                axios.get(`${server.getApi()}api/users/${user.id}/`)
+                  .then(res => {
+                    loginUser(res.data)
+                  }).catch(error => console.error(error))
+              }).catch(error => console.error(error))
+
+            // удаляем депозит
+            axios.delete(`${server.getApi()}api/deposit/${deposit[0].id}/delete/`, { body: 'delete' })
+              .then(res => {
+                axios.get(`${server.getApi()}api/deposit/`)
+                  .then(res => {
+                    const deposit = res.data.filter(u => u.user_id === user.id);
+                    updateList(deposit)
+                  }).catch(error => console.error(error));
+              }).catch(error => console.error(error));
+
+            setSuccessModalText('средства выведены')
+          } else {
+            validationInput()
+          }
+
+        }
+      }).catch(error => console.error(error))
+  }
+
+  useEffect(()=> {
+    withDrawDeposit().catch(error => console.error(error))
+  }, [])
+
+  // генерируем пароль
+  const generatePassword = () => {
+    let pass = "";
+    let possible = "0123456789";
+
+    for (let i = 0; i < 6; i++)
+      pass += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return pass;
+  }
+
   // получаем прошедшие депозита дни и переводим в % для диаграмы
   let dayInPercent = Math.round((days * 100) / parseInt(deposit.term));
 
@@ -135,7 +249,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent}) => {
               <input type="text" name={'income'} value={deposit.income} hidden readOnly/>
             </div>
             {
-              deposit.term ===  days ? (
+              1 < 2 ? ( // deposit.term ===  days
                 <DepositEnd>
                   <div className="text">
                     <div className="top">Программа окончена</div>
@@ -146,6 +260,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent}) => {
                     text={'Вывести на кошелек'}
                     colorBg={true}
                     width={'235px'}
+                    func={openConfirmationModal}
                   />
                 </DepositEnd>
               ) : (
@@ -188,6 +303,18 @@ const ActiveDeposit = ({deposit, user, onDelete, percent}) => {
           </tbody>
         </table>
       </DepositTable>
+
+      <SmallSuccessModal/>
+      {
+        confirmation && (
+          <ConfirmationCode
+            title={'Введите проверочный код'}
+            validation={validation}
+            close={closeModal}
+            withDrawDeposit={withDrawDeposit}
+          />
+        )
+      }
     </>
   )
 }
@@ -199,6 +326,9 @@ const mapStateToProps = (state) => {
   }
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  loginUser,
+  setSuccessModalText
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActiveDeposit);

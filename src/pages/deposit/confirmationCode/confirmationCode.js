@@ -6,16 +6,15 @@ import ConfirmationCodeItem from '../../../components/confirmationCodeItem/Confi
 import MainButton from "../../../components/mainButton/mainButton";
 import SmallSuccessModal from '../../../components/smallSuccessModal/smallSuccessModal';
 
-import {ModalOverlay, ConfirmModalWrapper} from "../../balance/styled";
-import closed from "../../media/icon/close.svg";
-import arrow from '../../media/icon/arrow.svg'
+import {ModalOverlay, ConfirmModalWrapper} from "./styled";
+import closed from "../media/icon/close.svg";
+import arrow from '../media/icon/arrow.svg'
 
-import {loginUser} from "../../../../actions";
+
 import ServerSettings from "../../../service/serverSettings";
 
 
-
-const ConfirmationCode = () => {
+const ConfirmationCode = ({title, user, validation, close, withDrawDeposit}) => {
   const [authCode, setAuthCode] = useState('');
 
   const update = (value) => {
@@ -36,55 +35,46 @@ const ConfirmationCode = () => {
   }
 
   return (
-    <>
-      {
-        <>
-          {
-            transferModal && (
-              <ModalOverlay transferModal={transferModal}/>
-            )
-          }
-          <ConfirmModalWrapper confirmation={confirmation} transferModal={transferModal}>
-            <div className="title">
-              {
-                transferModal
-                  ? null
-                  : <button onClick={back} type={'button'} className={'back'}><img src={arrow} alt="icon"/></button>
-              }
-              {title}
-            </div>
-            <button onClick={close} className={'close'}><img src={closed} alt="icon"/></button>
-            <div className={'info'}>Мы выслали проверочный код на почту {user.email}.
-              Введите код, что бы вывести средства
-            </div>
 
-            <ConfirmationCodeItem update={update} validation={validation}/>
+    <ModalOverlay>
+      <ConfirmModalWrapper>
+        <div className="title">
+          {title}
+        </div>
+        <button onClick={close} className={'close'}><img src={closed} alt="icon"/></button>
+        <div className={'info'}>Мы выслали проверочный код на почту {user.email}.
+          Введите код, что бы вывести средства
+        </div>
 
-            <MainButton
-              text={'Подтвердить'}
-              colorBg={true}
-              width={'100%'}
-              type={'submit'}
-            />
-            <p className={'send_again'}>
-              Не пришел код?
-              <button onClick={(e) => sendCodeAgain(e)}>Выслать код еще раз</button>
-            </p>
+        <ConfirmationCodeItem update={update} validation={validation}/>
 
-            <div id={'code'} style={{visibility: "hidden"}}>{authCode}</div>
-          </ConfirmModalWrapper>
-        </>
-      }
-    </>
+        <MainButton
+          text={'Подтвердить'}
+          colorBg={true}
+          width={'100%'}
+          type={'button'}
+          func={withDrawDeposit}
+        />
+        <p className={'send_again'}>
+          Не пришел код?
+          <button onClick={(e) => sendCodeAgain(e)}>Выслать код еще раз</button>
+        </p>
+
+        <div id={'code'} style={{visibility: "hidden"}}>{authCode}</div>
+      </ConfirmModalWrapper>
+    </ModalOverlay>
   )
 }
 
 const mapStateToProps = (state) => {
-  return {
-    user: state.user
+    return {
+      user: state.user
+    }
   }
-};
+;
 
-const mapDispatchToProps = {};
+const mapDispatchToProps =
+  {}
+;
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfirmationCode);

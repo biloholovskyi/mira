@@ -100,7 +100,6 @@ const Deposit = ({user}) => {
 
   useEffect(() => {
     getDeposit().catch(error => console.error(error));
-    onMakeDeposit().catch(error => console.error(error));
   }, [])
 
   // удалить дапозит
@@ -111,8 +110,13 @@ const Deposit = ({user}) => {
     const server = new ServerSettings();
 
     await axios.delete(`${server.getApi()}api/deposit/${id}/delete/`, { body: 'delete' })
-      .catch(error => console.error(error));
-
+      .then(res => {
+        axios.get(`${server.getApi()}api/deposit/`)
+          .then(res => {
+            const deposit = res.data.filter(u => u.user_id === user.id);
+            setDeposit(deposit)
+          }).catch(error => console.error(error));
+      }).catch(error => console.error(error));
   }
 
   return (
@@ -131,13 +135,14 @@ const Deposit = ({user}) => {
 
 
         {
-          deposit.length >= 1
+          deposit.length === 1
             ? (
               <ActiveDeposit
                 deposit={deposit[0]}
                 percent={deposit[0].percent}
                 user={user}
                 onDelete={onDelete}
+                updateList={updateList}
               />
             ) : (
               <MakeDeposit
