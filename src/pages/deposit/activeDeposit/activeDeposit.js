@@ -49,9 +49,9 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
 
               if (depositPercent) {
                 // получаем общее количество всех выплат и записиваем в стейт
-                const allPercent = depositPercent.map(u => parseInt(u.summa))
-                let totalPercent = allPercent.reduce((a, b) => a + b, 0)
-                setTotalPercent(totalPercent)
+                // const allPercent = depositPercent.map(u => parseInt(u.summa))
+                // let totalPercent = allPercent.reduce((a, b) => a + b, 0)
+                // setTotalPercent(totalPercent)
 
                 const data = new FormData();
                 data.set('summa', myDeposit[0].dailyIncome)
@@ -124,6 +124,9 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
   // получаем прошедшие депозита дни и переводим в % для диаграмы
   let dayInPercent = Math.round((days * 100) / parseInt(deposit.term));
 
+  const allPercent = percent.map(u => parseInt(u.summa))
+  let totalPerc = allPercent.reduce((a, b) => a + b, 0)
+
   return (
     <>
       <InfoBlock>
@@ -152,7 +155,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
             </div>
             <div className="item">
               <div className="title">Начислено процентов</div>
-              <div className="text">{totalPercent} MRC</div>
+              <div className="text">{totalPerc} MRC</div>
             </div>
           </div>
         </Left>
@@ -184,7 +187,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
                 <DepositEnd>
                   <div className="text">
                     <div className="top">Программа окончена</div>
-                    <div className="bottom">Вы заработали {totalPercent} MRC</div>
+                    <div className="bottom">Вы заработали {totalPerc} MRC</div>
                   </div>
                   <MainButton
                     type={'button'}

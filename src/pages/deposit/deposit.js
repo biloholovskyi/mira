@@ -190,6 +190,18 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
         const dep = res.data.filter(deposit => parseInt(deposit.user_id) === parseInt(user.id))
         setDeposit(dep)
         setPercent(dep[0].percent)
+        // if(dep[0]){
+        //   axios.get(`${server.getApi()}api/percent/`)
+        //     .then(res => {
+        //       // получаем проценты текущего депозита
+        //       const depositPercent = res.data.filter(u => u.deposit_percent === dep[0].id);
+        //
+        //       const lastItem = depositPercent.slice(-1)[0].created_at;
+        //       let lastItemDate = new Date(lastItem)
+        //       let days2 = Math.round((today - lastItemDate) / 60 / 60 / 24 / 1000)
+        //       setRemainder(days2)
+        //     }).catch(error => console.error(error))
+        // }
       }).catch(error => console.error(error))
   }
 
