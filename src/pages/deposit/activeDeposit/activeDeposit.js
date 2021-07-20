@@ -31,12 +31,13 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
     setDays(days)
 
     // получаем последний елемент начисленых процентов
-    let lastItem = percent.slice(-1)[0].percent_date;
+    let lastItem = sortPercentList.slice(-1)[0].percent_date;
     const newFormat = lastItem.split('.');
     const newPercentDate = `${newFormat[2]}-${newFormat[1]}-${newFormat[0]}`
     let lastItemDate = new Date(newPercentDate)
-    let days2 = Math.round((today - lastItemDate) / 60 / 60 / 24 / 1000)
+    let days2 = Math.floor((today - lastItemDate) / 60 / 60 / 24 / 1000)
 
+    console.log(lastItem)
     const server = new ServerSettings();
 
     await axios.get(`${server.getApi()}api/deposit/`)
@@ -51,20 +52,29 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
               const depositPercent = res.data.filter(u => u.deposit_percent === myDeposit.id);
 
               if (depositPercent) {
+                let allPercent = percent.map(u => parseInt(u.summa))
+                let totalPerc = allPercent.reduce((a, b) => a + b, 0)
+                setTotalPercent(totalPerc)
+
+                let counter = deposit.term - percent.length;
+                console.log(counter)
                 // получаем разницу в днях между последний начислениям и сегодня и через цикл делаем посты на сервер
                 for (let i = 0; i < days2; i++) {
-                  // форматируем дату для начисления процентов
-                  const formatLastDate = lastItemDate.setDate(lastItemDate.getDate() + 1)
-                  const newFormatLastDate = new Date(formatLastDate);
+                  if(counter > 0){
+                    // форматируем дату для начисления процентов
+                    const formatLastDate = lastItemDate.setDate(lastItemDate.getDate() + 1)
+                    const newFormatLastDate = new Date(formatLastDate);
 
-                  const data = new FormData();
-                  data.set('summa', myDeposit.dailyIncome)
-                  data.set('rate', myDeposit.rate)
-                  data.set('deposit_percent', myDeposit.id)
-                  data.set('percent_date', newFormatLastDate.toLocaleString().split(',')[0])
+                    const data = new FormData();
+                    data.set('summa', myDeposit.dailyIncome)
+                    data.set('rate', myDeposit.rate)
+                    data.set('deposit_percent', myDeposit.id)
+                    data.set('percent_date', newFormatLastDate.toLocaleString().split(',')[0])
 
-                  axios.post(`${server.getApi()}api/percent/`, data)
-                    .catch(error => console.error(error))
+                    axios.post(`${server.getApi()}api/percent/`, data)
+                      .catch(error => console.error(error))
+                  }
+                  counter--
                 }
               }
             }).catch(error => console.error(error))
@@ -126,8 +136,18 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
   // получаем прошедшие депозита дни и переводим в % для диаграмы
   let dayInPercent = Math.round((days * 100) / parseInt(deposit.term));
 
-  let allPercent = percent.map(u => parseInt(u.summa))
-  let totalPerc = allPercent.reduce((a, b) => a + b, 0)
+  // получаем дату и меняем в нужном формате
+  const sortPercentList = percent.map(event => {
+    const date = event.percent_date.split('.');
+    const newFormatDate = `${date[2]}-${date[1]}-${date[0]}`
+    const test = new Date(newFormatDate);
+    return {...event, sortTime: test};
+  })
+
+  // соритруем по дате
+  sortPercentList.sort((a, b) => {
+    return new Date(a.sortTime).getTime() - new Date(b.sortTime).getTime()
+  })
 
   return (
     <>
@@ -159,7 +179,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
             </div>
             <div className="item">
               <div className="title">Начислено процентов</div>
-              <div className="text">{totalPerc} MRC</div>
+              <div className="text">{totalPercent} MRC</div>
             </div>
           </div>
         </Left>
@@ -183,7 +203,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
             </div>
             <div className="item">
               <div className="name">Прогнозируемая прибыль</div>
-              <div className="value">{deposit.income} MRC</div>
+              <div className="value">{parseInt(deposit.term) * parseInt(deposit.dailyIncome)} MRC</div>
               <input type="text" name={'income'} value={deposit.income} hidden readOnly/>
             </div>
             {/*.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')*/}
@@ -193,7 +213,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
                 <DepositEnd>
                   <div className="text">
                     <div className="top">Программа окончена</div>
-                    <div className="bottom">Вы заработали {totalPerc} MRC</div>
+                    <div className="bottom">Вы заработали {totalPercent} MRC</div>
                   </div>
                   <MainButton
                     type={'button'}
@@ -229,7 +249,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
           </thead>
           <tbody>
           {
-            percent.map(item => {
+            sortPercentList.map(item => {
               return (
                 <tr key={item.id}>
                   <td>{item.summa}</td>

@@ -44,7 +44,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   const validationSumma = () => {
     setValidationSum(true)
   }
-
+console.log(deposit)
   //выводим средства на кошелек
   const withDrawDeposit = async () => {
 
@@ -59,7 +59,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
           const code = document.getElementById('code')
 
           // новый баланс
-          const newBalance = parseInt(user.user_balance) + parseInt(deposit.total)
+          const newBalance = parseInt(user.user_balance) + parseInt(deposit.summa) + (parseInt(deposit.term) * parseInt(deposit.dailyIncome))
 
           const data = new FormData();
           data.set('user_balance', newBalance)
@@ -96,6 +96,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
               .then(res => {
                 setActive(false)
                 setDeposit({})
+                //window.location.reload()
               }).catch(error => console.error(error))
 
             setSuccessModalText('средства выведены')
