@@ -56,25 +56,27 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
                 let totalPerc = allPercent.reduce((a, b) => a + b, 0)
                 setTotalPercent(totalPerc)
 
-                let counter = deposit.term - percent.length;
+                if(myDeposit.percent.length === deposit.percent.length) {
+                  let counter = deposit.term - percent.length;
 
-                // получаем разницу в днях между последний начислениям и сегодня и через цикл делаем посты на сервер
-                for (let i = 0; i < days2; i++) {
-                  if(counter > 0){
-                    // форматируем дату для начисления процентов
-                    const formatLastDate = lastItemDate.setDate(lastItemDate.getDate() + 1)
-                    const newFormatLastDate = new Date(formatLastDate);
+                  // получаем разницу в днях между последний начислениям и сегодня и через цикл делаем посты на сервер
+                  for (let i = 0; i < days2; i++) {
+                    if (counter > 0) {
+                      // форматируем дату для начисления процентов
+                      const formatLastDate = lastItemDate.setDate(lastItemDate.getDate() + 1)
+                      const newFormatLastDate = new Date(formatLastDate);
 
-                    const data = new FormData();
-                    data.set('summa', myDeposit.dailyIncome)
-                    data.set('rate', myDeposit.rate)
-                    data.set('deposit_percent', myDeposit.id)
-                    data.set('percent_date', newFormatLastDate.toLocaleString().split(',')[0])
+                      const data = new FormData();
+                      data.set('summa', myDeposit.dailyIncome)
+                      data.set('rate', myDeposit.rate)
+                      data.set('deposit_percent', myDeposit.id)
+                      data.set('percent_date', newFormatLastDate.toLocaleString().split(',')[0])
 
-                    axios.post(`${server.getApi()}api/percent/`, data)
-                      .catch(error => console.error(error))
+                      axios.post(`${server.getApi()}api/percent/`, data)
+                        .catch(error => console.error(error))
+                    }
+                    counter--
                   }
-                  counter--
                 }
               }
             }).catch(error => console.error(error))
