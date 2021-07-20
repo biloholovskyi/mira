@@ -52,13 +52,13 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
 
     await axios.get(`${server.getApi()}api/deposit/`)
       .then(res => {
-        const deposit = res.data.filter(d => d.user_id === user.id)
+        const deposit = res.data.find(d => d.user_id === user.id)
 
-        if (deposit[0]) {
+        if (deposit) {
           // получаем код подтверджения
           const code = document.getElementById('code')
           // новый баланс
-          const newBalance = parseInt(user.user_balance) + parseInt(deposit[0].total)
+          const newBalance = parseInt(user.user_balance) + parseInt(deposit.total)
 
           const data = new FormData();
           data.set('user_balance', newBalance)
@@ -68,27 +68,30 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
             // обновляем баланс юзера
             axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
               .then(res => {
+                console.log(res.data)
                 axios.get(`${server.getApi()}api/users/${user.id}/`)
                   .then(res => {
                     loginUser(res.data)
+                    setActive(false)
                   }).catch(error => console.error(error))
               }).catch(error => console.error(error))
 
-            // удаляем депозит
-            axios.delete(`${server.getApi()}api/deposit/${deposit[0].id}/delete/`, {body: 'delete'})
-              .then(res => {
-                axios.get(`${server.getApi()}api/deposit/`)
-                  .then(res => {
-                    const deposit = res.data.filter(u => u.user_id === user.id);
-                    setDeposit(deposit)
-                  }).catch(error => console.error(error));
-              }).catch(error => console.error(error));
+            // обновляем список транзакций
+            const data2 = new FormData();
+            data2.set("summa", deposit.total);
+            data2.set("user_id", user.id);
+            data2.set('operation', 'перевод с депозита')
+            data2.set('background', '#36C136')
+
+            axios.post(`${server.getApi()}api/balance/`, data2)
+              .catch(error => {console.error(error)})
+
+            // delete deposit
 
             setSuccessModalText('средства выведены')
           } else {
             validationInput()
           }
-
         }
       }).catch(error => console.error(error))
   }
@@ -195,12 +198,12 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   }, [])
 
   // удалить дапозит
-  const onDelete = async (e) => {
-    e.preventDefault();
-    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-    axios.defaults.xsrfCookieName = 'csrftoken';
+  const onDelete = async () => {
 
-    const server = new ServerSettings();
+    // axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    // axios.defaults.xsrfCookieName = 'csrftoken';
+    //
+    // const server = new ServerSettings();
 
     // await axios.get(`${server.getApi()}api/deposit/`)
     //   .then(res => {

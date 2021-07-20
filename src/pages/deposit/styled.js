@@ -92,7 +92,7 @@ const Left = styled.div`
           font-size: 5px;
           line-height: 32px;
           fill: #FFFFFF;
-          transform: translateY(0.30em);
+          transform: translate(2px , 0.33em);
         }
         .chart-label {
           font-style: normal;
@@ -454,7 +454,7 @@ const DepositEnd = styled.div`
   }
   button {
     padding: 12px 10px;
-    margin-top: 0;
+    margin-top: 0!important;
   }
   
   @media(max-width: 1400px){
