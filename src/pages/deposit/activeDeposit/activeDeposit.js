@@ -37,7 +37,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
     let lastItemDate = new Date(newPercentDate)
     let days2 = Math.floor((today - lastItemDate) / 60 / 60 / 24 / 1000)
 
-    console.log(lastItem)
+
     const server = new ServerSettings();
 
     await axios.get(`${server.getApi()}api/deposit/`)
@@ -57,7 +57,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
                 setTotalPercent(totalPerc)
 
                 let counter = deposit.term - percent.length;
-                console.log(counter)
+
                 // получаем разницу в днях между последний начислениям и сегодня и через цикл делаем посты на сервер
                 for (let i = 0; i < days2; i++) {
                   if(counter > 0){

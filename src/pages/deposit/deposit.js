@@ -44,7 +44,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   const validationSumma = () => {
     setValidationSum(true)
   }
-console.log(deposit)
+
   //выводим средства на кошелек
   const withDrawDeposit = async () => {
 
