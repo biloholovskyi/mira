@@ -470,6 +470,41 @@ const DepositEnd = styled.div`
   }
 `
 
+const TabWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 48px;
+    border-bottom: 1px solid #424242;
+    .name {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 22px;
+      color: #CACACA;
+    }
+    .value {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 22px;
+      color: #FFFFFF;
+      background-color: transparent;
+      border: none;
+      text-align: right;
+    }
+  }
+  
+  button {
+    margin-top: 32px; 
+  }
+`
+
 export {
   DepositWrap,
   Desc,
@@ -481,5 +516,6 @@ export {
   TabHead,
   TabHeadNav,
   TabWrap,
-  DepositEnd
+  DepositEnd,
+  TabWrapper
 }

@@ -25,7 +25,8 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   const [validation, setValidation] = useState(false);
   const [validationSum, setValidationSum] = useState(false);
   const [active, setActive] = useState(false)
-
+  console.log(deposit)
+  console.log(percent)
   useEffect(() => {
     return () => {
       setSuccessModalText(false)
@@ -137,19 +138,21 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
             .then(res => {
               setDeposit(res.data)
               setActive(true)
-              console.log(res.data)
-            if(res.data) {
-              const data2 = new FormData();
-              data2.set('summa', res.data.dailyIncome)
-              data2.set('rate', res.data.rate)
-              data2.set('percent_date', depositCreate)
-              data2.set('deposit_percent', res.data.id)
-              axios.post(`${server.getApi()}api/percent/`, data2)
-                .then(res => {
-                  setPercent(res.data)
-                  console.log(res.data)
-                }).catch(error => console.error(error))
-            }
+              if (res.data) {
+                const data2 = new FormData();
+                data2.set('summa', res.data.dailyIncome)
+                data2.set('rate', res.data.rate)
+                data2.set('percent_date', depositCreate)
+                data2.set('deposit_percent', res.data.id)
+
+                axios.post(`${server.getApi()}api/percent/`, data2)
+                  .then(res => {
+                    axios.get(`${server.getApi()}api/percent/`)
+                      .then(res => {
+                        setPercent(res.data)
+                      }).catch(error => console.error(error))
+                  }).catch(error => console.error(error))
+              }
             }).catch(error => console.error(error))
 
           //обновляем баланс (отнимаем сумму депозита)
@@ -179,9 +182,8 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
 
     await axios.get(`${server.getApi()}api/deposit/`)
       .then(res => {
-        const dep = res.data.find(deposit => parseInt(deposit.user_id) === parseInt(user.id))
+        const dep = res.data.find(d => parseInt(d.user_id) === parseInt(user.id))
         setDeposit(dep)
-
         if (dep) {
           setPercent(dep.percent)
           setActive(true)
@@ -194,22 +196,49 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   }, [])
 
   // удалить дапозит
-  const onDelete = async (e ,id) => {
+  const onDelete = async (e) => {
+    e.preventDefault();
     axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
     axios.defaults.xsrfCookieName = 'csrftoken';
 
     const server = new ServerSettings();
 
-    await axios.delete(`${server.getApi()}api/deposit/${id}/delete/`, { body: 'delete' })
-      .then(res => {
-        axios.get(`${server.getApi()}api/deposit/`)
-          .then(res => {
-            const deposit = res.data.filter(u => u.user_id === user.id);
-            setDeposit(deposit)
-            setActive(false)
-          }).catch(error => console.error(error));
-      }).catch(error => console.error(error));
+    // await axios.get(`${server.getApi()}api/deposit/`)
+    //   .then(res => {
+    //     const deposit = res.data.find(deposit => parseInt(deposit.user_id) === parseInt(user.id))
+    //     if (deposit) {
+    //       const newBalance = parseInt(user.user_balance) + parseInt(deposit.summa);
+    //
+    //       const data = new FormData();
+    //       data.set('user_balance', newBalance);
+    //
+    //       const data2 = new FormData();
+    //       data2.set('status', 'un_active');
+    //
+    //       axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
+    //         .then(res => {
+    //           axios.get(`${server.getApi()}api/users/${user.id}/`)
+    //             .then(res => {
+    //               loginUser(res.data)
+    //             }).catch(error => console.error(error))
+    //         })
+    //         .catch(error => console.error(error))
+    //
+    //       axios.put(`${server.getApi()}api/deposit/${deposit.id}/update/`, data2)
+    //         .then(res => {
+    //           setActive(false)
+    //           setDeposit({})
+    //           console.log('delete')
+    //         }).catch(error => console.error(error))
+    //       console.log('delete')
+    //     }
+    //   }).catch(error => console.error(error));
   }
+
+  useEffect(() => {
+    onDelete().catch(error => console.error(error));
+  }, [])
+
 
   return (
     <div className={'main_container'}>

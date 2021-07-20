@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import MainButton from "../../../components/mainButton/mainButton";
 import ConfirmationCode from "../confirmationCode/confirmationCode";
 
-import {Left, Right, DepositTable, InfoBlock, TabWrap, DepositEnd} from "../styled";
+import {Left, Right, DepositTable, InfoBlock, TabWrapper, DepositEnd} from "../styled";
 
 import {loginUser, setSuccessModalText} from '../../../actions/index';
 import ServerSettings from "../../../service/serverSettings";
@@ -15,6 +15,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
   const [days, setDays] = useState('');
   const [totalPercent, setTotalPercent] = useState('');
   const [confirmation, setConfirmation] = useState(false)
+console.log(percent)
 
   const getPercent = async () => {
     // дата создания депозита
@@ -29,7 +30,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
     let days = Math.round((today - d1) / 60 / 60 / 24 / 1000)
     //количество дней для диаграмы записиваем в стейт
     setDays(days)
-    console.log(days)
+
     // получаем последний елемент начисленых процентов
     let lastItem = percent.slice(-1)[0].percent_date;
     const newFormat = lastItem.split('.');
@@ -52,9 +53,6 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
 
               if (depositPercent) {
                 // получаем общее количество всех выплат и записиваем в стейт
-                // const allPercent = depositPercent.map(u => parseInt(u.summa))
-                // let totalPercent = allPercent.reduce((a, b) => a + b, 0)
-                // setTotalPercent(totalPercent)
                 let allPercent = depositPercent.map(u => parseInt(u.summa))
                 let totalPerc = allPercent.reduce((a, b) => a + b, 0)
                 setTotalPercent(totalPerc)
@@ -171,7 +169,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
         </Left>
         <Right>
           <h3>Подробнее о вашем депозите</h3>
-          <TabWrap>
+          <TabWrapper>
             <div className="item">
               <div className="name">Срок депозита</div>
               <div className="value">{deposit.term} дней</div>
@@ -215,11 +213,11 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
                   text={'Отменить депозит'}
                   colorBgRed={true}
                   width={'100%'}
-                  func={(e) => onDelete(e, deposit.id)}
+                  func={onDelete}
                 />
               )
             }
-          </TabWrap>
+          </TabWrapper>
         </Right>
       </InfoBlock>
 
