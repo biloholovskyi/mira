@@ -31,12 +31,11 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
     setDays(days)
 
     // получаем последний елемент начисленых процентов
-    let lastItem = sortPercentList.slice(-1)[0].percent_date;
+    let lastItem = sortPercentList[0].percent_date;
     const newFormat = lastItem.split('.');
     const newPercentDate = `${newFormat[2]}-${newFormat[1]}-${newFormat[0]}`
     let lastItemDate = new Date(newPercentDate)
     let days2 = Math.floor((today - lastItemDate) / 60 / 60 / 24 / 1000)
-
 
     const server = new ServerSettings();
 
@@ -149,7 +148,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
   // соритруем по дате
   sortPercentList.sort((a, b) => {
     return new Date(a.sortTime).getTime() - new Date(b.sortTime).getTime()
-  })
+  }).reverse()
 
   return (
     <>
