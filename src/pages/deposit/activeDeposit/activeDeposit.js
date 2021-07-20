@@ -15,7 +15,6 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
   const [days, setDays] = useState('');
   const [totalPercent, setTotalPercent] = useState('');
   const [confirmation, setConfirmation] = useState(false)
-console.log(percent)
 
   const getPercent = async () => {
     // дата создания депозита
@@ -53,9 +52,9 @@ console.log(percent)
 
               if (depositPercent) {
                 // получаем общее количество всех выплат и записиваем в стейт
-                let allPercent = depositPercent.map(u => parseInt(u.summa))
-                let totalPerc = allPercent.reduce((a, b) => a + b, 0)
-                setTotalPercent(totalPerc)
+                // let allPercent = percent.map(u => parseInt(u.summa))
+                // let totalPerc = allPercent.reduce((a, b) => a + b, 0)
+                // setTotalPercent(totalPerc)
 
                 // получаем разницу в днях между последний начислениям и сегодня и через цикл делаем посты на сервер
 
@@ -133,6 +132,9 @@ console.log(percent)
   // получаем прошедшие депозита дни и переводим в % для диаграмы
   let dayInPercent = Math.round((days * 100) / parseInt(deposit.term));
 
+  let allPercent = percent.map(u => parseInt(u.summa))
+  let totalPerc = allPercent.reduce((a, b) => a + b, 0)
+
   return (
     <>
       <InfoBlock>
@@ -163,7 +165,7 @@ console.log(percent)
             </div>
             <div className="item">
               <div className="title">Начислено процентов</div>
-              <div className="text">{totalPercent} MRC</div>
+              <div className="text">{totalPerc} MRC</div>
             </div>
           </div>
         </Left>
@@ -197,7 +199,7 @@ console.log(percent)
                 <DepositEnd>
                   <div className="text">
                     <div className="top">Программа окончена</div>
-                    <div className="bottom">Вы заработали {totalPercent} MRC</div>
+                    <div className="bottom">Вы заработали {totalPerc} MRC</div>
                   </div>
                   <MainButton
                     type={'button'}

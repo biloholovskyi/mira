@@ -25,8 +25,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   const [validation, setValidation] = useState(false);
   const [validationSum, setValidationSum] = useState(false);
   const [active, setActive] = useState(false)
-  console.log(deposit)
-  console.log(percent)
+
   useEffect(() => {
     return () => {
       setSuccessModalText(false)
