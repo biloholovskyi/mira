@@ -18,20 +18,23 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
 
   const getPercent = async () => {
     // дата создания депозита
-    const depositDate = deposit.created_at.split('T')[0]
+    const depositDate = deposit.deposit_date.split('.')
+    const newDepositDate = `${depositDate[2]}-${depositDate[1]}-${depositDate[0]}`
 
     // делаем нужный нам формат для даты создания
-    let d1 = new Date(depositDate)
+    let d1 = new Date(newDepositDate)
     // сегодняшняя дата
     let today = new Date()
     // получаем количество дней от создания депозита до сегодня
     let days = Math.round((today - d1) / 60 / 60 / 24 / 1000)
     //количество дней для диаграмы записиваем в стейт
     setDays(days)
-
+    console.log(days)
     // получаем последний елемент начисленых процентов
-    let lastItem = percent.slice(-1)[0].created_at
-    let lastItemDate = new Date(lastItem)
+    let lastItem = percent.slice(-1)[0].percent_date;
+    const newFormat = lastItem.split('.');
+    const newPercentDate = `${newFormat[2]}-${newFormat[1]}-${newFormat[0]}`
+    let lastItemDate = new Date(newPercentDate)
     let days2 = Math.round((today - lastItemDate) / 60 / 60 / 24 / 1000)
 
     const server = new ServerSettings();
@@ -39,35 +42,39 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
     await axios.get(`${server.getApi()}api/deposit/`)
       .then(res => {
         // получаем текущый депозит
-        const myDeposit = res.data.filter(u => u.user_id === user.id);
+        const myDeposit = res.data.find(u => u.user_id === user.id);
 
-        if (myDeposit[0]) {
+        if (myDeposit) {
           axios.get(`${server.getApi()}api/percent/`)
             .then(res => {
               // получаем проценты текущего депозита
-              const depositPercent = res.data.filter(u => u.deposit_percent === myDeposit[0].id);
+              const depositPercent = res.data.filter(u => u.deposit_percent === myDeposit.id);
 
               if (depositPercent) {
                 // получаем общее количество всех выплат и записиваем в стейт
                 // const allPercent = depositPercent.map(u => parseInt(u.summa))
                 // let totalPercent = allPercent.reduce((a, b) => a + b, 0)
                 // setTotalPercent(totalPercent)
-
-                const data = new FormData();
-                data.set('summa', myDeposit[0].dailyIncome)
-                data.set('rate', myDeposit[0].rate)
-                data.set('deposit_percent', myDeposit[0].id)
+                let allPercent = depositPercent.map(u => parseInt(u.summa))
+                let totalPerc = allPercent.reduce((a, b) => a + b, 0)
+                setTotalPercent(totalPerc)
 
                 // получаем разницу в днях между последний начислениям и сегодня и через цикл делаем посты на сервер
-                let promises = [];
-                for (let i = 0; i < days2; i++) {
-                  promises.push(
-                    axios.post(`${server.getApi()}api/percent/`, data)
-                      .catch(error => console.error(error))
-                  )
-                }
-                Promise.all(promises).then(() => console.log('all done'));
 
+                for (let i = 0; i < days2; i++) {
+                  // форматируем дату для начисления процентов
+                  const formatLastDate = lastItemDate.setDate(lastItemDate.getDate() + 1)
+                  const newFormatLastDate = new Date(formatLastDate);
+
+                  const data = new FormData();
+                  data.set('summa', myDeposit.dailyIncome)
+                  data.set('rate', myDeposit.rate)
+                  data.set('deposit_percent', myDeposit.id)
+                  data.set('percent_date', newFormatLastDate.toLocaleString().split(',')[0])
+
+                  axios.post(`${server.getApi()}api/percent/`, data)
+                    .catch(error => console.error(error))
+                }
               }
             }).catch(error => console.error(error))
         }
@@ -91,7 +98,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
     const server = new ServerSettings();
 
     const data = new FormData();
-    data.set('code' , generatePassword())
+    data.set('code', generatePassword())
 
     axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
       .then(res => {
@@ -105,9 +112,13 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
         axios.get(`${server.getApi()}api/user/code/${user.id}/`)
           .then(res => {
             setConfirmation(true)
-          }).catch(error => {console.error(error);});
+          }).catch(error => {
+          console.error(error);
+        });
 
-      }).catch(error => {console.error(error);});
+      }).catch(error => {
+      console.error(error);
+    });
   }
 
   // генерируем пароль
@@ -124,9 +135,6 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
   // получаем прошедшие депозита дни и переводим в % для диаграмы
   let dayInPercent = Math.round((days * 100) / parseInt(deposit.term));
 
-  const allPercent = percent.map(u => parseInt(u.summa))
-  let totalPerc = allPercent.reduce((a, b) => a + b, 0)
-
   return (
     <>
       <InfoBlock>
@@ -142,7 +150,9 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
                       strokeDashoffset="25"/>
               <g className="chart-text">
 
-                <text x="50%" y="50%" className="chart-number">{parseInt(deposit.term) - days} дней</text>
+                <text x="50%" y="50%"
+                      className="chart-number">{parseInt(deposit.term) - days <= 0 ? 0 : parseInt(deposit.term) - days} дней
+                </text>
                 <text x="50%" y="50%" className="chart-label">Осталось</text>
               </g>
             </svg>
@@ -151,11 +161,11 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
           <div className="bottom">
             <div className="item">
               <div className="title">Тело депозита</div>
-              <div className="text">{deposit.summa.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')} MRC</div>
+              <div className="text">{deposit.summa} MRC</div>
             </div>
             <div className="item">
               <div className="title">Начислено процентов</div>
-              <div className="text">{totalPerc} MRC</div>
+              <div className="text">{totalPercent} MRC</div>
             </div>
           </div>
         </Left>
@@ -179,15 +189,17 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
             </div>
             <div className="item">
               <div className="name">Прогнозируемая прибыль</div>
-              <div className="value">{deposit.income.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')} MRC</div>
+              <div className="value">{deposit.income} MRC</div>
               <input type="text" name={'income'} value={deposit.income} hidden readOnly/>
             </div>
+            {/*.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')*/}
             {
-              deposit.term ===  days ? (
+              days >= deposit.term ? (
+
                 <DepositEnd>
                   <div className="text">
                     <div className="top">Программа окончена</div>
-                    <div className="bottom">Вы заработали {totalPerc} MRC</div>
+                    <div className="bottom">Вы заработали {totalPercent} MRC</div>
                   </div>
                   <MainButton
                     type={'button'}
@@ -203,7 +215,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
                   text={'Отменить депозит'}
                   colorBgRed={true}
                   width={'100%'}
-                  func={(e)=>onDelete(e, deposit.id)}
+                  func={(e) => onDelete(e, deposit.id)}
                 />
               )
             }
@@ -224,12 +236,11 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
           <tbody>
           {
             percent.map(item => {
-              const date = item.created_at.split('T')[0];
               return (
                 <tr key={item.id}>
                   <td>{item.summa}</td>
                   <td>{item.rate}</td>
-                  <td>{date}</td>
+                  <td>{item.percent_date}</td>
                 </tr>
               )
             })

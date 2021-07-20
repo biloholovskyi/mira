@@ -20,10 +20,11 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   // for button show more text
   const [showMore, setShowMore] = useState(false);
   // записиваем все дание о депозите
-  const [deposit, setDeposit] = useState([]);
+  const [deposit, setDeposit] = useState({});
   const [percent, setPercent] = useState([])
   const [validation, setValidation] = useState(false);
   const [validationSum, setValidationSum] = useState(false);
+  const [active, setActive] = useState(false)
 
   useEffect(() => {
     return () => {
@@ -53,7 +54,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
       .then(res => {
         const deposit = res.data.filter(d => d.user_id === user.id)
 
-        if(deposit[0]){
+        if (deposit[0]) {
           // получаем код подтверджения
           const code = document.getElementById('code')
           // новый баланс
@@ -74,7 +75,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
               }).catch(error => console.error(error))
 
             // удаляем депозит
-            axios.delete(`${server.getApi()}api/deposit/${deposit[0].id}/delete/`, { body: 'delete' })
+            axios.delete(`${server.getApi()}api/deposit/${deposit[0].id}/delete/`, {body: 'delete'})
               .then(res => {
                 axios.get(`${server.getApi()}api/deposit/`)
                   .then(res => {
@@ -92,7 +93,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
       }).catch(error => console.error(error))
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     withDrawDeposit().catch(error => console.error(error))
   }, [])
 
@@ -113,6 +114,9 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
 
     const server = new ServerSettings();
 
+    // дата создания депозита, получаем нужный формат
+    const depositCreate = new Date().toLocaleString().split(',')[0];
+
     const data = new FormData();
     data.set('summa', e.target.summa.value);
     data.set('term', e.target.month.value);
@@ -121,50 +125,38 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
     data.set('dailyIncome', e.target.dailyIncome.value);
     data.set("user_id", user.id);
     data.set('total', parseInt(e.target.summa.value) + parseInt(e.target.income.value));
+    data.set("deposit_date", depositCreate);
+    data.set("status", 'active');
+
     // получаем текущого пользователя
     await axios.get(`${server.getApi()}api/users/${user.id}/`)
       .then(res => {
-        if(parseInt(e.target.summa.value) <= parseInt(user.user_balance) && parseInt(e.target.summa.value) > 0){
+        if (parseInt(e.target.summa.value) <= parseInt(user.user_balance) && parseInt(e.target.summa.value) > 0) {
           // делаем пост с новым депозитом на сервер
           axios.post(`${server.getApi()}api/deposit/`, data)
             .then(res => {
-
-              axios.get(`${server.getApi()}api/deposit/`)
+              setDeposit(res.data)
+              setActive(true)
+              console.log(res.data)
+            if(res.data) {
+              const data2 = new FormData();
+              data2.set('summa', res.data.dailyIncome)
+              data2.set('rate', res.data.rate)
+              data2.set('percent_date', depositCreate)
+              data2.set('deposit_percent', res.data.id)
+              axios.post(`${server.getApi()}api/percent/`, data2)
                 .then(res => {
-                  // получаем депозит текущого пользователя
-                  const dep = res.data.filter(deposit => parseInt(deposit.user_id) === parseInt(user.id))
-                  setDeposit(dep)
-                  // если депозит найден делаем первое начисление процентов
-                  if (dep[0]) {
-                    const data2 = new FormData();
-                    data2.set('summa', dep[0].dailyIncome)
-                    data2.set('rate', dep[0].rate)
-                    data2.set('deposit_percent', dep[0].id)
-
-                    axios.post(`${server.getApi()}api/percent/`, data2)
-                      .then(res => {
-                        // получаем начисления пользователя
-                        axios.get(`${server.getApi()}api/deposit/`)
-                          .then(res => {
-                            // получаем начисления текущого пользователя
-                            const userPercent = res.data.filter(deposit => parseInt(deposit.user_id) === parseInt(user.id))
-                            // записиваем начисления в стейт
-
-                            if (userPercent[0]) {
-                              setPercent(userPercent[0].percent)
-                            }
-                          }).catch(error => console.error(error))
-                      }).catch(error => console.error(error))
-                  }
+                  setPercent(res.data)
+                  console.log(res.data)
                 }).catch(error => console.error(error))
-            })
-            .catch(error => console.error(error))
+            }
+            }).catch(error => console.error(error))
 
           //обновляем баланс (отнимаем сумму депозита)
           const newBalance = parseInt(user.user_balance) - parseInt(e.target.summa.value)
 
           const data2 = new FormData();
-          data2.set('user_balance' , newBalance)
+          data2.set('user_balance', newBalance)
 
           axios.put(`${server.getApi()}api/users/${user.id}/update/`, data2)
             .then(res => {
@@ -181,27 +173,19 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
       }).catch(error => console.error(error))
   }
 
-  // получаем все даные о текущем депозите
+  //получаем все даные о текущем депозите
   const getDeposit = async () => {
     const server = new ServerSettings();
 
     await axios.get(`${server.getApi()}api/deposit/`)
       .then(res => {
-        const dep = res.data.filter(deposit => parseInt(deposit.user_id) === parseInt(user.id))
+        const dep = res.data.find(deposit => parseInt(deposit.user_id) === parseInt(user.id))
         setDeposit(dep)
-        setPercent(dep[0].percent)
-        // if(dep[0]){
-        //   axios.get(`${server.getApi()}api/percent/`)
-        //     .then(res => {
-        //       // получаем проценты текущего депозита
-        //       const depositPercent = res.data.filter(u => u.deposit_percent === dep[0].id);
-        //
-        //       const lastItem = depositPercent.slice(-1)[0].created_at;
-        //       let lastItemDate = new Date(lastItem)
-        //       let days2 = Math.round((today - lastItemDate) / 60 / 60 / 24 / 1000)
-        //       setRemainder(days2)
-        //     }).catch(error => console.error(error))
-        // }
+
+        if (dep) {
+          setPercent(dep.percent)
+          setActive(true)
+        }
       }).catch(error => console.error(error))
   }
 
@@ -222,6 +206,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
           .then(res => {
             const deposit = res.data.filter(u => u.user_id === user.id);
             setDeposit(deposit)
+            setActive(false)
           }).catch(error => console.error(error));
       }).catch(error => console.error(error));
   }
@@ -240,26 +225,23 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
           <button onClick={showMoreBtn}>{showMore ? 'Скрыть' : 'Подробнее'}<img src={arrow} alt="icon"/></button>
         </Desc>
 
-
         {
-          deposit.length === 1
-            ? (
-              <ActiveDeposit
-                deposit={deposit[0]}
-                percent={deposit[0].percent}
-                user={user}
-                onDelete={onDelete}
-                updateList={updateList}
-                withDrawDeposit={withDrawDeposit}
-                validation={validation}
-              />
-            ) : (
-              <MakeDeposit
-                updateList={updateList}
-                onMakeDeposit={onMakeDeposit}
-                validation={validationSum}
-              />
-            )
+          active
+            ? <ActiveDeposit
+              deposit={deposit}
+              percent={percent}
+              user={user}
+              onDelete={onDelete}
+              updateList={updateList}
+              withDrawDeposit={withDrawDeposit}
+              validation={validation}
+            />
+
+            : <MakeDeposit
+              updateList={updateList}
+              onMakeDeposit={onMakeDeposit}
+              validation={validationSum}
+            />
         }
       </DepositWrap>
 

@@ -15,6 +15,7 @@ import {loginUser, setSuccessModalText, setErrorModalText} from "../../actions";
 import ServerSettings from "../../service/serverSettings";
 import SmallSuccessModal from "../../components/smallSuccessModal/smallSuccessModal";
 import SmallErrorModal from "../../components/smallErrorModal/smallErrorModal";
+import Preloader from "../../components/preloader/preloader";
 
 const Balance = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   // модалка вывода средств

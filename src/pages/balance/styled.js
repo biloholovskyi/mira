@@ -183,6 +183,7 @@ const TableWrap = styled.div`
               bottom: -25px;
               @media(max-width: 1170px) {
                 display: block;
+                min-width: fit-content;
               }
             }
           }

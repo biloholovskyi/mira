@@ -456,6 +456,18 @@ const DepositEnd = styled.div`
     padding: 12px 10px;
     margin-top: 0;
   }
+  
+  @media(max-width: 1400px){
+    button {
+      padding: 8px 8px;
+      font-size: 15px;
+    }
+    .text {
+      .top {
+        font-size: 13px;
+      }
+    }
+  }
 `
 
 export {

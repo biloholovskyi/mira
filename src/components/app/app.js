@@ -22,13 +22,12 @@ import ForgotPassword from '../../pages/forgotPassword/forgotPassword';
 import ServerSettings from "../../service/serverSettings";
 
 import './App.css'
+import Preloader from "../preloader/preloader";
 
 const App = ({loginUser}) => {
   const [loading, setLoading] = useState(false);
-
   // window width
   const [windowWidth, setWidth] = useState(window.innerWidth);
-
   const handlerResize = () => {
     setWidth(window.innerWidth);
   }
@@ -82,7 +81,6 @@ const App = ({loginUser}) => {
           <Header/>
         )
       }
-
       <Switch>
         <Route path='/' exact>
           {
@@ -94,8 +92,8 @@ const App = ({loginUser}) => {
         <Route path='/login' exact>
           {
             loading
-            ? <Redirect to={'/dashboard'}/>
-            :  <Login/>
+              ? <Redirect to={'/dashboard'}/>
+              : <Login/>
           }
         </Route>
         <Route path='/registration' exact>
@@ -111,15 +109,15 @@ const App = ({loginUser}) => {
           {
             loading
               ? <Dashboard/>
-              :   <Redirect to={'/login'}/>
+              : <Redirect to={'/login'}/>
           }
         </Route>
-        <Route path='/settings' exact component={Settings} />
+        <Route path='/settings' exact component={Settings}/>
         <Route path='/balance' exact component={Balance}/>
         <Route path='/faq' exact component={Faq}/>
         <Route path='/deposit' exact component={Deposit}/>
         <Route path='/ref' exact component={Referral}/>
-        <Route path='/forgotPassword' exact component={ForgotPassword} />
+        <Route path='/forgotPassword' exact component={ForgotPassword}/>
       </Switch>
     </>
   )
