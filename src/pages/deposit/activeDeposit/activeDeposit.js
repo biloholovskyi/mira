@@ -42,7 +42,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
     await axios.get(`${server.getApi()}api/deposit/`)
       .then(res => {
         // получаем текущый депозит
-        const myDeposit = res.data.find(u => u.user_id === user.id);
+        const myDeposit = res.data.find(d => d.status === 'active');
 
         if (myDeposit) {
           axios.get(`${server.getApi()}api/percent/`)
@@ -51,13 +51,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
               const depositPercent = res.data.filter(u => u.deposit_percent === myDeposit.id);
 
               if (depositPercent) {
-                // получаем общее количество всех выплат и записиваем в стейт
-                // let allPercent = percent.map(u => parseInt(u.summa))
-                // let totalPerc = allPercent.reduce((a, b) => a + b, 0)
-                // setTotalPercent(totalPerc)
-
                 // получаем разницу в днях между последний начислениям и сегодня и через цикл делаем посты на сервер
-
                 for (let i = 0; i < days2; i++) {
                   // форматируем дату для начисления процентов
                   const formatLastDate = lastItemDate.setDate(lastItemDate.getDate() + 1)
@@ -248,7 +242,6 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
           </tbody>
         </table>
       </DepositTable>
-
       {
         confirmation && (
           <ConfirmationCode

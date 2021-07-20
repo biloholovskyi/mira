@@ -74,18 +74,19 @@ const TabPersonalDate = ({user, loginUser}) => {
 
   // get user photo
   const getUserPhoto = async () => {
+    if(user.photo !== null) {
+      // меняем формат ссылки фото
+      const avatar = user.photo.split('/')
+      const newAva = `${avatar[1]}/${avatar[2]}`;
 
-    // меняем формат ссылки фото
-    const avatar = user.photo.split('/')
-    const newAva =  `${avatar[1]}/${avatar[2]}`;
+      const server = new ServerSettings();
 
-    const server = new ServerSettings();
-
-    // получаем аватарку и записиваем у стейт
-    await axios.get(`${server.getApi()}${newAva}/`)
-      .then(res => {
-        setPhoto(res.config.url)
-      }).catch(error => console.log(error))
+      // получаем аватарку и записиваем у стейт
+      await axios.get(`${server.getApi()}${newAva}/`)
+        .then(res => {
+          setPhoto(res.config.url)
+        }).catch(error => console.log(error))
+    }
   }
 
   useEffect(()=> {

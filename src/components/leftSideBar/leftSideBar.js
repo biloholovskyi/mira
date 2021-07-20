@@ -31,16 +31,18 @@ const LeftSideBar = ({mobileMenu, closeMenu, user}) => {
   // get user photo
   const getUserPhoto = async () => {
     // меняем формат ссылки фото
-    const avatar = user.photo.split('/')
-    const newAva = `${avatar[1]}/${avatar[2]}`;
+    if(user.photo !== null) {
+      const avatar = user.photo.split('/')
+      const newAva = `${avatar[1]}/${avatar[2]}`;
 
-    const server = new ServerSettings();
+      const server = new ServerSettings();
 
-    // получаем аватарку и записиваем у стейт
-    await axios.get(`${server.getApi()}${newAva}/`)
-      .then(res => {
-        setPhoto(res.config.url)
-      }).catch(error => console.error(error))
+      // получаем аватарку и записиваем у стейт
+      await axios.get(`${server.getApi()}${newAva}/`)
+        .then(res => {
+          setPhoto(res.config.url)
+        }).catch(error => console.error(error))
+    }
   }
 
   useEffect(() => {

@@ -9,16 +9,17 @@ const DepositWrap = styled.div`
     line-height: 36px;
     color: #FFFFFF;
     font-family: 'TTInterfaces-SemiBold';
-    @media(max-width: 500px) {
+    @media (max-width: 500px) {
       font-size: 20px;
       line-height: 28px;
     }
   }
+
   .info_block {
     display: flex;
     align-items: flex-start;
     margin-bottom: 48px;
-    @media(max-width: 1199px) {
+    @media (max-width: 1199px) {
       flex-direction: column;
     }
   }
@@ -26,6 +27,7 @@ const DepositWrap = styled.div`
 
 const Desc = styled.div`
   margin-bottom: 48px;
+
   p {
     font-style: normal;
     font-weight: normal;
@@ -37,6 +39,7 @@ const Desc = styled.div`
     max-height: ${props => props.show ? 'fit-content' : '44px'};
     overflow: hidden;
   }
+
   button {
     font-style: normal;
     font-weight: 500;
@@ -49,6 +52,7 @@ const Desc = styled.div`
     display: flex;
     align-items: center;
     cursor: pointer;
+
     img {
       width: 18px;
       height: 18px;
@@ -63,9 +67,10 @@ const Desc = styled.div`
 const Left = styled.div`
   flex: 50%;
   padding: 32px 0px 32px 0;
- display: flex;
+  display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   .top {
     flex: 2;
     min-height: 231px;
@@ -73,16 +78,20 @@ const Left = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+
     .donut {
       max-width: 220px;
+
       &-hole,
       &-ring,
       &-segment {
         min-width: 220px;
       }
+
       .chart-text {
         fill: #000;
-        transform: translate(-24%,5%);
+        transform: translate(-24%, 5%);
+
         .chart-number {
           display: flex;
           align-items: center;
@@ -92,8 +101,9 @@ const Left = styled.div`
           font-size: 5px;
           line-height: 32px;
           fill: #FFFFFF;
-          transform: translate(2px , 0.33em);
+          transform: translate(2px, 0.33em);
         }
+
         .chart-label {
           font-style: normal;
           font-weight: normal;
@@ -105,15 +115,18 @@ const Left = styled.div`
       }
     }
   }
+
   .bottom {
     display: flex;
     align-items: center;
     flex: 1;
+
     .item {
       flex: 50%;
       display: flex;
       flex-direction: column;
       align-items: center;
+
       .title {
         font-style: normal;
         font-weight: normal;
@@ -122,6 +135,7 @@ const Left = styled.div`
         color: #FFFFFF;
         margin-bottom: 7px;
       }
+
       .text {
         font-style: normal;
         font-weight: bold;
@@ -129,23 +143,33 @@ const Left = styled.div`
         line-height: 32px;
         color: #FFFFFF;
       }
-    @media(max-width: 1150px) {
-      .title {
-        font-size: 14px;
-        line-height: 20px;
+
+      @media (max-width: 1150px) {
+        .title {
+          font-size: 14px;
+          line-height: 20px;
+        }
+
+        .text {
+          font-size: 18px;
+          line-height: 24px;
+        }
       }
-      .text {
-        font-size: 18px;
-        line-height: 24px;
+      @media (max-width: 992px) {
+        .title {
+          font-size: 12px;
+          line-height: 18px;
+        }
       }
     }
-    }
+
     & .item:first-child {
       padding-right: 15px;
       margin-right: 15px;
       border-right: 1px solid rgba(255, 255, 255, 0.16);
     }
   }
+
   h3 {
     font-style: normal;
     font-weight: bold;
@@ -156,14 +180,14 @@ const Left = styled.div`
     font-family: 'TTInterfaces-Bold';
   }
 
-  @media(max-width: 1099px) {
+  @media (max-width: 1099px) {
     padding: 16px 0px 16px 0;
   }
 
-  @media(max-width: 730px) {
+  @media (max-width: 730px) {
     width: 100%;
   }
-  
+
 `
 
 const Label = styled.div`
@@ -179,6 +203,7 @@ const Label = styled.div`
   line-height: 20px;
   color: #FFFFFF;
   font-family: 'TTInterfaces-Medium';
+
   img {
     width: 18px;
     height: 18px;
@@ -192,6 +217,7 @@ const Right = styled.div`
   padding: 32px 0 32px 32px;
   border-left: 1px solid #424242;
   margin-left: 32px;
+
   h3 {
     font-style: normal;
     font-weight: bold;
@@ -201,13 +227,13 @@ const Right = styled.div`
     margin-bottom: 12px;
     font-family: 'TTInterfaces-Bold';
   }
-  
-  @media(max-width: 1099px) {
+
+  @media (max-width: 1099px) {
     padding: 16px 0 16px 16px;
     margin-left: 16px;
   }
 
-  @media(max-width: 730px) {
+  @media (max-width: 730px) {
     width: 100%;
     border-top: 1px solid #424242;
     margin-left: 0px;
@@ -249,11 +275,12 @@ const DepositTable = styled.div`
       tr th:last-child {
         text-align: right;
       }
-@media(max-width: 400px) {
-  tr th:nth-child(2){
-    display: none;
-  }
-}
+
+      @media (max-width: 400px) {
+        tr th:nth-child(2) {
+          display: none;
+        }
+      }
     }
 
     tbody {
@@ -269,6 +296,7 @@ const DepositTable = styled.div`
           text-align: left;
           padding: 25px 15px 25px 0;
           vertical-align: top;
+
           .info {
             display: flex;
             align-items: center;
@@ -291,18 +319,21 @@ const DepositTable = styled.div`
             }
           }
         }
+
         & td:last-child {
           max-width: 300px;
           text-align: right;
         }
       }
-      @media(max-width: 400px) {
+
+      @media (max-width: 400px) {
         tr {
           td {
             padding: 15px 15px 15px 0;
           }
         }
-        tr td:nth-child(2){
+
+        tr td:nth-child(2) {
           display: none;
         }
       }
@@ -318,14 +349,14 @@ const InfoBlock = styled.div`
   align-items: flex-start;
   margin-bottom: 48px;
 
-  @media(max-width: 1099px) {
+  @media (max-width: 1099px) {
     padding: 0 16px;
   }
 
-  @media(max-width: 730px) {
+  @media (max-width: 730px) {
     flex-direction: column;
   }
-  
+
 `
 
 const TabHead = styled.div`
@@ -336,10 +367,12 @@ const TabHead = styled.div`
   padding: 4px;
   min-height: 65px;
   margin-bottom: 24px;
+
   & div:last-child {
     margin-right: 0;
   }
-  @media(max-width: 575px) {
+
+  @media (max-width: 575px) {
     overflow: auto;
     &::-webkit-scrollbar {
       display: none;
@@ -350,7 +383,7 @@ const TabHead = styled.div`
 const TabHeadNav = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
   flex: 1;
   cursor: pointer;
   padding: 6px 0;
@@ -362,6 +395,7 @@ const TabHeadNav = styled.div`
   line-height: 20px;
   color: #FFFFFF;
   text-align: center;
+
   span {
     font-style: normal;
     font-weight: normal;
@@ -371,15 +405,17 @@ const TabHeadNav = styled.div`
     position: relative;
     z-index: 8;
   }
+
   .text {
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 20px;
-    color: #FFFFFF; 
+    color: #FFFFFF;
     position: relative;
     z-index: 8;
   }
+
   &.tabs-active {
     background: #36B37E;
     border-radius: 8px;
@@ -390,6 +426,7 @@ const TabWrap = styled.form`
   display: flex;
   align-items: center;
   flex-direction: column;
+
   .item {
     display: flex;
     align-items: center;
@@ -397,6 +434,7 @@ const TabWrap = styled.form`
     width: 100%;
     min-height: 48px;
     border-bottom: 1px solid #424242;
+
     .name {
       font-style: normal;
       font-weight: normal;
@@ -404,6 +442,7 @@ const TabWrap = styled.form`
       line-height: 22px;
       color: #CACACA;
     }
+
     .value {
       font-style: normal;
       font-weight: normal;
@@ -415,9 +454,9 @@ const TabWrap = styled.form`
       text-align: right;
     }
   }
-  
+
   button {
-    margin-top: 32px; 
+    margin-top: 32px;
   }
 `
 
@@ -431,10 +470,12 @@ const DepositEnd = styled.div`
   padding: 8px;
   max-height: 64px;
   margin-top: 32px;
+
   .text {
     display: flex;
     flex-direction: column;
     margin-right: 20px;
+
     .top {
       font-family: 'TTInterfaces-Regular', sans-serif;
       font-style: normal;
@@ -443,6 +484,7 @@ const DepositEnd = styled.div`
       line-height: 20px;
       color: #36B37E;
     }
+
     .bottom {
       font-family: 'TTInterfaces-Regular', sans-serif;
       font-style: normal;
@@ -452,16 +494,18 @@ const DepositEnd = styled.div`
       color: #FFFFFF;
     }
   }
+
   button {
     padding: 12px 10px;
-    margin-top: 0!important;
+    margin-top: 0 !important;
   }
-  
-  @media(max-width: 1400px){
+
+  @media (max-width: 1400px) {
     button {
       padding: 8px 8px;
       font-size: 15px;
     }
+
     .text {
       .top {
         font-size: 13px;
@@ -474,6 +518,7 @@ const TabWrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+
   .item {
     display: flex;
     align-items: center;
@@ -481,6 +526,7 @@ const TabWrapper = styled.div`
     width: 100%;
     min-height: 48px;
     border-bottom: 1px solid #424242;
+
     .name {
       font-style: normal;
       font-weight: normal;
@@ -488,6 +534,7 @@ const TabWrapper = styled.div`
       line-height: 22px;
       color: #CACACA;
     }
+
     .value {
       font-style: normal;
       font-weight: normal;
@@ -499,9 +546,9 @@ const TabWrapper = styled.div`
       text-align: right;
     }
   }
-  
+
   button {
-    margin-top: 32px; 
+    margin-top: 32px;
   }
 `
 
