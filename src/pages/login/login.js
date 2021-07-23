@@ -11,15 +11,21 @@ import LeftImageBlock from '../../components/leftImageBlock/leftImageBlock';
 import SmallSuccessModal from "../../components/smallSuccessModal/smallSuccessModal";
 import SmallErrorModal from "../../components/smallErrorModal/smallErrorModal";
 
-import {LoginWrap, Caption, LoginForm, LogoMobile, MobileBtn} from './style';
+import {LoginWrap, Caption, LoginForm, LogoMobile, MobileBtn, CheckLogin, CaptionCheck} from './style';
 import logo from './media/icon/logo-green.svg';
 
 import ServerSettings from '../../service/serverSettings';
+import arrow from "../authorizationCode/media/icon/small_arrow.svg";
+import {SmallDesc} from "../authorizationCode/style";
+import ConfirmationCodeItem from "../../components/confirmationCodeItem/ConfirmationCodeItem";
 
-const Login = ({setSuccessModalText, loginUser, setErrorModalText}) => {
+const Login = ({setSuccessModalText, loginUser, setErrorModalText, user}) => {
   const [validation, setValidation] = useState(false);
+  const [nextStep, setNextStep] = useState(false)
+  const [authCode, setAuthCode] = useState('');
   const history = useHistory();
-
+  console.log(user)
+  console.log(authCode)
   const validationInput = () => {
     setValidation(true)
   }
@@ -36,6 +42,10 @@ const Login = ({setSuccessModalText, loginUser, setErrorModalText}) => {
     setErrorModalText(false)
   }, 1500)
 
+  const update = (value) => {
+    setAuthCode(value)
+  }
+
   // логин пользователя
   const onLogin = async (e) => {
     e.preventDefault();
@@ -47,17 +57,20 @@ const Login = ({setSuccessModalText, loginUser, setErrorModalText}) => {
       .then(res => {
         // проверяем пароль
         if (res.data.password === e.target.password.value) {
-         const userId = res.data.id;
-
-          loginUser(res.data);
-          createToken(res.data);
+          const userId = res.data.id;
+          console.log(userId)
 
           const data = new FormData();
           data.set('code', generatePassword())
 
           axios.put(`${server.getApi()}api/users/${userId}/update/`, data)
             .then(res => {
-              window.location.assign('/authorizationCode');
+              setNextStep(true)
+              axios.get(`${server.getApi()}api/users/${userId}/`)
+                .then(res => {
+                  loginUser(res.data);
+                }).catch(error => console.error(error));
+
               // отправляем письмо с кодом авторизации
               axios.get(`${server.getApi()}api/user/code/${userId}/`)
                 .catch(error => {
@@ -89,6 +102,31 @@ const Login = ({setSuccessModalText, loginUser, setErrorModalText}) => {
       });
   }
 
+  // проверка кода авторизации
+  const checkCode = async (e) => {
+    e.preventDefault();
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const server = new ServerSettings();
+
+    // получаем код подтверджения
+    const code = document.getElementById('code')
+
+    await axios.get(`${server.getApi()}api/users/${user.id}/`)
+      .then(res => {
+        if (user.code === code.textContent) {
+          loginUser(res.data);
+          createToken(res.data);
+          window.location.assign('/dashboard')
+        } else {
+          //alert('неверный код!')
+          validationInput();
+          setErrorModalText('неверный код!')
+        }
+      }).catch(error => console.log(error))
+  }
+
   const createToken = (user) => {
     const value = JSON.stringify({email: user.email});
 
@@ -106,51 +144,97 @@ const Login = ({setSuccessModalText, loginUser, setErrorModalText}) => {
     return pass;
   }
 
+  // отправляем код еще раз
+  const sendCodeAgain = (e) => {
+    e.preventDefault();
+
+    const server = new ServerSettings();
+
+    // отправляем письмо с кодом авторизации
+    axios.get(`${server.getApi()}api/user/code/${user.id}/`)
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
   return (
     <>
       <LoginWrap>
         <LeftImageBlock loginPage={true}/>
 
         <div className="right">
-          <NavLink to='/login'>
-            <LogoMobile src={logo} alt="logo"/>
-          </NavLink>
+          <LogoMobile src={logo} alt="logo"/>
 
-          <Caption>
-            <span>Еще нет аккаунта?</span>
-            <MainButton
-              func={() => history.push('/registration')}
-              text={'Зарегистрироваться'}
-            />
-          </Caption>
+          {
+            nextStep ? (
+              <CaptionCheck>
+                <button onClick={() => setNextStep(false)}><img src={arrow} alt="icon"/>Назад</button>
+              </CaptionCheck>
+            ) : (
+              <Caption>
+                <span>Еще нет аккаунта?</span>
+                <MainButton
+                  func={() => history.push('/registration')}
+                  text={'Зарегистрироваться'}
+                />
+              </Caption>
+            )
+          }
+          {
+            nextStep ? (
+              <>
+                <CheckLogin onSubmit={(e) => checkCode(e)}>
+                  <h3>Введите проверочный код</h3>
+                  <SmallDesc>Мы выслали проверочный код на почту {user.email}<br/>
+                    Введите код, что бы подтвердить свой аккаунт</SmallDesc>
 
-          <LoginForm onSubmit={(e) => onLogin(e)}>
-            <h3>Войти в систему</h3>
-            <MainInput
-              label={'Email'}
-              type={'email'}
-              name={'login'}
-              required={true}
-              validation={validation}
-            />
+                  <ConfirmationCodeItem update={update} validation={validation}/>
 
-            <NavLink to={'/forgotPassword'} className={'send_again'}>Забыли пароль?</NavLink>
+                  <div className="btn_section">
+                    <MainButton
+                      type={'submit'}
+                      text={'Подтвердить'}
+                      colorBg={true}
+                    />
+                    <p>
+                      Не пришел код?
+                      <button type={'button'} onClick={(e) => sendCodeAgain(e)}>Выслать код еще раз</button>
+                    </p>
+                  </div>
+                  <div id={'code'} style={{visibility: "hidden"}}>{authCode}</div>
+                </CheckLogin>
+              </>
+            ) : (
+              <>
+                <LoginForm onSubmit={(e) => onLogin(e)}>
+                  <h3>Войти в систему</h3>
+                  <MainInput
+                    label={'Email'}
+                    type={'email'}
+                    name={'login'}
+                    required={true}
+                    validation={validation}
+                  />
 
-            <MainInput
-              label={'Пароль'}
-              type={'password'}
-              name={'password'}
-              required={true}
-              validation={validation}
-            />
-            <MainButton
-              type={'submit'}
-              text={'Войти'}
-              colorBg={true}
-              //func={() => history.push('/authorizationCode')}
-            />
-          </LoginForm>
+                  <NavLink to={'/forgotPassword'} className={'send_again'}>Забыли пароль?</NavLink>
 
+                  <MainInput
+                    label={'Пароль'}
+                    type={'password'}
+                    name={'password'}
+                    required={true}
+                    validation={validation}
+                  />
+
+                  <MainButton
+                    type={'submit'}
+                    text={'Войти'}
+                    colorBg={true}
+                  />
+                </LoginForm>
+              </>
+            )
+          }
           <MobileBtn>
             <span>Еще нет аккаунта?</span>
             <MainButton
