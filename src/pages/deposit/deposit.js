@@ -64,7 +64,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
           const code = document.getElementById('code')
 
           // новый баланс
-          const newBalance = parseInt(user.user_balance) + parseInt(deposit.summa) + (parseInt(deposit.term) * parseInt(deposit.dailyIncome))
+          const newBalance = parseInt(user.user_balance) + (parseInt(deposit.summa) + (parseInt(deposit.term) * parseInt(deposit.dailyIncome)))
 
           const data = new FormData();
           data.set('user_balance', newBalance)
