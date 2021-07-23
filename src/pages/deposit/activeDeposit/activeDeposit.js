@@ -10,10 +10,10 @@ import {Left, Right, DepositTable, InfoBlock, TabWrapper, DepositEnd} from "../s
 import {loginUser, setSuccessModalText} from '../../../actions/index';
 import ServerSettings from "../../../service/serverSettings";
 
-const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation, withDrawDeposit}) => {
+const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation, withDrawDeposit, totalPercent}) => {
   // записиваем разницу в днях от создания депозита до сегодня
   const [days, setDays] = useState('');
-  const [totalPercent, setTotalPercent] = useState('');
+  // const [totalPercent, setTotalPercent] = useState('');
   const [confirmation, setConfirmation] = useState(false)
 
   const getPercent = async () => {
@@ -49,12 +49,8 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
             .then(res => {
               // получаем проценты текущего депозита
               const depositPercent = res.data.filter(u => u.deposit_percent === myDeposit.id);
-
+              console.log(depositPercent)
               if (depositPercent) {
-                let allPercent = percent.map(u => parseInt(u.summa))
-                let totalPerc = allPercent.reduce((a, b) => a + b, 0)
-                setTotalPercent(totalPerc)
-
                 if(myDeposit.percent.length === deposit.percent.length) {
                   let counter = deposit.term - percent.length;
 
@@ -180,7 +176,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
             </div>
             <div className="item">
               <div className="title">Начислено процентов</div>
-              <div className="text">{totalPercent} MRC</div>
+              <div className="text">{totalPercent.toFixed(2)} MRC</div>
             </div>
           </div>
         </Left>
@@ -204,8 +200,8 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
             </div>
             <div className="item">
               <div className="name">Прогнозируемая прибыль</div>
-              <div className="value">{parseInt(deposit.term) * parseInt(deposit.dailyIncome)} MRC</div>
-              <input type="text" name={'income'} value={deposit.income} hidden readOnly/>
+              <div className="value">{deposit.income} MRC</div>
+              <input type="text" name={'income'} value={deposit.income}  readOnly/>
             </div>
             {/*.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')*/}
             {
@@ -214,7 +210,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
                 <DepositEnd>
                   <div className="text">
                     <div className="top">Программа окончена</div>
-                    <div className="bottom">Вы заработали {totalPercent} MRC</div>
+                    <div className="bottom">Вы заработали {totalPercent.toFixed(2)} MRC</div>
                   </div>
                   <MainButton
                     type={'button'}

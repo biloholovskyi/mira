@@ -25,7 +25,10 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   const [validation, setValidation] = useState(false);
   const [validationSum, setValidationSum] = useState(false);
   const [active, setActive] = useState(false)
+  const [totalPercent, setTotalPercent] = useState('');
 
+console.log(deposit)
+  console.log(percent)
   useEffect(() => {
     return () => {
       setSuccessModalText(false)
@@ -165,6 +168,10 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
                       .then(res => {
                         const currentPercent = res.data.find(d => d.status === 'active');
                         setPercent(currentPercent.percent)
+
+                        const allPercent = currentPercent.percent.map(u => parseFloat(u.summa))
+                        const totalPerc = allPercent.reduce((a, b) => a + b)
+                        setTotalPercent(totalPerc)
                       }).catch(error => console.error(error))
                   }).catch(error => console.error(error))
               }
@@ -186,7 +193,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
 
         } else {
           validationSumma();
-          setErrorModalText('Не достаточно средств')
+          setErrorModalText('Недостаточно средств')
         }
       }).catch(error => console.error(error))
   }
@@ -203,10 +210,15 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
           setDeposit(activeDep)
           setPercent(activeDep.percent)
           setActive(true)
+
+          const allPercent = activeDep.percent.map(u => parseFloat(u.summa))
+          const totalPerc = allPercent.reduce((a, b) => a + b)
+          setTotalPercent(totalPerc)
         } else {
           setDeposit({})
           setPercent([])
           setActive(false)
+          setTotalPercent(0)
         }
       }).catch(error => console.error(error))
   }
@@ -253,6 +265,19 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
       }).catch(error => console.error(error));
   }
 
+  // получаем дату и меняем в нужном формате
+  const sortPercentList = percent.map(event => {
+    const date = event.percent_date.split('.');
+    const newFormatDate = `${date[2]}-${date[1]}-${date[0]}`
+    const test = new Date(newFormatDate);
+    return {...event, sortTime: test};
+  })
+
+  // соритруем по дате
+  sortPercentList.sort((a, b) => {
+    return new Date(a.sortTime).getTime() - new Date(b.sortTime).getTime()
+  }).reverse()
+
   return (
     <div className={'main_container'}>
       <DepositWrap>
@@ -277,6 +302,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
               updateList={updateList}
               withDrawDeposit={withDrawDeposit}
               validation={validation}
+              totalPercent={totalPercent}
             />
 
             : <MakeDeposit

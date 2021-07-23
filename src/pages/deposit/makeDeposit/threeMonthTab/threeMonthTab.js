@@ -8,10 +8,10 @@ const ThreeMonthTab = ({totalSum, getInfo, onMakeDeposit}) => {
 
   //Прибыль за весь срок
   let income = ((totalSum * 0.8) / 100) * 90;
-  let formatIncome = income.toString();
+  let formatIncome = income.toFixed(2);
   //Дневная прибыль
   let dalyIncome = (totalSum * 0.8) / 100;
-  let formatDailyIncome = dalyIncome.toString();
+  let formatDailyIncome = dalyIncome.toFixed(2);
 
   return(
     <TabWrap onSubmit={(e)=> onMakeDeposit(e)}>
@@ -28,12 +28,12 @@ const ThreeMonthTab = ({totalSum, getInfo, onMakeDeposit}) => {
       <div className="item">
         <div className="name">Дневная прибыль</div>
         <div className="value">{formatDailyIncome.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')} MRC</div>
-        <input type="text" name={'dailyIncome'} value={(totalSum * 0.8) / 100} hidden readOnly/>
+        <input type="text" name={'dailyIncome'} value={formatDailyIncome}  readOnly/>
       </div>
       <div className="item">
         <div className="name">Прибыль за весь срок</div>
         <div className="value">{formatIncome.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')} MRC</div>
-        <input type="text" name={'income'} value={((totalSum * 0.8) / 100) * 90} hidden readOnly/>
+        <input type="text" name={'income'} value={formatIncome}  readOnly/>
       </div>
       <div className="item">
         <div className="name">Итого к оплате</div>

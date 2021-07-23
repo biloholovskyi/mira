@@ -8,10 +8,10 @@ const NineMonthTab = ({totalSum, getInfo, onMakeDeposit}) => {
 
   //Прибыль за весь срок
   let income = ((totalSum * 1.2) / 100) * 270;
-  let formatIncome = income.toString();
+  let formatIncome = income.toFixed(2);
   //Дневная прибыль
   let dalyIncome = (totalSum * 1.2) / 100;
-  let formatDailyIncome = dalyIncome.toString();
+  let formatDailyIncome = dalyIncome.toFixed(2);
 
   return(
     <TabWrap onSubmit={(e)=>onMakeDeposit(e)}>
