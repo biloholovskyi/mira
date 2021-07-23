@@ -27,8 +27,6 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   const [active, setActive] = useState(false)
   const [totalPercent, setTotalPercent] = useState('');
 
-console.log(deposit)
-  console.log(percent)
   useEffect(() => {
     return () => {
       setSuccessModalText(false)
@@ -155,6 +153,7 @@ console.log(deposit)
             .then(res => {
               setDeposit(res.data)
               setActive(true)
+              console.log(res.data)
               if (res.data) {
                 const data2 = new FormData();
                 data2.set('summa', res.data.dailyIncome)
@@ -190,6 +189,18 @@ console.log(deposit)
                   loginUser(res.data)
                 }).catch(error => console.error(error))
             }).catch(error => console.error(error))
+
+          // обновляем список транзакций
+          const data3 = new FormData();
+          data3.set("summa", e.target.summa.value);
+          data3.set("user_id", user.id);
+          data3.set('operation', 'перевод на депозит')
+          data3.set('background', '#FF3842')
+
+          axios.post(`${server.getApi()}api/balance/`, data3)
+            .catch(error => {
+              console.error(error)
+            })
 
         } else {
           validationSumma();
@@ -261,22 +272,21 @@ console.log(deposit)
               setDeposit({})
               console.log('delete')
             }).catch(error => console.error(error))
+
+          // обновляем список транзакций
+          const data3 = new FormData();
+          data3.set("summa", deposit.summa);
+          data3.set("user_id", user.id);
+          data3.set('operation', 'отмена депозита')
+          data3.set('background', '#36C136')
+
+          axios.post(`${server.getApi()}api/balance/`, data3)
+            .catch(error => {
+              console.error(error)
+            })
         }
       }).catch(error => console.error(error));
   }
-
-  // получаем дату и меняем в нужном формате
-  const sortPercentList = percent.map(event => {
-    const date = event.percent_date.split('.');
-    const newFormatDate = `${date[2]}-${date[1]}-${date[0]}`
-    const test = new Date(newFormatDate);
-    return {...event, sortTime: test};
-  })
-
-  // соритруем по дате
-  sortPercentList.sort((a, b) => {
-    return new Date(a.sortTime).getTime() - new Date(b.sortTime).getTime()
-  }).reverse()
 
   return (
     <div className={'main_container'}>

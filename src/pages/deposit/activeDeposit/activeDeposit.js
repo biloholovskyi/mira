@@ -176,7 +176,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
             </div>
             <div className="item">
               <div className="title">Начислено процентов</div>
-              <div className="text">{totalPercent.toFixed(2)} MRC</div>
+              <div className="text">{totalPercent} MRC</div>
             </div>
           </div>
         </Left>
@@ -210,7 +210,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
                 <DepositEnd>
                   <div className="text">
                     <div className="top">Программа окончена</div>
-                    <div className="bottom">Вы заработали {totalPercent.toFixed(2)} MRC</div>
+                    <div className="bottom">Вы заработали {totalPercent} MRC</div>
                   </div>
                   <MainButton
                     type={'button'}
