@@ -87,30 +87,38 @@ const Left = styled.div`
       &-segment {
         min-width: 220px;
       }
-
+      
+    }
+    .diagramma {
+      position: relative;
       .chart-text {
-        fill: #000;
-        transform: translate(-24%, 5%);
-
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column-reverse;
         .chart-number {
           display: flex;
           align-items: center;
           font-family: 'TTInterfaces-Bold', sans-serif;
           font-style: normal;
           font-weight: bold;
-          font-size: 5px;
+          font-size: 23px;
           line-height: 32px;
-          fill: #FFFFFF;
-          transform: translate(2px, 0.33em);
+          color: #FFFFFF;
+        
         }
 
         .chart-label {
           font-style: normal;
           font-weight: normal;
-          font-size: 3px;
-          line-height: 20px;
-          fill: #FFFFFF;
-          transform: translate(4px, -1.3em);
+          font-size: 18px;
+          line-height: 22px;
+          color: #FFFFFF;
+       
         }
       }
     }

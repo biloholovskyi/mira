@@ -28,12 +28,12 @@ const ThreeMonthTab = ({totalSum, getInfo, onMakeDeposit}) => {
       <div className="item">
         <div className="name">Дневная прибыль</div>
         <div className="value">{formatDailyIncome.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')} MRC</div>
-        <input type="text" name={'dailyIncome'} value={formatDailyIncome}  readOnly/>
+        <input type="text" name={'dailyIncome'} value={formatDailyIncome} hidden readOnly/>
       </div>
       <div className="item">
         <div className="name">Прибыль за весь срок</div>
         <div className="value">{formatIncome.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')} MRC</div>
-        <input type="text" name={'income'} value={formatIncome}  readOnly/>
+        <input type="text" name={'income'} value={formatIncome} hidden readOnly/>
       </div>
       <div className="item">
         <div className="name">Итого к оплате</div>

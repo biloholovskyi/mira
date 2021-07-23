@@ -12,6 +12,7 @@ import ServerSettings from "../../service/serverSettings";
 import {loginUser, setSuccessModalText, setErrorModalText} from "../../actions";
 import SmallSuccessModal from "../../components/smallSuccessModal/smallSuccessModal";
 import SmallErrorModal from "../../components/smallErrorModal/smallErrorModal";
+import ConfirmationCode from "./confirmationCode/confirmationCode";
 
 const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   useEffect(() => {
@@ -21,10 +22,13 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   const [showMore, setShowMore] = useState(false);
   // записиваем все дание о депозите
   const [deposit, setDeposit] = useState({});
+  // все проценты депозита
   const [percent, setPercent] = useState([])
+  // валидация
   const [validation, setValidation] = useState(false);
   const [validationSum, setValidationSum] = useState(false);
   const [active, setActive] = useState(false)
+  // общая сума всех процентов
   const [totalPercent, setTotalPercent] = useState('');
 
   useEffect(() => {
@@ -37,7 +41,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   setTimeout(() => {
     setSuccessModalText(false)
     setErrorModalText(false)
-  }, 3000)
+  }, 2500)
 
   const validationInput = () => {
     setValidation(true)
@@ -148,60 +152,67 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
     await axios.get(`${server.getApi()}api/users/${user.id}/`)
       .then(res => {
         if (parseInt(e.target.summa.value) <= parseInt(user.user_balance) && parseInt(e.target.summa.value) > 0) {
-          // делаем пост с новым депозитом на сервер
-          axios.post(`${server.getApi()}api/deposit/`, data)
-            .then(res => {
-              setDeposit(res.data)
-              setActive(true)
-              console.log(res.data)
-              if (res.data) {
-                const data2 = new FormData();
-                data2.set('summa', res.data.dailyIncome)
-                data2.set('rate', res.data.rate)
-                data2.set('percent_date', depositCreate)
-                data2.set('deposit_percent', res.data.id)
+          if(parseInt(e.target.summa.value) < 100){
+            validationSumma();
+            setErrorModalText('минимальная сумма 100 MRC')
+          } else if (parseInt(e.target.summa.value) > 5000){
+            validationSumma();
+            setErrorModalText('максимальная сумма 5000 MRC')
+          } else {
+            // делаем пост с новым депозитом на сервер
+            axios.post(`${server.getApi()}api/deposit/`, data)
+              .then(res => {
+                setDeposit(res.data)
+                setActive(true)
+                console.log(res.data)
+                if (res.data) {
+                  const data2 = new FormData();
+                  data2.set('summa', res.data.dailyIncome)
+                  data2.set('rate', res.data.rate)
+                  data2.set('percent_date', depositCreate)
+                  data2.set('deposit_percent', res.data.id)
 
-                axios.post(`${server.getApi()}api/percent/`, data2)
+                  axios.post(`${server.getApi()}api/percent/`, data2)
+                    .then(res => {
+                      axios.get(`${server.getApi()}api/deposit/`)
+                        .then(res => {
+                          const currentPercent = res.data.find(d => d.status === 'active');
+                          setPercent(currentPercent.percent)
+
+                          const allPercent = currentPercent.percent.map(u => parseFloat(u.summa))
+                          const totalPerc = allPercent.reduce((a, b) => a + b)
+                          setTotalPercent(totalPerc)
+                        }).catch(error => console.error(error))
+                    }).catch(error => console.error(error))
+                }
+              }).catch(error => console.error(error))
+
+            //обновляем баланс (отнимаем сумму депозита)
+            const newBalance = parseInt(user.user_balance) - parseInt(e.target.summa.value)
+
+            const data2 = new FormData();
+            data2.set('user_balance', newBalance)
+
+            axios.put(`${server.getApi()}api/users/${user.id}/update/`, data2)
+              .then(res => {
+                axios.get(`${server.getApi()}api/users/${user.id}/`)
                   .then(res => {
-                    axios.get(`${server.getApi()}api/deposit/`)
-                      .then(res => {
-                        const currentPercent = res.data.find(d => d.status === 'active');
-                        setPercent(currentPercent.percent)
-
-                        const allPercent = currentPercent.percent.map(u => parseFloat(u.summa))
-                        const totalPerc = allPercent.reduce((a, b) => a + b)
-                        setTotalPercent(totalPerc)
-                      }).catch(error => console.error(error))
+                    loginUser(res.data)
                   }).catch(error => console.error(error))
-              }
-            }).catch(error => console.error(error))
+              }).catch(error => console.error(error))
 
-          //обновляем баланс (отнимаем сумму депозита)
-          const newBalance = parseInt(user.user_balance) - parseInt(e.target.summa.value)
+            // обновляем список транзакций
+            const data3 = new FormData();
+            data3.set("summa", e.target.summa.value);
+            data3.set("user_id", user.id);
+            data3.set('operation', 'перевод на депозит')
+            data3.set('background', '#FF3842')
 
-          const data2 = new FormData();
-          data2.set('user_balance', newBalance)
-
-          axios.put(`${server.getApi()}api/users/${user.id}/update/`, data2)
-            .then(res => {
-              axios.get(`${server.getApi()}api/users/${user.id}/`)
-                .then(res => {
-                  loginUser(res.data)
-                }).catch(error => console.error(error))
-            }).catch(error => console.error(error))
-
-          // обновляем список транзакций
-          const data3 = new FormData();
-          data3.set("summa", e.target.summa.value);
-          data3.set("user_id", user.id);
-          data3.set('operation', 'перевод на депозит')
-          data3.set('background', '#FF3842')
-
-          axios.post(`${server.getApi()}api/balance/`, data3)
-            .catch(error => {
-              console.error(error)
-            })
-
+            axios.post(`${server.getApi()}api/balance/`, data3)
+              .catch(error => {
+                console.error(error)
+              })
+          }
         } else {
           validationSumma();
           setErrorModalText('Недостаточно средств')
@@ -325,6 +336,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
 
       <SmallSuccessModal/>
       <SmallErrorModal/>
+
     </div>
   )
 }

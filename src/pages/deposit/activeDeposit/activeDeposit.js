@@ -13,8 +13,8 @@ import ServerSettings from "../../../service/serverSettings";
 const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation, withDrawDeposit, totalPercent}) => {
   // записиваем разницу в днях от создания депозита до сегодня
   const [days, setDays] = useState('');
-  // const [totalPercent, setTotalPercent] = useState('');
   const [confirmation, setConfirmation] = useState(false)
+  const [deleteDeposit, setDeleteDeposit] = useState(false)
 
   const getPercent = async () => {
     // дата создания депозита
@@ -51,7 +51,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
               const depositPercent = res.data.filter(u => u.deposit_percent === myDeposit.id);
               console.log(depositPercent)
               if (depositPercent) {
-                if(myDeposit.percent.length === deposit.percent.length) {
+                if (myDeposit.percent.length === deposit.percent.length) {
                   let counter = deposit.term - percent.length;
 
                   // получаем разницу в днях между последний начислениям и сегодня и через цикл делаем посты на сервер
@@ -146,28 +146,60 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
     return new Date(a.sortTime).getTime() - new Date(b.sortTime).getTime()
   }).reverse()
 
+  // отправляем письмо с кодом
+  const openDeleteDeposit = () => {
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const server = new ServerSettings();
+
+    const data = new FormData();
+    data.set('code', generatePassword())
+
+    axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
+      .then(res => {
+
+        axios.get(`${server.getApi()}api/users/${user.id}/`)
+          .then(res => {
+            loginUser(res.data)
+          }).catch(error => console.error(error))
+
+        // отправляем письмо
+        axios.get(`${server.getApi()}api/user/code/${user.id}/`)
+          .then(res => {
+            setConfirmation(true)
+            setDeleteDeposit(true)
+          }).catch(error => {
+          console.error(error);
+        });
+
+      }).catch(error => {
+      console.error(error);
+    });
+  }
+
   return (
     <>
       <InfoBlock>
         <Left>
           <div className="top">
 
-            <svg width="100%" height="100%" viewBox="0 0 42 42" className="donut">
-              <circle className="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="transparent"/>
-              <circle className="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d2d3d4"
-                      strokeWidth="1.8"/>
-              <circle className="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent"
-                      stroke="#4BA499" strokeWidth="1.8" strokeDasharray={`${dayInPercent} ${100 - dayInPercent}`}
-                      strokeDashoffset="25"/>
-              <g className="chart-text">
-
-                <text x="50%" y="50%"
-                      className="chart-number">{parseInt(deposit.term) - days <= 0 ? 0 : parseInt(deposit.term) - days} дней
-                </text>
-                <text x="50%" y="50%" className="chart-label">Осталось</text>
-              </g>
-            </svg>
-
+            <div className="diagramma">
+              <svg width="100%" height="100%" viewBox="0 0 42 42" className="donut">
+                <circle className="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="transparent"/>
+                <circle className="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d2d3d4"
+                        strokeWidth="1.8"/>
+                <circle className="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent"
+                        stroke="#4BA499" strokeWidth="1.8" strokeDasharray={`${dayInPercent} ${100 - dayInPercent}`}
+                        strokeDashoffset="25"/>
+              </svg>
+              <div className="chart-text">
+                <div
+                  className="chart-number">{parseInt(deposit.term) - days <= 0 ? 0 : parseInt(deposit.term) - days} дней
+                </div>
+                <div className="chart-label">Осталось</div>
+              </div>
+            </div>
           </div>
           <div className="bottom">
             <div className="item">
@@ -201,7 +233,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
             <div className="item">
               <div className="name">Прогнозируемая прибыль</div>
               <div className="value">{deposit.income} MRC</div>
-              <input type="text" name={'income'} value={deposit.income}  readOnly/>
+              <input type="text" name={'income'} value={deposit.income} hidden readOnly/>
             </div>
             {/*.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')*/}
             {
@@ -226,7 +258,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
                   text={'Отменить депозит'}
                   colorBgRed={true}
                   width={'100%'}
-                  func={onDelete}
+                  func={openDeleteDeposit}
                 />
               )
             }
@@ -266,6 +298,8 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
             validation={validation}
             close={closeModal}
             withDrawDeposit={withDrawDeposit}
+            deleteDeposit={deleteDeposit}
+            onDelete={onDelete}
           />
         )
       }

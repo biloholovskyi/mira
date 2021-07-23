@@ -14,7 +14,7 @@ import arrow from '../media/icon/arrow.svg'
 import ServerSettings from "../../../service/serverSettings";
 
 
-const ConfirmationCode = ({title, user, validation, close, withDrawDeposit}) => {
+const ConfirmationCode = ({title, user, validation, close, withDrawDeposit, deleteDeposit = false, onDelete}) => {
   const [authCode, setAuthCode] = useState('');
 
   const update = (value) => {
@@ -53,7 +53,7 @@ const ConfirmationCode = ({title, user, validation, close, withDrawDeposit}) => 
           colorBg={true}
           width={'100%'}
           type={'button'}
-          func={withDrawDeposit}
+          func={deleteDeposit ? onDelete : withDrawDeposit}
         />
         <p className={'send_again'}>
           Не пришел код?
