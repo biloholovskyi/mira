@@ -41,40 +41,44 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
 
     await axios.get(`${server.getApi()}api/deposit/`)
       .then(res => {
-        // получаем текущый депозит
-        const myDeposit = res.data.find(d => d.status === 'active');
+        // получаем нужного юзера
+        const needUser = res.data.filter(u => u.user_id === user.id);
+        if(needUser) {
+          // получаем текущый депозит
+          const myDeposit = needUser.find(d => d.status === 'active');
 
-        if (myDeposit) {
-          axios.get(`${server.getApi()}api/percent/`)
-            .then(res => {
-              // получаем проценты текущего депозита
-              const depositPercent = res.data.filter(u => u.deposit_percent === myDeposit.id);
-              console.log(depositPercent)
-              if (depositPercent) {
-                if (myDeposit.percent.length === deposit.percent.length) {
-                  let counter = deposit.term - percent.length;
+          if (myDeposit) {
+            axios.get(`${server.getApi()}api/percent/`)
+              .then(res => {
+                // получаем проценты текущего депозита
+                const depositPercent = res.data.filter(u => u.deposit_percent === myDeposit.id);
 
-                  // получаем разницу в днях между последний начислениям и сегодня и через цикл делаем посты на сервер
-                  for (let i = 0; i < days2; i++) {
-                    if (counter > 0) {
-                      // форматируем дату для начисления процентов
-                      const formatLastDate = lastItemDate.setDate(lastItemDate.getDate() + 1)
-                      const newFormatLastDate = new Date(formatLastDate);
+                if (depositPercent) {
+                  if (myDeposit.percent.length === deposit.percent.length) {
+                    let counter = deposit.term - percent.length;
 
-                      const data = new FormData();
-                      data.set('summa', myDeposit.dailyIncome)
-                      data.set('rate', myDeposit.rate)
-                      data.set('deposit_percent', myDeposit.id)
-                      data.set('percent_date', newFormatLastDate.toLocaleString().split(',')[0])
+                    // получаем разницу в днях между последний начислениям и сегодня и через цикл делаем посты на сервер
+                    for (let i = 0; i < days2; i++) {
+                      if (counter > 0) {
+                        // форматируем дату для начисления процентов
+                        const formatLastDate = lastItemDate.setDate(lastItemDate.getDate() + 1)
+                        const newFormatLastDate = new Date(formatLastDate);
 
-                      axios.post(`${server.getApi()}api/percent/`, data)
-                        .catch(error => console.error(error))
+                        const data = new FormData();
+                        data.set('summa', myDeposit.dailyIncome)
+                        data.set('rate', myDeposit.rate)
+                        data.set('deposit_percent', myDeposit.id)
+                        data.set('percent_date', newFormatLastDate.toLocaleString().split(',')[0])
+
+                        axios.post(`${server.getApi()}api/percent/`, data)
+                          .catch(error => console.error(error))
+                      }
+                      counter--
                     }
-                    counter--
                   }
                 }
-              }
-            }).catch(error => console.error(error))
+              }).catch(error => console.error(error))
+          }
         }
       }).catch(error => console.error(error))
   }

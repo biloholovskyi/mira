@@ -57,58 +57,63 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
 
     await axios.get(`${server.getApi()}api/deposit/`)
       .then(res => {
-        const deposit = res.data.find(d => d.status === 'active');
+        // получаем нужного юзера
+        const needUser = res.data.filter(u => u.user_id === user.id);
+        if (needUser) {
+          const deposit = needUser.find(d => d.status === 'active');
 
-        if (deposit) {
-          // получаем код подтверджения
-          const code = document.getElementById('code')
+          if (deposit) {
+            // получаем код подтверджения
+            const code = document.getElementById('code')
 
-          // новый баланс
-          const newBalance = parseInt(user.user_balance) + (parseInt(deposit.summa) + (parseInt(deposit.term) * parseInt(deposit.dailyIncome)))
+            // новый баланс
+            const newBalance = parseInt(user.user_balance) + (parseInt(deposit.summa) + (parseInt(deposit.term) * parseInt(deposit.dailyIncome)))
 
-          const data = new FormData();
-          data.set('user_balance', newBalance)
+            const data = new FormData();
+            data.set('user_balance', newBalance)
 
-          // проверяем совпадают ли коды
-          if (user.code === code.textContent) {
-            // обновляем баланс юзера
-            axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
-              .then(res => {
-                axios.get(`${server.getApi()}api/users/${user.id}/`)
-                  .then(res => {
-                    loginUser(res.data)
-                    setActive(false)
-                  }).catch(error => console.error(error))
-              }).catch(error => console.error(error))
+            // проверяем совпадают ли коды
+            if (user.code === code.textContent) {
+              // обновляем баланс юзера
+              axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
+                .then(res => {
+                  axios.get(`${server.getApi()}api/users/${user.id}/`)
+                    .then(res => {
+                      loginUser(res.data)
+                      setActive(false)
+                    }).catch(error => console.error(error))
+                }).catch(error => console.error(error))
 
-            // обновляем список транзакций
-            const data2 = new FormData();
-            data2.set("summa", deposit.total);
-            data2.set("user_id", user.id);
-            data2.set('operation', 'перевод с депозита')
-            data2.set('background', '#36C136')
+              const newSum = parseInt(deposit.summa) + (parseInt(deposit.term) * parseInt(deposit.dailyIncome))
+              // обновляем список транзакций
+              const data2 = new FormData();
+              data2.set("summa", newSum);
+              data2.set("user_id", user.id);
+              data2.set('operation', 'перевод с депозита')
+              data2.set('background', '#36C136')
 
-            axios.post(`${server.getApi()}api/balance/`, data2)
-              .catch(error => {
-                console.error(error)
-              })
+              axios.post(`${server.getApi()}api/balance/`, data2)
+                .catch(error => {
+                  console.error(error)
+                })
 
-            // delete deposit
-            const data3 = new FormData();
-            data3.set('status', 'un_active');
+              // delete deposit
+              const data3 = new FormData();
+              data3.set('status', 'un_active');
 
-            axios.put(`${server.getApi()}api/deposit/${deposit.id}/update/`, data3)
-              .then(res => {
-                setActive(false)
-                setDeposit({})
-                //window.location.reload()
-              }).catch(error => console.error(error))
+              axios.put(`${server.getApi()}api/deposit/${deposit.id}/update/`, data3)
+                .then(res => {
+                  setActive(false)
+                  setDeposit({})
+                  //window.location.reload()
+                }).catch(error => console.error(error))
 
-            setSuccessModalText('средства выведены')
-          } else {
-            validationInput()
+              setSuccessModalText('средства выведены')
+            } else {
+              validationInput()
+            }
+
           }
-
         }
       }).catch(error => console.error(error))
   }
@@ -152,10 +157,10 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
     await axios.get(`${server.getApi()}api/users/${user.id}/`)
       .then(res => {
         if (parseInt(e.target.summa.value) <= parseInt(user.user_balance) && parseInt(e.target.summa.value) > 0) {
-          if(parseInt(e.target.summa.value) < 100){
+          if (parseInt(e.target.summa.value) < 100) {
             validationSumma();
             setErrorModalText('минимальная сумма 100 MRC')
-          } else if (parseInt(e.target.summa.value) > 5000){
+          } else if (parseInt(e.target.summa.value) > 5000) {
             validationSumma();
             setErrorModalText('максимальная сумма 5000 MRC')
           } else {
@@ -164,7 +169,6 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
               .then(res => {
                 setDeposit(res.data)
                 setActive(true)
-                console.log(res.data)
                 if (res.data) {
                   const data2 = new FormData();
                   data2.set('summa', res.data.dailyIncome)
@@ -176,12 +180,16 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
                     .then(res => {
                       axios.get(`${server.getApi()}api/deposit/`)
                         .then(res => {
-                          const currentPercent = res.data.find(d => d.status === 'active');
-                          setPercent(currentPercent.percent)
+                          const needUser = res.data.filter(u => u.user_id === user.id);
+                          if (needUser) {
+                            const currentPercent = needUser.find(d => d.status === 'active');
+                            setPercent(currentPercent.percent)
+                            const allPercent = currentPercent.percent.map(u => parseFloat(u.summa))
+                            const totalPerc = allPercent.reduce((a, b) => a + b)
+                            setTotalPercent(totalPerc)
 
-                          const allPercent = currentPercent.percent.map(u => parseFloat(u.summa))
-                          const totalPerc = allPercent.reduce((a, b) => a + b)
-                          setTotalPercent(totalPerc)
+                          }
+
                         }).catch(error => console.error(error))
                     }).catch(error => console.error(error))
                 }
@@ -226,21 +234,27 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
 
     await axios.get(`${server.getApi()}api/deposit/`)
       .then(res => {
-        const activeDep = res.data.find(d => d.status === 'active');
+        // получаем нужного юзера
+        const needUser = res.data.filter(u => u.user_id === user.id);
 
-        if (activeDep.status === 'active') {
-          setDeposit(activeDep)
-          setPercent(activeDep.percent)
-          setActive(true)
+        if (needUser) {
+          // получаем активный депозит текущого юзера
+          const activeDep = needUser.find(d => d.status === 'active');
 
-          const allPercent = activeDep.percent.map(u => parseFloat(u.summa))
-          const totalPerc = allPercent.reduce((a, b) => a + b)
-          setTotalPercent(totalPerc)
-        } else {
-          setDeposit({})
-          setPercent([])
-          setActive(false)
-          setTotalPercent(0)
+          if (activeDep) {
+            setDeposit(activeDep)
+            setPercent(activeDep.percent)
+            setActive(true)
+
+            const allPercent = activeDep.percent.map(u => parseFloat(u.summa))
+            const totalPerc = allPercent.reduce((a, b) => a + b)
+            setTotalPercent(totalPerc)
+          } else {
+            setDeposit({})
+            setPercent([])
+            setActive(false)
+            setTotalPercent(0)
+          }
         }
       }).catch(error => console.error(error))
   }
@@ -258,43 +272,47 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
 
     await axios.get(`${server.getApi()}api/deposit/`)
       .then(res => {
-        const deposit = res.data.find(d => d.status === 'active');
-        if (deposit) {
-          const newBalance = parseInt(user.user_balance) + parseInt(deposit.summa);
+        // получаем нужного юзера
+        const needUser = res.data.filter(u => u.user_id === user.id);
+        if (needUser) {
+          const deposit = needUser.find(d => d.status === 'active');
+          if (deposit) {
+            const newBalance = parseInt(user.user_balance) + parseInt(deposit.summa);
 
-          const data = new FormData();
-          data.set('user_balance', newBalance);
+            const data = new FormData();
+            data.set('user_balance', newBalance);
 
-          axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
-            .then(res => {
-              axios.get(`${server.getApi()}api/users/${user.id}/`)
-                .then(res => {
-                  loginUser(res.data)
-                }).catch(error => console.error(error))
-            })
-            .catch(error => console.error(error))
+            axios.put(`${server.getApi()}api/users/${user.id}/update/`, data)
+              .then(res => {
+                axios.get(`${server.getApi()}api/users/${user.id}/`)
+                  .then(res => {
+                    loginUser(res.data)
+                  }).catch(error => console.error(error))
+              })
+              .catch(error => console.error(error))
 
-          const data2 = new FormData();
-          data2.set('status', 'un_active');
+            const data2 = new FormData();
+            data2.set('status', 'un_active');
 
-          axios.put(`${server.getApi()}api/deposit/${deposit.id}/update/`, data2)
-            .then(res => {
-              setActive(false)
-              setDeposit({})
-              console.log('delete')
-            }).catch(error => console.error(error))
+            axios.put(`${server.getApi()}api/deposit/${deposit.id}/update/`, data2)
+              .then(res => {
+                setActive(false)
+                setDeposit({})
+                console.log('delete')
+              }).catch(error => console.error(error))
 
-          // обновляем список транзакций
-          const data3 = new FormData();
-          data3.set("summa", deposit.summa);
-          data3.set("user_id", user.id);
-          data3.set('operation', 'отмена депозита')
-          data3.set('background', '#36C136')
+            // обновляем список транзакций
+            const data3 = new FormData();
+            data3.set("summa", deposit.summa);
+            data3.set("user_id", user.id);
+            data3.set('operation', 'отмена депозита')
+            data3.set('background', '#36C136')
 
-          axios.post(`${server.getApi()}api/balance/`, data3)
-            .catch(error => {
-              console.error(error)
-            })
+            axios.post(`${server.getApi()}api/balance/`, data3)
+              .catch(error => {
+                console.error(error)
+              })
+          }
         }
       }).catch(error => console.error(error));
   }
