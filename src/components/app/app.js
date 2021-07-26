@@ -18,11 +18,12 @@ import Deposit from '../../pages/deposit/deposit';
 import Header from '../header/header';
 import Referral from '../../pages/referral/Referral';
 import ForgotPassword from '../../pages/forgotPassword/forgotPassword';
+import Notification from "../../pages/notification/notification";
 
 import ServerSettings from "../../service/serverSettings";
 
 import './App.css'
-import Preloader from "../preloader/preloader";
+
 
 const App = ({loginUser}) => {
   const [loading, setLoading] = useState(false);
@@ -118,6 +119,7 @@ const App = ({loginUser}) => {
         <Route path='/deposit' exact component={Deposit}/>
         <Route path='/ref' exact component={Referral}/>
         <Route path='/forgotPassword' exact component={ForgotPassword}/>
+        <Route path='/notification' exact component={Notification}/>
       </Switch>
     </>
   )
