@@ -2,7 +2,7 @@ import React from 'react';
 
 import {PreloaderWrap} from './styled';
 
-import logo from './media/logo-green.svg';
+import logo from './media/preloader.svg';
 
 const Preloader = () => {
   return (
