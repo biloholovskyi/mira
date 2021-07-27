@@ -23,6 +23,7 @@ import Notification from "../../pages/notification/notification";
 import ServerSettings from "../../service/serverSettings";
 
 import './App.css'
+import Preloader from "../preloader/preloader";
 
 
 const App = ({loginUser}) => {
@@ -121,6 +122,7 @@ const App = ({loginUser}) => {
         <Route path='/forgotPassword' exact component={ForgotPassword}/>
         <Route path='/notification' exact component={Notification}/>
       </Switch>
+      <Preloader/>
     </>
   )
 }
