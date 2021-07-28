@@ -41,8 +41,8 @@ const App = ({loginUser}) => {
 
   // navigation
   const Dashboard = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/dashboard/dashboard")), 1500);});});
-  const Settings = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/balance/balance")), 1500);});});
-  const Balance = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/dashboard/dashboard")), 1500);});});
+  const Settings = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/settings/settings")), 1500);});});
+  const Balance = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/balance/balance")), 1500);});});
   const Faq = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/faq/faq")), 1500);});});
   const Deposit = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/deposit/deposit")), 1500);});});
   const Referral = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/referral/Referral")), 1500);});});
