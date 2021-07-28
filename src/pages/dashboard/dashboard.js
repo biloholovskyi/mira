@@ -11,6 +11,7 @@ import {TopBlock, Balance, RefLink, MyIncome, ActivePrograms} from './styled';
 
 import TopUpModal from "./modals/topUpModal/topUpModal";
 import WithDraw from "./modals/withDraw/withDraw";
+import SpinnerSimple from "../../components/spinner/spinner";
 
 const Dashboard = ({user}) => {
   const [chartsType, setChartsType] = useState('week');
@@ -259,7 +260,6 @@ const Dashboard = ({user}) => {
           <div className="small_title">Активные программы</div>
 
           <ActiveProgram/>
-
         </ActivePrograms>
       </div>
       {
