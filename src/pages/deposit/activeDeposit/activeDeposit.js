@@ -9,8 +9,19 @@ import {Left, Right, DepositTable, InfoBlock, TabWrapper, DepositEnd} from "../s
 
 import {loginUser, setSuccessModalText} from '../../../actions/index';
 import ServerSettings from "../../../service/serverSettings";
+import Spinner from '../../../components/spinner/spinner';
 
-const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation, withDrawDeposit, totalPercent}) => {
+const ActiveDeposit = ({
+                         deposit,
+                         user,
+                         onDelete,
+                         percent,
+                         loginUser,
+                         validation,
+                         withDrawDeposit,
+                         totalPercent,
+                         spinner
+                       }) => {
   // записиваем разницу в днях от создания депозита до сегодня
   const [days, setDays] = useState('');
   const [confirmation, setConfirmation] = useState(false)
@@ -43,7 +54,7 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
       .then(res => {
         // получаем нужного юзера
         const needUser = res.data.filter(u => u.user_id === user.id);
-        if(needUser) {
+        if (needUser) {
           // получаем текущый депозит
           const myDeposit = needUser.find(d => d.status === 'active');
 
@@ -280,19 +291,25 @@ const ActiveDeposit = ({deposit, user, onDelete, percent, loginUser, validation,
             <th>Дата</th>
           </tr>
           </thead>
-          <tbody>
           {
-            sortPercentList.map(item => {
-              return (
-                <tr key={item.id}>
-                  <td>{item.summa}</td>
-                  <td>{item.rate}</td>
-                  <td>{item.percent_date}</td>
-                </tr>
-              )
-            })
+            spinner ? (
+              <Spinner/>
+            ) : (
+              <tbody>
+              {
+                sortPercentList.map(item => {
+                  return (
+                    <tr key={item.id}>
+                      <td>{item.summa}</td>
+                      <td>{item.rate}</td>
+                      <td>{item.percent_date}</td>
+                    </tr>
+                  )
+                })
+              }
+              </tbody>
+            )
           }
-          </tbody>
         </table>
       </DepositTable>
       {

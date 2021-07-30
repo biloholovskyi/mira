@@ -13,7 +13,7 @@ import Header from '../header/header';
 import ForgotPassword from '../../pages/forgotPassword/forgotPassword';
 import LeftSideBar from "../leftSideBar/leftSideBar";
 
-// import Dashboard from '../../pages/dashboard/dashboard';
+//import Dashboard from '../../pages/dashboard/dashboard';
 // import Settings from '../../pages/settings/settings';
 // import Balance from '../../pages/balance/balance';
 // import Faq from '../../pages/faq/faq';
@@ -25,6 +25,15 @@ import ServerSettings from "../../service/serverSettings";
 
 import './App.css'
 import Preloader from "../preloader/preloader";
+
+// navigation
+const Dashboard = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/dashboard/dashboard")), 1500);});});
+const Settings = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/settings/settings")), 1500);});});
+const Balance = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/balance/balance")), 1500);});});
+const Faq = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/faq/faq")), 1500);});});
+const Deposit = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/deposit/deposit")), 1500);});});
+const Referral = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/referral/Referral")), 1500);});});
+const Notification = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/notification/notification")), 1500);});});
 
 const App = ({loginUser}) => {
   const [loading, setLoading] = useState(false);
@@ -40,13 +49,13 @@ const App = ({loginUser}) => {
   }, [])
 
   // navigation
-  const Dashboard = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/dashboard/dashboard")), 1500);});});
-  const Settings = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/settings/settings")), 1500);});});
-  const Balance = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/balance/balance")), 1500);});});
-  const Faq = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/faq/faq")), 1500);});});
-  const Deposit = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/deposit/deposit")), 1500);});});
-  const Referral = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/referral/Referral")), 1500);});});
-  const Notification = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/notification/notification")), 1500);});});
+  // const Dashboard = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/dashboard/dashboard")), 1500);});});
+  // const Settings = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/settings/settings")), 1500);});});
+  // const Balance = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/balance/balance")), 1500);});});
+  // const Faq = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/faq/faq")), 1500);});});
+  // const Deposit = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/deposit/deposit")), 1500);});});
+  // const Referral = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/referral/Referral")), 1500);});});
+  // const Notification = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/notification/notification")), 1500);});});
 
 
   useEffect(() => {

@@ -264,7 +264,8 @@ const DepositTable = styled.div`
   table {
     width: 100%;
     border-collapse: collapse;
-
+    position: relative;
+    
     thead {
       tr {
         th {

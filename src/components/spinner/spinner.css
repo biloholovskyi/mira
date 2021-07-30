@@ -53,6 +53,7 @@
   border-radius: 50%;
   -webkit-animation: .75s linear infinite spinner-border;
   animation: 1s linear infinite spinner-border;
+  margin-right: 0px!important;
 }
 
 .spinner-border-sm {

@@ -16,6 +16,7 @@ import ServerSettings from "../../service/serverSettings";
 import SmallSuccessModal from "../../components/smallSuccessModal/smallSuccessModal";
 import SmallErrorModal from "../../components/smallErrorModal/smallErrorModal";
 import Preloader from "../../components/preloader/preloader";
+import Spinner from '../../components/spinner/spinner';
 
 const Balance = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   // модалка вывода средств
@@ -30,6 +31,14 @@ const Balance = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   const [transferSum, setTransferSUm] = useState('')
   const [validation, setValidation] = useState(false);
   const [validationSum, setValidationSum] = useState(false);
+  const [spinner, setSpinner] = useState(false);
+
+  useEffect(()=> {
+    setSpinner(true)
+    setTimeout(()=> {
+      setSpinner(false)
+    }, 1000)
+  }, [])
 
   const validationInput = () => {
     setValidation(true)
@@ -347,29 +356,35 @@ const Balance = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
               {/*<th>Коментарий к платежу</th>*/}
             </tr>
             </thead>
-            <tbody>
             {
-              sortList.map(item => {
-                const MyNewDate = item.date.split('T')[0]
-                const dateNormal = formatDate(MyNewDate);
-                return (
-                  <tr key={item.id}>
-                    <td>
-                      <div className="info">
-                        <div className="indicator" style={{backgroundColor: item.background}}/>
-                        <div className="name">{item.operation}</div>
-                        <div className="mobile_summ">{item.summa} MRC</div>
-                      </div>
-                    </td>
-                    <td>{item.status === 'Conducted' ? 'Проведено' : 'Не Проведено'}</td>
-                    <td>{dateNormal}</td>
-                    <td>{item.summa}</td>
-                    {/*<td>Коментарий</td>*/}
-                  </tr>
-                )
-              })
+              spinner ? (
+                <Spinner />
+              ) : (
+                <tbody>
+                {
+                  sortList.map(item => {
+                    const MyNewDate = item.date.split('T')[0]
+                    const dateNormal = formatDate(MyNewDate);
+                    return (
+                      <tr key={item.id}>
+                        <td>
+                          <div className="info">
+                            <div className="indicator" style={{backgroundColor: item.background}}/>
+                            <div className="name">{item.operation}</div>
+                            <div className="mobile_summ">{item.summa} MRC</div>
+                          </div>
+                        </td>
+                        <td>{item.status === 'Conducted' ? 'Проведено' : 'Не Проведено'}</td>
+                        <td>{dateNormal}</td>
+                        <td>{item.summa}</td>
+                        {/*<td>Коментарий</td>*/}
+                      </tr>
+                    )
+                  })
+                }
+                </tbody>
+              )
             }
-            </tbody>
           </table>
         </TableWrap>
         {/*маленькая модалка успеха*/}

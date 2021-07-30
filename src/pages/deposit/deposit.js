@@ -30,6 +30,14 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
   const [active, setActive] = useState(false)
   // общая сума всех процентов
   const [totalPercent, setTotalPercent] = useState('');
+  const [spinner, setSpinner] = useState(false);
+
+  useEffect(()=> {
+    setSpinner(true)
+    setTimeout(()=> {
+      setSpinner(false)
+    }, 1000)
+  }, [])
 
   useEffect(() => {
     return () => {
@@ -342,6 +350,7 @@ const Deposit = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
               withDrawDeposit={withDrawDeposit}
               validation={validation}
               totalPercent={totalPercent}
+              spinner={spinner}
             />
 
             : <MakeDeposit
