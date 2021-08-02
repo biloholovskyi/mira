@@ -19,6 +19,12 @@ html, body {
   min-height: 100vh;
 }
 
+.admin_container {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
 @media (max-width: 1300px) {
   .main_container {
     padding: 30px;

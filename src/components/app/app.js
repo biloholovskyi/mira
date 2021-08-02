@@ -25,6 +25,8 @@ import ServerSettings from "../../service/serverSettings";
 
 import './App.css'
 import Preloader from "../preloader/preloader";
+import AdminHeader from "../adminHeader/adminHeader";
+import AdminUsers from "../../pages/adminUsers/adminUsers";
 
 // navigation
 const Dashboard = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/dashboard/dashboard")), 1500);});});
@@ -35,7 +37,7 @@ const Deposit = React.lazy(() => {return new Promise(resolve => {setTimeout(() =
 const Referral = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/referral/Referral")), 1500);});});
 const Notification = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/notification/notification")), 1500);});});
 
-const App = ({loginUser}) => {
+const App = ({loginUser, user}) => {
   const [loading, setLoading] = useState(false);
   // window width
   const [windowWidth, setWidth] = useState(window.innerWidth);
@@ -47,16 +49,6 @@ const App = ({loginUser}) => {
     setWidth(window.innerWidth);
     window.addEventListener('resize', () => handlerResize())
   }, [])
-
-  // navigation
-  // const Dashboard = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/dashboard/dashboard")), 1500);});});
-  // const Settings = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/settings/settings")), 1500);});});
-  // const Balance = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/balance/balance")), 1500);});});
-  // const Faq = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/faq/faq")), 1500);});});
-  // const Deposit = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/deposit/deposit")), 1500);});});
-  // const Referral = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/referral/Referral")), 1500);});});
-  // const Notification = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/notification/notification")), 1500);});});
-
 
   useEffect(() => {
     _checkToken().catch(error => console.error(error));
@@ -94,9 +86,18 @@ const App = ({loginUser}) => {
     }
   }
 
+  let isAdmin = window.location.pathname.split("/")[1] === "admin";
+  if (user.type === 'admin') {
+    isAdmin = 'admin'
+  }
+
   return (
     <>
-      <LeftSideBar/>
+      {
+        isAdmin
+        ? <AdminHeader/>
+        : <LeftSideBar/>
+      }
       {
         windowWidth < 900 && (
           <Header/>
@@ -141,6 +142,7 @@ const App = ({loginUser}) => {
           <Route path='/ref' exact component={Referral}/>
           <Route path='/forgotPassword' exact component={ForgotPassword}/>
           <Route path='/notification' exact component={Notification}/>
+          <Route path='/admin/users' exact component={AdminUsers}/>
         </Switch>
       </Suspense>
     </>
