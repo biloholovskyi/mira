@@ -23,6 +23,7 @@ html, body {
   width: 100%;
   max-width: 1320px;
   margin: 0 auto;
+  padding: 0 15px;
 }
 
 @media (max-width: 1300px) {

@@ -3,7 +3,7 @@ import {Redirect, Route, Switch} from "react-router";
 import {connect} from "react-redux";
 import axios from "axios";
 
-import {loginUser} from '../../actions/index';
+import {loginUser, getAllUsers} from '../../actions/index';
 
 import Login from '../../pages/login/login';
 import Registration from '../../pages/registration/registration'
@@ -37,7 +37,7 @@ const Deposit = React.lazy(() => {return new Promise(resolve => {setTimeout(() =
 const Referral = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/referral/Referral")), 1500);});});
 const Notification = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/notification/notification")), 1500);});});
 
-const App = ({loginUser, user}) => {
+const App = ({loginUser, user, getAllUsers}) => {
   const [loading, setLoading] = useState(false);
   // window width
   const [windowWidth, setWidth] = useState(window.innerWidth);
@@ -85,6 +85,22 @@ const App = ({loginUser, user}) => {
       setLoading(false);
     }
   }
+
+  const getUsers = async () => {
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const server = new ServerSettings();
+
+    await axios.get(`${server.getApi()}api/users/`)
+      .then(res => {
+        getAllUsers(res.data)
+      }).catch(error => console.error(error))
+  }
+
+  useEffect(() => {
+    getUsers().catch(error => console.error(error));
+  }, [])
 
   let isAdmin = window.location.pathname.split("/")[1] === "admin";
   if (user.type === 'admin') {
@@ -151,12 +167,14 @@ const App = ({loginUser, user}) => {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user,
+    users: state.users
   }
 };
 
 const mapDispatchToProps = {
-  loginUser
+  loginUser,
+  getAllUsers
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
