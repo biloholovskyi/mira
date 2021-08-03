@@ -82,45 +82,10 @@ const TableWrap = styled.table`
         line-height: 22px;
         text-align: right;
         color: #FFFFFF;
-
-        .info_block {
-          display: flex;
-          align-items: center;
-
-          .photo {
-            width: 40px;
-            height: 40px;
-            min-height: 40px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-right: 16px;
-            min-width: 40px;
-          }
-
-          .name_block {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-
-            .name {
-              font-family: 'TTInterfaces-Bold', sans-serif;
-              font-style: normal;
-              font-weight: 600;
-              font-size: 16px;
-              line-height: 22px;
-              color: #FFFFFF;
-            }
-
-            .nickname {
-              font-family: 'TTInterfaces-Regular', sans-serif;
-              font-style: normal;
-              font-weight: normal;
-              font-size: 14px;
-              line-height: 20px;
-              color: #9E9E9E;
-            }
-          }
-        }
+        
+      }
+      & td:first-child{
+        text-align: left;
       }
     }
 

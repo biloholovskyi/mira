@@ -132,6 +132,7 @@ const Balance = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
         const data = new FormData();
         data.set('email', e.target.selectUser.value);
         data.set('summa', e.target.transferSumma.value);
+        data.set('type', 'inner')
         data.set('operation', 'перевод')
         data.set('user_id', getUser.id)
 

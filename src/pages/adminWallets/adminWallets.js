@@ -3,12 +3,13 @@ import React, {useEffect, useState} from "react";
 import MainButton from "../../components/mainButton/mainButton";
 import Pagination from "./pagination/pagination";
 
-import {AdminUserWrap, TableWrap} from './styled'
-import avatar from './media/userAvatar.svg';
-
+import {AdminUserWrap, TableWrap} from "./styled";
 import {connect} from "react-redux";
 
-const AdminUsers = ({users}) => {
+const AdminWallets = ({users, balance}) => {
+  // все пополнение пользователей
+  const [allTopUp, setAllTopUp] = useState([]);
+  // для пагинации
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(12);
 
@@ -19,8 +20,8 @@ const AdminUsers = ({users}) => {
   }
 
   // получаем дату и меняем в нужном формате
-  const sortList = users.map(event => {
-    const date = event.created_at.split('T')[0]
+  const sortList = allTopUp.map(event => {
+    const date = event.date.split('T')[0]
     const myDate = formatDate(date)
     return {...event, sortTime: myDate};
   })
@@ -29,12 +30,20 @@ const AdminUsers = ({users}) => {
   sortList.sort((a, b) => {
     return new Date(a.sortTime).getTime() - new Date(b.sortTime).getTime()
   }).reverse();
-  // pagination
+
+  // для пагинации
   const lastUserIndex = currentPage * usersPerPage;
   const firstUserIndex = lastUserIndex - usersPerPage;
   const currentUsers = sortList.slice(firstUserIndex, lastUserIndex)
 
   const paginate = pageNumber => setCurrentPage(pageNumber)
+
+  useEffect(()=> {
+    // получаем все пополнения и записиваем в стейт
+    const getTopUp = balance.filter(u => u.operation === 'пополнение')
+    setAllTopUp(getTopUp)
+    console.log(getTopUp)
+  }, [])
 
   return (
     <div className={'admin_container'}>
@@ -50,31 +59,29 @@ const AdminUsers = ({users}) => {
         <TableWrap>
           <thead>
           <tr>
-            <th>Операция</th>
-            <th>Статус</th>
-            <th>Дата регистрации</th>
-            <th>Баланс кошелька</th>
+            <th>Тип пополнения</th>
+            <th>Логин пользователя</th>
+            <th>Дата</th>
+            <th>Сумма</th>
           </tr>
           </thead>
           <tbody>
           {
-            currentUsers.map((item, key) => {
-              const MyNewDate = item.created_at.split('T')[0]
+            currentUsers.map((item, i) => {
+              // логин
+              const getNickName = users.find(u => u.id === item.user_id);
+              // дата в нужном формате
+              const MyNewDate = item.date.split('T')[0]
               const dateNormal = formatDate(MyNewDate);
+              // тип пополнения
+              const type = item.type === 'outer' ? 'Внешний' : item.type === 'inner' ? 'Внутренний' : null;
+
               return (
-                <tr key={key}>
-                  <td>
-                    <div className="info_block">
-                      <img src={item.photo === null ? avatar : item.photo} alt="photo" className={'photo'}/>
-                      <div className="name_block">
-                        <div className="name">{item.name} {item.surName}</div>
-                        <div className="nickname">{item.email.split('@')[0]}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>??????????</td>
+                <tr key={i}>
+                  <td>{type}</td>
+                  <td>{getNickName.email.split('@')[0]}</td>
                   <td>{dateNormal}</td>
-                  <td>{item.user_balance.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')} MRC</td>
+                  <td>{item.summa.replace(/(\d)(?=(\d{3})+(\D|$))/g, '$1 ')}</td>
                 </tr>
               )
             })
@@ -84,7 +91,7 @@ const AdminUsers = ({users}) => {
         <div className="bottom_info">
           <Pagination
             usersPerPage={usersPerPage}
-            totalUsers={users.length}
+            totalUsers={allTopUp.length}
             paginate={paginate}
             currentPage={currentPage}
           />
@@ -93,8 +100,8 @@ const AdminUsers = ({users}) => {
             <div>-</div>
             <div>{lastUserIndex}</div>
             <div>из</div>
-           <div> {users.length}</div>
-            <div>пользователей</div>
+            <div> {allTopUp.length}</div>
+            <div>пополнений</div>
           </div>
         </div>
       </AdminUserWrap>
@@ -104,10 +111,11 @@ const AdminUsers = ({users}) => {
 
 const mapStateToProps = (state) => {
   return {
-    users: state.users
+    users: state.users,
+    balance: state.balance
   }
 };
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminUsers);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminWallets);

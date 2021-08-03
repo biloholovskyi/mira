@@ -3,7 +3,7 @@ import {Redirect, Route, Switch} from "react-router";
 import {connect} from "react-redux";
 import axios from "axios";
 
-import {loginUser, getAllUsers} from '../../actions/index';
+import {loginUser, getAllUsers, getAllBalance} from '../../actions/index';
 
 import Login from '../../pages/login/login';
 import Registration from '../../pages/registration/registration'
@@ -12,6 +12,10 @@ import TemporaryPassword from '../../pages/temporaryPassword/temporaryPassword';
 import Header from '../header/header';
 import ForgotPassword from '../../pages/forgotPassword/forgotPassword';
 import LeftSideBar from "../leftSideBar/leftSideBar";
+import Preloader from "../preloader/preloader";
+import AdminHeader from "../adminHeader/adminHeader";
+import AdminUsers from "../../pages/adminUsers/adminUsers";
+import AdminWallets from "../../pages/adminWallets/adminWallets";
 
 //import Dashboard from '../../pages/dashboard/dashboard';
 // import Settings from '../../pages/settings/settings';
@@ -24,9 +28,6 @@ import LeftSideBar from "../leftSideBar/leftSideBar";
 import ServerSettings from "../../service/serverSettings";
 
 import './App.css'
-import Preloader from "../preloader/preloader";
-import AdminHeader from "../adminHeader/adminHeader";
-import AdminUsers from "../../pages/adminUsers/adminUsers";
 
 // navigation
 const Dashboard = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/dashboard/dashboard")), 1500);});});
@@ -37,7 +38,7 @@ const Deposit = React.lazy(() => {return new Promise(resolve => {setTimeout(() =
 const Referral = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/referral/Referral")), 1500);});});
 const Notification = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/notification/notification")), 1500);});});
 
-const App = ({loginUser, user, getAllUsers}) => {
+const App = ({loginUser, user, getAllUsers, getAllBalance}) => {
   const [loading, setLoading] = useState(false);
   // window width
   const [windowWidth, setWidth] = useState(window.innerWidth);
@@ -86,6 +87,7 @@ const App = ({loginUser, user, getAllUsers}) => {
     }
   }
 
+  //получаем всех юзеров
   const getUsers = async () => {
     axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
     axios.defaults.xsrfCookieName = 'csrftoken';
@@ -100,6 +102,23 @@ const App = ({loginUser, user, getAllUsers}) => {
 
   useEffect(() => {
     getUsers().catch(error => console.error(error));
+  }, [])
+
+  //получаем весь баланс всех пользователей
+  const getBalance = async () => {
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const server = new ServerSettings();
+
+    await axios.get(`${server.getApi()}api/balance/`)
+      .then(res => {
+        getAllBalance(res.data)
+      }).catch(error => console.error(error))
+  }
+
+  useEffect(() => {
+    getBalance().catch(error => console.error(error));
   }, [])
 
   let isAdmin = window.location.pathname.split("/")[1] === "admin";
@@ -159,6 +178,7 @@ const App = ({loginUser, user, getAllUsers}) => {
           <Route path='/forgotPassword' exact component={ForgotPassword}/>
           <Route path='/notification' exact component={Notification}/>
           <Route path='/admin/users' exact component={AdminUsers}/>
+          <Route path='/admin/wallets' exact component={AdminWallets}/>
         </Switch>
       </Suspense>
     </>
@@ -174,7 +194,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   loginUser,
-  getAllUsers
+  getAllUsers,
+  getAllBalance
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

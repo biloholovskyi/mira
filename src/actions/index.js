@@ -12,6 +12,13 @@ const getAllUsers = (users) => {
   }
 }
 
+const getAllBalance = (balance) => {
+  return {
+    type: 'GET_ALL_BALANCE',
+    balance
+  }
+}
+
 // передаем текст в success modal
 const setSuccessModalText = (text) => {
   return {type: 'SHOW_SUCCESS_MODAL', text}
@@ -26,5 +33,6 @@ export {
   loginUser,
   getAllUsers,
   setSuccessModalText,
-  setErrorModalText
+  setErrorModalText,
+  getAllBalance
 }

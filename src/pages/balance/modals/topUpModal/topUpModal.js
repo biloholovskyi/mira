@@ -68,6 +68,7 @@ const TopUpModal = ({close, update, user, loginUser}) => {
         data.set("summa", e.target.summa.value);
         data.set("user_id", user.id);
         data.set('operation', 'пополнение')
+        data.set('type', 'outer')
         data.set('background', '#36C136')
 
         const newBalance = parseInt(user.user_balance) + parseInt(e.target.summa.value);

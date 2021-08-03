@@ -10,6 +10,7 @@ const initialState = {
   },
 
   users: [],
+  balance: [],
   // success message
   successModal: false,
   // error message
@@ -30,6 +31,12 @@ const reducer = (state= initialState, action) => {
       return {
         ...state,
         users: action.users
+      }
+
+    case 'GET_ALL_BALANCE':
+      return {
+        ...state,
+        balance: action.balance
       }
 
     case 'SHOW_SUCCESS_MODAL':
