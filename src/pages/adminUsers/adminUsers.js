@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 import MainButton from "../../components/mainButton/mainButton";
+import Pagination from "./pagination/pagination";
 
 import {AdminUserWrap, TableWrap} from './styled'
 import avatar from './media/userAvatar.svg';
@@ -8,6 +9,16 @@ import avatar from './media/userAvatar.svg';
 import {connect} from "react-redux";
 
 const AdminUsers = ({users}) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(2);
+
+  // pagination
+  const lastUserIndex = currentPage * usersPerPage;
+  const firstUserIndex = lastUserIndex - usersPerPage;
+  const currentUsers = users.slice(firstUserIndex, lastUserIndex)
+
+  const paginate = pageNumber => setCurrentPage(pageNumber)
+
   // формат даты
   const formatDate = (string) => {
     let options = {year: 'numeric', month: 'numeric', day: 'numeric'};
@@ -36,10 +47,9 @@ const AdminUsers = ({users}) => {
           </thead>
           <tbody>
           {
-            users.map((item, key) => {
+            currentUsers.map((item, key) => {
               const MyNewDate = item.created_at.split('T')[0]
               const dateNormal = formatDate(MyNewDate);
-              console.log(item)
               return (
                 <tr key={key}>
                   <td>
@@ -60,6 +70,22 @@ const AdminUsers = ({users}) => {
           }
           </tbody>
         </TableWrap>
+        <div className="bottom_info">
+          <Pagination
+            usersPerPage={usersPerPage}
+            totalUsers={users.length}
+            paginate={paginate}
+            currentPage={currentPage}
+          />
+          <div className="count_users">
+            <div>{firstUserIndex === 0 ? 1 : firstUserIndex }</div>
+            <div>-</div>
+            <div>{lastUserIndex}</div>
+            <div>из</div>
+           <div> {users.length}</div>
+            <div>пользователей</div>
+          </div>
+        </div>
       </AdminUserWrap>
     </div>
   )
