@@ -16,7 +16,7 @@ const MainButton = ({text, func = () => null, width, type = 'button', classList,
 
   return (
     <Button
-      onClick={() => onClick()}
+      onClick={() => func()}
       width={width}
       type={type}
       className={classList}

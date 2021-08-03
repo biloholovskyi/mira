@@ -10,7 +10,7 @@ import {connect} from "react-redux";
 
 const AdminUsers = ({users}) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage] = useState(2);
+  const [usersPerPage] = useState(12);
 
   // pagination
   const lastUserIndex = currentPage * usersPerPage;

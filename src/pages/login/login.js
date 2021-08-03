@@ -25,7 +25,7 @@ const Login = ({setSuccessModalText, loginUser, setErrorModalText, user}) => {
   const [authCode, setAuthCode] = useState('');
   const history = useHistory();
   console.log(user)
-  console.log(authCode)
+
   const validationInput = () => {
     setValidation(true)
   }
