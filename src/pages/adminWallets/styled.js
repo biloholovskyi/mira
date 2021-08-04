@@ -206,6 +206,8 @@ const InfoSection = styled.div`
         line-height: 22px;
         color: #FFFFFF;
         white-space: nowrap;
+        display: flex;
+        align-items: center;
       }
       .arrow_down {
         width: 18px;
@@ -256,6 +258,12 @@ const InfoSection = styled.div`
     }
     & .dropList:first-child {
       margin-right: 24px;
+    }
+    .dropList_container {
+      margin-right: 0;
+      .calendar_dropList {
+        margin-right: 0;
+      }
     }
   }
 `

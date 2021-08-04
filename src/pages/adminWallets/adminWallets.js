@@ -222,7 +222,7 @@ const AdminWallets = ({users, balance}) => {
               <div className="text">Все пополнения</div>
               <img src={arrow} alt="icon" className={'arrow_down'} />
             </div>
-            <div style={{position: "relative"}}>
+            <div style={{position: "relative"}} className={'dropList_container'}>
               <button type={'button'} onClick={()=> setShowCalendar(!showCalendar)} className="dropList calendar_dropList">
                 <div className="text">
                   <img src={calendar} alt="icon" className={'calendar_icon'}/>
