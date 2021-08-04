@@ -164,8 +164,132 @@ const PaginationWrap = styled.ul`
   }
 `
 
+const InfoSection = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  .left {
+    display: flex;
+    align-items: center;
+    .text {
+      font-family: 'TTInterfaces-Regular', sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 22px;
+      color: #D0D0D4;
+      margin-right: 24px;
+    }
+  }
+  .right {
+    display: flex;
+    align-items: center;
+    .dropList {
+      background: #424242;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 305px;
+      min-width: 305px;
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      .text {
+        font-family: 'TTInterfaces-Regular', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 22px;
+        color: #FFFFFF;
+        white-space: nowrap;
+      }
+      .arrow_down {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+      }
+      .calendar_icon {
+        margin-right: 19px;
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+      }
+      .calendar_arrow {
+        display: flex;
+        align-items: center;
+        .prev,
+        .next {
+          background-color: transparent;
+          border: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 13px 16px;
+          border-left: 1px solid  rgba(255, 255, 255, 0.1);
+          cursor: pointer;
+          img {
+            transform: rotate(90deg);
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+          }
+        }
+        .next {
+          img {
+            transform: rotate(-90deg);
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+          }
+        }
+      }
+    }
+    .calendar_dropList {
+      padding-bottom: 0;
+      padding-top: 0;
+      padding-right: 0;
+      position: relative;
+    }
+    & .dropList:first-child {
+      margin-right: 24px;
+    }
+  }
+`
+
+const TabHead = styled.div`
+  background: #424242;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  min-width: 305px;
+`
+
+const TabHeadNav = styled.div`
+  padding: 9px 0;
+  width: 50%;
+  font-family: 'TTInterfaces-Regular', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  color: #FFFFFF;
+  text-align: center;
+  cursor: pointer;
+  &.tabs-active {
+    background: #36B37E;
+    border-radius: 8px;
+  }
+`
+
 export {
   AdminUserWrap,
   TableWrap,
-  PaginationWrap
+  PaginationWrap,
+  InfoSection,
+  TabHead,
+  TabHeadNav
 }

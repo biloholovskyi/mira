@@ -133,7 +133,7 @@ const Balance = ({user, setSuccessModalText, loginUser, setErrorModalText}) => {
         data.set('email', e.target.selectUser.value);
         data.set('summa', e.target.transferSumma.value);
         data.set('type', 'inner')
-        data.set('operation', 'перевод')
+        data.set('operation', 'пополнение')
         data.set('user_id', getUser.id)
 
         // проверяем совпадают ли коды
