@@ -30,13 +30,41 @@ import ServerSettings from "../../service/serverSettings";
 import './App.css'
 
 // navigation
-const Dashboard = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/dashboard/dashboard")), 1500);});});
-const Settings = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/settings/settings")), 1500);});});
-const Balance = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/balance/balance")), 1500);});});
-const Faq = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/faq/faq")), 1500);});});
-const Deposit = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/deposit/deposit")), 1500);});});
-const Referral = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/referral/Referral")), 1500);});});
-const Notification = React.lazy(() => {return new Promise(resolve => {setTimeout(() => resolve(import("../../pages/notification/notification")), 1500);});});
+const Dashboard = React.lazy(() => {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(import("../../pages/dashboard/dashboard")), 1500);
+  });
+});
+const Settings = React.lazy(() => {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(import("../../pages/settings/settings")), 1500);
+  });
+});
+const Balance = React.lazy(() => {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(import("../../pages/balance/balance")), 1500);
+  });
+});
+const Faq = React.lazy(() => {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(import("../../pages/faq/faq")), 1500);
+  });
+});
+const Deposit = React.lazy(() => {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(import("../../pages/deposit/deposit")), 1500);
+  });
+});
+const Referral = React.lazy(() => {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(import("../../pages/referral/Referral")), 1500);
+  });
+});
+const Notification = React.lazy(() => {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(import("../../pages/notification/notification")), 1500);
+  });
+});
 
 const App = ({loginUser, user, getAllUsers, getAllBalance}) => {
   const [loading, setLoading] = useState(false);
@@ -129,9 +157,9 @@ const App = ({loginUser, user, getAllUsers, getAllBalance}) => {
   return (
     <>
       {
-        isAdmin
-        ? <AdminHeader/>
-        : <LeftSideBar/>
+        isAdmin && loading
+          ? <AdminHeader/>
+          : <LeftSideBar/>
       }
       {
         windowWidth < 900 && (
@@ -142,8 +170,10 @@ const App = ({loginUser, user, getAllUsers, getAllBalance}) => {
         <Switch>
           <Route path='/' exact>
             {
-              loading
+              loading && user.type === 'user'
                 ? <Redirect to={'/dashboard'}/>
+                : loading && user.type === 'admin'
+                ? <Redirect to={'/admin/users/'}/>
                 : <Redirect to={'/login'}/>
             }
           </Route>
@@ -161,24 +191,64 @@ const App = ({loginUser, user, getAllUsers, getAllBalance}) => {
                 : <Registration/>
             }
           </Route>
-          <Route path='/authorizationCode' exact component={AuthorizationCode}/>
+          <Route path='/authorizationCode' exact>
+            {
+              loading
+                ? <AuthorizationCode/>
+                : <Redirect to={'/login'}/>
+            }
+          </Route>
           <Route path='/temporaryPassword' exact component={TemporaryPassword}/>
           <Route path='/dashboard' exact component={Dashboard}>
             {
-              loading
+              loading && user.type === 'user'
                 ? <Dashboard/>
+                : loading && user.type === 'admin'
+                ? <Redirect to={'/admin/users'}/>
                 : <Redirect to={'/login'}/>
             }
           </Route>
           <Route path='/settings' exact component={Settings}/>
-          <Route path='/balance' exact component={Balance}/>
+          <Route path='/balance' exact >
+            {
+              loading && user.type === 'user'
+                ? <Balance/>
+                : loading && user.type === 'admin'
+                ? <Redirect to={'/admin/users'}/>
+                : <Redirect to={'/login'}/>
+            }
+          </Route>
           <Route path='/faq' exact component={Faq}/>
-          <Route path='/deposit' exact component={Deposit}/>
+          <Route path='/deposit' exact>
+            {
+              loading && user.type === 'user'
+                ? <Deposit/>
+                : loading && user.type === 'admin'
+                ? <Redirect to={'/admin/users'}/>
+                : <Redirect to={'/login'}/>
+            }
+          </Route>
           <Route path='/ref' exact component={Referral}/>
           <Route path='/forgotPassword' exact component={ForgotPassword}/>
           <Route path='/notification' exact component={Notification}/>
-          <Route path='/admin/users' exact component={AdminUsers}/>
-          <Route path='/admin/wallets' exact component={AdminWallets}/>
+          <Route path='/admin/users' exact>
+            {
+              loading && user.type === 'admin'
+                ? <AdminUsers/>
+                : loading && user.type === 'user'
+                ? <Redirect to='/dashboard'/>
+                : <Redirect to='/login'/>
+            }
+          </Route>
+          <Route path='/admin/wallets' exact>
+            {
+              loading && user.type === 'admin'
+                ? <AdminWallets/>
+                : loading && user.type === 'user'
+                ? <Redirect to='/dashboard'/>
+                : <Redirect to='/login'/>
+            }
+          </Route>
         </Switch>
       </Suspense>
     </>
