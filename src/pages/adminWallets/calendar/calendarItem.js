@@ -3,12 +3,13 @@ import DateRangePicker from "react-daterange-picker";
 import Moment from "moment";
 import { extendMoment } from "moment-range";
 
-// import DatePicker, { registerLocale } from "react-datepicker";
-import ru from "date-fns/locale/ru";
-
 import "./react-calendar.css";
-// registerLocale("ru", ru);
+
+import 'moment/locale/ru'
+const newLocal = Moment.locale('ru');
 const moment = extendMoment(Moment);
+
+
 const stateDefinitions = {
   available: {
     color: "transparent",
@@ -33,19 +34,22 @@ export default class CalendarItem extends React.Component {
     end: "",
     showNewMonth: true
   };
+
   dateRangePickerSelect = (range, states, dates, start, end, value) => {
     this.setState({ dates });
     this.setState({
       value: range,
       states: states
     });
-    let selectedStartDate = this.state.value.start.format("DD/MMM/YYYY");
-    let selectedEndDate = this.state.value.end.format("DD/MMM/YYYY");
+    let selectedStartDate = this.state.value.start.format("YYYY-MM-DD");
+    let selectedEndDate = this.state.value.end.format("YYYY-MM-DD");
 
     this.setState({
       start: selectedStartDate,
       end: selectedEndDate
     });
+    this.props.diapazonDate({from: selectedStartDate, to: selectedEndDate})
+    this.props.clickDiapasonDate();
   };
   displaySelectedDates = () => {
     return (
@@ -82,11 +86,9 @@ export default class CalendarItem extends React.Component {
   render() {
     let initialYear = this.state.setYear;
     let initialMonths = this.state.setMonth;
-
     let noOfMonths = 2;
 
     new Date().setDate(new Date().getDate() - 1);
-
     new Date().setDate(new Date().getDate() - 1);
 
     return (
@@ -103,6 +105,7 @@ export default class CalendarItem extends React.Component {
             initialMonth={initialMonths}
             initialYear={initialYear}
             firstOfWeek={1}
+            locale={newLocal}
           />
         )}
       </div>

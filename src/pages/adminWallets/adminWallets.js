@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 
 import MainButton from "../../components/mainButton/mainButton";
 import Pagination from "./pagination/pagination";
@@ -17,6 +17,13 @@ const AdminWallets = ({users, balance}) => {
   const [usersPerPage] = useState(12);
   const [tabStatus, setTabStatus] = useState('detail');
   const [showCalendar, setShowCalendar] = useState(false);
+  const [calendarTitle, setCalendarTitle] = useState('');
+  //записиваем диапазон выбраних дат
+  const [diapason, setDiapason] = useState({from: '', to: ''})
+
+  const getDiapasonDate = (value) => {
+    setDiapason(value)
+  }
   // change categories Tab
   const changeTab = (e, tab) => {
     setTabStatus(tab);
@@ -34,8 +41,8 @@ const AdminWallets = ({users, balance}) => {
   const sortList = allTopUp.map(event => {
     const date = event.date.split('T')[0]
     const myDate = formatDate(date)
-
-    return {...event, sortTime: myDate};
+    const test = new Date(date);
+    return {...event, sortTime: myDate, realDate: test};
   })
 
   // соритруем по дате
@@ -56,13 +63,15 @@ const AdminWallets = ({users, balance}) => {
     const sortList = TopUp.map(event => {
       const date = event.date.split('T')[0]
       const myDate = formatDate(date)
-      return {...event, sortTime: myDate};
+      const test = new Date(date);
+      return {...event, sortTime: myDate, realDate: test};
     })
 
     // перезаписиваем масив  с даными
     const getTopUp = sortList.filter(u => u.sortTime === myDate)
     setAllTopUp(getTopUp)
     setShowCalendar(false)
+    setCalendarTitle('Сегодня')
   }
 
   // сортируем масив за вчера
@@ -79,12 +88,14 @@ const AdminWallets = ({users, balance}) => {
     const sortList = TopUp.map(event => {
       const date = event.date.split('T')[0]
       const myDate = formatDate(date)
-      return {...event, sortTime: myDate};
+      const test = new Date(date);
+      return {...event, sortTime: myDate, realDate: test};
     })
 
     const getTopUp = sortList.filter(u => u.sortTime === newFormatYesterday)
     setAllTopUp(getTopUp)
     setShowCalendar(false)
+    setCalendarTitle('Вчера')
   }
 
   //сортируем масив за текущею неделю
@@ -105,12 +116,14 @@ const AdminWallets = ({users, balance}) => {
     const sortList = TopUp.map(event => {
       const date = event.date.split('T')[0]
       const myDate = formatDate(date)
-      return {...event, sortTime: myDate};
+      const test = new Date(date);
+      return {...event, sortTime: myDate, realDate: test};
     })
 
-    const getTopUp = sortList.filter(u => u.sortTime >= newFirstDay && u.sortTime <= newLastDay)
+    const getTopUp = sortList.filter(u => u.realDate >= firstDay && u.realDate <= lastDay)
     setAllTopUp(getTopUp)
     setShowCalendar(false)
+    setCalendarTitle('Эта неделя')
   }
 
   //сортируем масив за текущею неделю
@@ -130,14 +143,17 @@ const AdminWallets = ({users, balance}) => {
     const sortList = TopUp.map(event => {
       const date = event.date.split('T')[0]
       const myDate = formatDate(date)
-      return {...event, sortTime: myDate};
+      const test = new Date(date);
+      return {...event, sortTime: myDate, realDate: test};
     })
 
     const getTopUp = sortList.filter(u => u.sortTime >= newFirstDayOfMonth && u.sortTime <= newLastDayOfMonth)
     setAllTopUp(getTopUp)
     setShowCalendar(false)
+    setCalendarTitle('Этот месяц')
   }
 
+  //сортируем масив за последние две недели
   const handleClickTwoWeeks = () => {
     const dateNow = new Date();
     // первый день предедущей недели
@@ -145,10 +161,9 @@ const AdminWallets = ({users, balance}) => {
     const firstDayOfLastWeek = new Date(dateNow.setDate(firstDayOfTheWeek - 7));
 
     const newFirstDayOfLastWeek = firstDayOfLastWeek.toLocaleDateString()
-    console.log(newFirstDayOfLastWeek)
+
     const today = new Date;
     const newToday = today.toLocaleDateString()
-    console.log(newToday)
 
     // получаем все пополнения
     const TopUp = balance.filter(u => u.operation === 'пополнение')
@@ -157,14 +172,17 @@ const AdminWallets = ({users, balance}) => {
     const sortList = TopUp.map(event => {
       const date = event.date.split('T')[0]
       const myDate = formatDate(date)
-      return {...event, sortTime: myDate};
+      const test = new Date(date);
+      return {...event, sortTime: myDate, realDate: test};
     })
 
-
-    const getTopUp = sortList.filter(u => u.sortTime >= '20.07.2021' && u.sortTime <= '03.08.2021')
-    console.log(getTopUp)
+    const getTopUp = sortList.filter(u => u.realDate >= new Date(firstDayOfLastWeek) && u.realDate <= today)
+    setAllTopUp(getTopUp)
+    setShowCalendar(false)
+    setCalendarTitle('Последние две недели')
   }
 
+  // за год
   const handleClickYear = () => {
     const  today = new Date();
     const  currentYear = today.getFullYear();
@@ -178,11 +196,31 @@ const AdminWallets = ({users, balance}) => {
     const sortList = TopUp.map(event => {
       const date = event.date.split('T')[0]
       const myDate = formatDate(date)
-      return {...event, sortTime: myDate};
+      const test = new Date(date);
+      return {...event, sortTime: myDate, realDate: test};
     })
 
-    const getTopUp = sortList.filter(u => u.sortTime >= firstDayCurrYear.toLocaleDateString() && u.sortTime <= lastDayCurrYear.toLocaleDateString())
-    console.log(getTopUp)
+    const getTopUp = sortList.filter(u => u.realDate >= firstDayCurrYear && u.realDate <= lastDayCurrYear)
+    setAllTopUp(getTopUp)
+    setShowCalendar(false)
+    setCalendarTitle('Этот год')
+  }
+
+  const selectDiapasonDate = () => {
+    // получаем все пополнения
+    const TopUp = balance.filter(u => u.operation === 'пополнение')
+
+    // получаем дату и меняем в нужном формате
+    const sortList = TopUp.map(event => {
+      const date = event.date.split('T')[0]
+      const myDate = formatDate(date)
+      const test = new Date(date);
+      return {...event, sortTime: myDate, realDate: test};
+    })
+
+    const getTopUp = sortList.filter(u => u.realDate >= new Date(diapason.from) && u.realDate <= new Date(diapason.to))
+    setAllTopUp(getTopUp)
+    setShowCalendar(false)
   }
 
   // для пагинации
@@ -225,9 +263,7 @@ const AdminWallets = ({users, balance}) => {
             <div style={{position: "relative"}} className={'dropList_container'}>
               <button type={'button'} onClick={()=> setShowCalendar(!showCalendar)} className="dropList calendar_dropList">
                 <div className="text">
-                  <img src={calendar} alt="icon" className={'calendar_icon'}/>
-                  Этот месяц
-                </div>
+                  <img src={calendar} alt="icon" className={'calendar_icon'}/>{calendarTitle ? calendarTitle : 'За все время'}</div>
                 <div className="calendar_arrow">
                   <div  className={'prev'}> <img src={arrow} alt="icon" className={'arrow_down'} /></div>
                   <div  className={'next'}><img src={arrow} alt="icon" className={'arrow_down'} /></div>
@@ -242,6 +278,10 @@ const AdminWallets = ({users, balance}) => {
                 month={handleClickMonth}
                 twoWeeks={handleClickTwoWeeks}
                 year={handleClickYear}
+                activeBtn={calendarTitle}
+                diapasonDate={getDiapasonDate}
+                clickDiapasonDate={selectDiapasonDate}
+                setShowCalendar={setShowCalendar}
               />
                  )
                }

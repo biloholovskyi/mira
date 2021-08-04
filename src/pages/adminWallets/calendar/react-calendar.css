@@ -72,6 +72,7 @@
 
 .DateRangePicker__PaginationArrowIcon--is-disabled {
   opacity: .25;
+
 }
 
 .DateRangePicker__PaginationArrowIcon--previous {
@@ -119,6 +120,7 @@
 .DateRangePicker__MonthHeaderLabel {
   display: inline-block;
   position: relative;
+  text-transform: capitalize;
 }
 
 .DateRangePicker__MonthHeaderSelect {

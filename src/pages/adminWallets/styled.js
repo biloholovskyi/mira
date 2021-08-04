@@ -198,11 +198,12 @@ const InfoSection = styled.div`
       justify-content: space-between;
       cursor: pointer;
       border: none;
+      min-height: 47px;
       .text {
         font-family: 'TTInterfaces-Regular', sans-serif;
         font-style: normal;
         font-weight: normal;
-        font-size: 16px;
+        font-size: 14px;
         line-height: 22px;
         color: #FFFFFF;
         white-space: nowrap;
@@ -215,7 +216,7 @@ const InfoSection = styled.div`
         object-fit: contain;
       }
       .calendar_icon {
-        margin-right: 19px;
+        margin-right: 12px;
         width: 18px;
         height: 18px;
         object-fit: contain;

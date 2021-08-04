@@ -1,23 +1,38 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 
 import CalendarItem from './calendarItem';
 
 import {CalendarWrap} from './styled';
 
-const Calendar = ({today, yesterday, week, month, twoWeeks, year}) => {
+const Calendar = ({today, yesterday, week, month, twoWeeks, year, activeBtn, diapasonDate, clickDiapasonDate, setShowCalendar}) => {
+  // ссылка модалку
+  const selectEl = useRef(null);
+
+  // закрытие при клике вне елемента
+  const closeOutsideClick = (e) => {
+    if (selectEl.current && !selectEl.current.contains(e.target)) {
+      setShowCalendar(false)
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("click", (e) => closeOutsideClick(e));
+  }, []);
   return (
-    <CalendarWrap>
+    <CalendarWrap ref={selectEl}>
       <div className="left">
-        <button type={'button'} onClick={()=> today()}>Сегодня</button>
-        <button type={'button'} onClick={()=> yesterday()}>Вчера</button>
-        <button onClick={()=> week()}>Эта неделя</button>
-        <button onClick={()=> twoWeeks()}>Последние две недели</button>
-        <button onClick={()=> month()}>Этот месяц</button>
-        <button onClick={()=> year()}>Этот год</button>
-        <button>Прошлый год</button>
+        <button className={`${activeBtn === 'Сегодня' &&  'active'}`} type={'button'} onClick={()=> today()}>Сегодня</button>
+        <button className={`${activeBtn === 'Вчера' && 'active'}`} type={'button'} onClick={()=> yesterday()}>Вчера</button>
+        <button className={`${activeBtn === 'Эта неделя' && 'active'}`} onClick={()=> week()}>Эта неделя</button>
+        <button className={`${activeBtn === 'Последние две недели' && 'active'}`} onClick={()=> twoWeeks()}>Последние две недели</button>
+        <button className={`${activeBtn === 'Этот месяц' && 'active'}`} onClick={()=> month()}>Этот месяц</button>
+        <button className={`${activeBtn === 'Этот год' && 'active'}`} onClick={()=> year()}>Этот год</button>
       </div>
       <div className="right">
-        <CalendarItem/>
+        <CalendarItem
+          diapazonDate={diapasonDate}
+          clickDiapasonDate={clickDiapasonDate}
+        />
       </div>
     </CalendarWrap>
   )
