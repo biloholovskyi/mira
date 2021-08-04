@@ -16,7 +16,7 @@ const AdminWallets = ({users, balance}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(12);
   const [tabStatus, setTabStatus] = useState('detail');
-
+  const [showCalendar, setShowCalendar] = useState(false);
   // change categories Tab
   const changeTab = (e, tab) => {
     setTabStatus(tab);
@@ -218,26 +218,30 @@ const AdminWallets = ({users, balance}) => {
               <div className="text">Все пополнения</div>
               <img src={arrow} alt="icon" className={'arrow_down'} />
             </div>
-            <div className="dropList calendar_dropList">
+            <button type={'button'} onClick={()=> setShowCalendar(!showCalendar)} className="dropList calendar_dropList">
               <div className="text">
                 <img src={calendar} alt="icon" className={'calendar_icon'}/>
                 Этот месяц
               </div>
               <div className="calendar_arrow">
-                <button type={'button'} className={'prev'}> <img src={arrow} alt="icon" className={'arrow_down'} /></button>
-                <button type={'button'} className={'next'}><img src={arrow} alt="icon" className={'arrow_down'} /></button>
+                <div  className={'prev'}> <img src={arrow} alt="icon" className={'arrow_down'} /></div>
+                <div  className={'next'}><img src={arrow} alt="icon" className={'arrow_down'} /></div>
               </div>
 
-              <Calendar
-                today={handleClickToday}
-                yesterday={handleClickYesterday}
-                week={handleClickWeek}
-                month={handleClickMonth}
-                twoWeeks={handleClickTwoWeeks}
-                year={handleClickYear}
-              />
+              {/*{*/}
+              {/*  showCalendar && (*/}
+                  <Calendar
+                    today={handleClickToday}
+                    yesterday={handleClickYesterday}
+                    week={handleClickWeek}
+                    month={handleClickMonth}
+                    twoWeeks={handleClickTwoWeeks}
+                    year={handleClickYear}
+                  />
+              {/*   )*/}
+              {/* }*/}
 
-            </div>
+            </button>
           </div>
         </InfoSection>
         <TableWrap>

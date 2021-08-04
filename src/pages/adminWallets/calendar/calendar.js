@@ -8,8 +8,8 @@ const Calendar = ({today, yesterday, week, month, twoWeeks, year}) => {
   return (
     <CalendarWrap>
       <div className="left">
-        <button onClick={()=> today()}>Сегодня</button>
-        <button onClick={()=> yesterday()}>Вчера</button>
+        <button type={'button'} onClick={()=> today()}>Сегодня</button>
+        <button type={'button'} onClick={()=> yesterday()}>Вчера</button>
         <button onClick={()=> week()}>Эта неделя</button>
         <button onClick={()=> twoWeeks()}>Последние две недели</button>
         <button onClick={()=> month()}>Этот месяц</button>

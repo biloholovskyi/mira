@@ -197,6 +197,7 @@ const InfoSection = styled.div`
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
+      border: none;
       .text {
         font-family: 'TTInterfaces-Regular', sans-serif;
         font-style: normal;
