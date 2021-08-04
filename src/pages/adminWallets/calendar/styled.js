@@ -11,6 +11,9 @@ const CalendarWrap = styled.div`
   z-index: 20;
   width: 100%;
   max-width: 720px;
+  min-width: 720px;
+  display: flex;
+  align-items: center;
   .left {
     display: flex;
     flex-direction: column;
@@ -18,8 +21,9 @@ const CalendarWrap = styled.div`
     justify-content: space-between;
     padding: 24px 0;
     border-right: 1px solid  rgba(255, 255, 255, 0.1);
-    margin-right: 24px;
+    margin-right: 4px;
     max-width: 200px;
+    min-width: 200px;
     button {
       background-color: transparent;
       border: none;
@@ -39,6 +43,10 @@ const CalendarWrap = styled.div`
         color: #36B37E;
       }
     }
+  }
+  .right {
+    display: flex;
+    align-items: center;
   }
 `
 
