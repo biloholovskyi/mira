@@ -62,6 +62,7 @@ const AdminWallets = ({users, balance}) => {
     // перезаписиваем масив  с даными
     const getTopUp = sortList.filter(u => u.sortTime === myDate)
     setAllTopUp(getTopUp)
+    setShowCalendar(false)
   }
 
   // сортируем масив за вчера
@@ -83,6 +84,7 @@ const AdminWallets = ({users, balance}) => {
 
     const getTopUp = sortList.filter(u => u.sortTime === newFormatYesterday)
     setAllTopUp(getTopUp)
+    setShowCalendar(false)
   }
 
   //сортируем масив за текущею неделю
@@ -108,6 +110,7 @@ const AdminWallets = ({users, balance}) => {
 
     const getTopUp = sortList.filter(u => u.sortTime >= newFirstDay && u.sortTime <= newLastDay)
     setAllTopUp(getTopUp)
+    setShowCalendar(false)
   }
 
   //сортируем масив за текущею неделю
@@ -132,6 +135,7 @@ const AdminWallets = ({users, balance}) => {
 
     const getTopUp = sortList.filter(u => u.sortTime >= newFirstDayOfMonth && u.sortTime <= newLastDayOfMonth)
     setAllTopUp(getTopUp)
+    setShowCalendar(false)
   }
 
   const handleClickTwoWeeks = () => {
@@ -218,30 +222,30 @@ const AdminWallets = ({users, balance}) => {
               <div className="text">Все пополнения</div>
               <img src={arrow} alt="icon" className={'arrow_down'} />
             </div>
-            <button type={'button'} onClick={()=> setShowCalendar(!showCalendar)} className="dropList calendar_dropList">
-              <div className="text">
-                <img src={calendar} alt="icon" className={'calendar_icon'}/>
-                Этот месяц
-              </div>
-              <div className="calendar_arrow">
-                <div  className={'prev'}> <img src={arrow} alt="icon" className={'arrow_down'} /></div>
-                <div  className={'next'}><img src={arrow} alt="icon" className={'arrow_down'} /></div>
-              </div>
-
-              {/*{*/}
-              {/*  showCalendar && (*/}
-                  <Calendar
-                    today={handleClickToday}
-                    yesterday={handleClickYesterday}
-                    week={handleClickWeek}
-                    month={handleClickMonth}
-                    twoWeeks={handleClickTwoWeeks}
-                    year={handleClickYear}
-                  />
-              {/*   )*/}
-              {/* }*/}
-
-            </button>
+            <div style={{position: "relative"}}>
+              <button type={'button'} onClick={()=> setShowCalendar(!showCalendar)} className="dropList calendar_dropList">
+                <div className="text">
+                  <img src={calendar} alt="icon" className={'calendar_icon'}/>
+                  Этот месяц
+                </div>
+                <div className="calendar_arrow">
+                  <div  className={'prev'}> <img src={arrow} alt="icon" className={'arrow_down'} /></div>
+                  <div  className={'next'}><img src={arrow} alt="icon" className={'arrow_down'} /></div>
+                </div>
+              </button>
+              {
+                showCalendar && (
+              <Calendar
+                today={handleClickToday}
+                yesterday={handleClickYesterday}
+                week={handleClickWeek}
+                month={handleClickMonth}
+                twoWeeks={handleClickTwoWeeks}
+                year={handleClickYear}
+              />
+                 )
+               }
+            </div>
           </div>
         </InfoSection>
         <TableWrap>
