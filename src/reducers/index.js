@@ -13,6 +13,7 @@ const initialState = {
   balance: [],
   //все заявки на вывод средств
   cashout: [],
+  deposit: [],
   // success message
   successModal: false,
   // error message
@@ -51,6 +52,12 @@ const reducer = (state= initialState, action) => {
       return {
         ...state,
         cashout: action.cashout
+      }
+
+    case 'GET_ALL_DEPOSIT':
+      return {
+        ...state,
+        deposit: action.deposit
       }
 
     case 'SHOW_ERROR_MODAL':

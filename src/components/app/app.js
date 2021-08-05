@@ -3,7 +3,7 @@ import {Redirect, Route, Switch} from "react-router";
 import {connect} from "react-redux";
 import axios from "axios";
 
-import {loginUser, getAllUsers, getAllBalance, getAllCashout} from '../../actions/index';
+import {loginUser, getAllUsers, getAllBalance, getAllCashout, getAllDeposit} from '../../actions/index';
 
 import Login from '../../pages/login/login';
 import Registration from '../../pages/registration/registration'
@@ -30,6 +30,7 @@ import AdminFaq from "../../pages/adminFaq/adminFaq";
 import ServerSettings from "../../service/serverSettings";
 
 import './App.css'
+import AdminPrograms from "../../pages/adminPrograms/adminPrograms";
 
 // navigation
 const Dashboard = React.lazy(() => {
@@ -68,7 +69,7 @@ const Notification = React.lazy(() => {
   });
 });
 
-const App = ({loginUser, user, getAllUsers, getAllBalance, getAllCashout}) => {
+const App = ({loginUser, user, getAllUsers, getAllBalance, getAllCashout, getAllDeposit}) => {
   const [loading, setLoading] = useState(false);
   // window width
   const [windowWidth, setWidth] = useState(window.innerWidth);
@@ -166,6 +167,23 @@ const App = ({loginUser, user, getAllUsers, getAllBalance, getAllCashout}) => {
 
   useEffect(()=> {
     getCashout().catch(error => console.error(error))
+  }, [])
+
+  // получаем все депозиты
+  const getDEposit = async () => {
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const server = new ServerSettings();
+
+    await axios.get(`${server.getApi()}api/deposit/`)
+      .then(res => {
+        getAllDeposit(res.data)
+      }).catch(error => console.error(error))
+  }
+
+  useEffect(()=> {
+    getDEposit().catch(error => console.error(error))
   }, [])
 
   let isAdmin = window.location.pathname.split("/")[1] === "admin";
@@ -286,6 +304,15 @@ const App = ({loginUser, user, getAllUsers, getAllBalance, getAllCashout}) => {
                 : <Redirect to='/login'/>
             }
           </Route>
+          <Route path='/admin/programs' exact>
+            {
+              loading && user.type === 'admin'
+                ? <AdminPrograms/>
+                : loading && user.type === 'user'
+                ? <Redirect to='/dashboard'/>
+                : <Redirect to='/login'/>
+            }
+          </Route>
         </Switch>
       </Suspense>
     </>
@@ -303,7 +330,8 @@ const mapDispatchToProps = {
   loginUser,
   getAllUsers,
   getAllBalance,
-  getAllCashout
+  getAllCashout,
+  getAllDeposit
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

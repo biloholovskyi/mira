@@ -26,6 +26,13 @@ const getAllCashout = (cashout) => {
   }
 }
 
+const getAllDeposit = (deposit) => {
+  return {
+    type: 'GET_ALL_DEPOSIT',
+    deposit
+  }
+}
+
 // передаем текст в success modal
 const setSuccessModalText = (text) => {
   return {type: 'SHOW_SUCCESS_MODAL', text}
@@ -42,5 +49,6 @@ export {
   setSuccessModalText,
   setErrorModalText,
   getAllBalance,
-  getAllCashout
+  getAllCashout,
+  getAllDeposit
 }
