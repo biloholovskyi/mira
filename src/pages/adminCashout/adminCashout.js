@@ -13,6 +13,7 @@ import all from './media/all.svg';
 import ServerSettings from "../../service/serverSettings";
 import {loginUser, getAllCashout} from '../../actions/index';
 import {connect} from "react-redux";
+import {Redirect} from "react-router";
 
 const AdminCashout = ({users, cashout, loginUser, getAllCashout}) => {
   const [tabStatus, setTabStatus] = useState('on_moderation');
@@ -57,7 +58,7 @@ const AdminCashout = ({users, cashout, loginUser, getAllCashout}) => {
     const dateReal = new Date(date);
     return {...event, sortTime: myDate, realDate: dateReal};
   })
-
+console.log(cashoutOnModeration)
   // соритруем по дате
   sortList.sort((a, b) => {
     return new Date(a.sortTime).getTime() - new Date(b.sortTime).getTime()
@@ -303,6 +304,7 @@ const AdminCashout = ({users, cashout, loginUser, getAllCashout}) => {
         data3.set("wallet", getRequest.wallet);
         data3.set("user_id", res.data.id);
         data3.set('status', 'successful')
+        data3.set('date', getRequest.date)
 
         //создаем заявку на вывод средств
         axios.put(`${server.getApi()}api/cashout/${getRequest.id}/update/`, data3)
@@ -311,7 +313,8 @@ const AdminCashout = ({users, cashout, loginUser, getAllCashout}) => {
             axios.get(`${server.getApi()}api/cashout/`)
               .then(res => {
                 getAllCashout(res.data)
-                updateList(res.data)
+                // updateList(res.data)
+                window.location.assign('/admin/cashout/')
               }).catch(error => console.error(error))
 
           }).catch(error => console.error(error))
@@ -320,9 +323,9 @@ const AdminCashout = ({users, cashout, loginUser, getAllCashout}) => {
   }
 
   // обновляем баланс
-  const updateList = (event) => {
-    setCashOutOnModeration([...cashoutOnModeration, event])
-  }
+  // const updateList = (event) => {
+  //   setCashOutOnModeration([...cashoutOnModeration, event])
+  // }
 
 
   // selectedSum.reduce((a, b) => a + b, 0)
