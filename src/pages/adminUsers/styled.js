@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 const AdminUserWrap = styled.div`
-  padding-top: 64px;
-  padding-bottom: 64px;
+  padding-top: 60px;
+  padding-bottom: 60px;
   .title_section {
     display: flex;
     width: 100%;

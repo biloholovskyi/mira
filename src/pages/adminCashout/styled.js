@@ -1,8 +1,12 @@
 import styled from 'styled-components';
 
+import ok from './media/ok.svg';
+
 const AdminUserWrap = styled.div`
   padding-top: 60px;
   padding-bottom: 60px;
+  min-height: calc(100vh - 84px);
+  position: relative;
   .title_section {
     display: flex;
     width: 100%;
@@ -82,10 +86,34 @@ const TableWrap = styled.table`
         line-height: 22px;
         text-align: right;
         color: #FFFFFF;
-        
+        input[type=checkbox] {
+          appearance: none;
+          display: inline-block;
+          width: 18px;
+          height: 18px;
+          border: 1px solid #424242;
+          box-sizing: border-box;
+          border-radius: 2px;
+          background-clip: content-box;
+          margin-right: 16px;
+          position: relative;
+          &:checked {
+            background-color: #36B37E;
+            border-radius: 2px;
+            background-image: url(${ok});
+            background-size: 12px;
+            background-repeat: no-repeat;
+           background-position: center;
+          }
+          &:focus {
+            outline: none!important;
+          }
+        }
       }
       & td:first-child{
         text-align: left;
+        display: flex;
+        align-items: center;
       }
     }
 
@@ -165,7 +193,6 @@ const PaginationWrap = styled.ul`
 `
 
 const InfoSection = styled.div`
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -182,6 +209,7 @@ const InfoSection = styled.div`
       color: #D0D0D4;
       margin-right: 24px;
     }
+    margin-right: 24px;
   }
   .right {
     display: flex;
@@ -295,11 +323,96 @@ const TabHeadNav = styled.div`
   }
 `
 
+const CashoutInfoModal = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 24px;
+  padding: 16px 24px;
+  background: #212121;
+  box-shadow: 0px 100px 179px rgba(0, 0, 0, 0.16), 0px 22.3363px 39.982px rgba(0, 0, 0, 0.0953772), 0px 6.6501px 11.9037px rgba(0, 0, 0, 0.0646228);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  max-height: 72px;
+  .text {
+    font-family: 'TTInterfaces-Regular', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    color: #FFFFFF;
+    margin-right: 32px;
+  }
+ .cancel {
+   background-color: transparent;
+   border: none;
+   margin-left: 16px;
+   font-family: 'TTInterfaces-Regular', sans-serif;
+   font-style: normal;
+   font-weight: normal;
+   font-size: 14px;
+   line-height: 22px;
+   color: #9E9E9E;
+   cursor: pointer;
+ }
+  .select_all {
+    background-color: transparent;
+    border: none;
+    margin-right: 24px;
+    cursor: pointer;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    position: relative;
+    .hover {
+      display: none;
+      font-family: 'TTInterfaces-Regular', sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 22px;
+      color: #FFFFFF;
+      padding: 5px 10px;
+      background: rgba(0, 0, 0, 0.72);
+      border-radius: 2px;
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      &::after {
+        content: '';
+        width: 8px;
+        height: 8px;
+        background: rgba(0, 0, 0, 0.72);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        bottom: -4px;
+      }
+    }
+    img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+    &:hover {
+      transition: .3s;
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+    &:hover .hover{
+      display: block;
+    }
+  }
+`
+
 export {
   AdminUserWrap,
   TableWrap,
   PaginationWrap,
   InfoSection,
   TabHead,
-  TabHeadNav
+  TabHeadNav,
+  CashoutInfoModal
 }

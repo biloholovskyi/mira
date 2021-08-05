@@ -16,7 +16,7 @@ const AdminHeader = () => {
         <NavLink to='/admin/users'>Пользователи</NavLink>
         <NavLink to='/admin/programs'>Активные программы</NavLink>
         <NavLink to='/admin/wallets'>Пополнения кошелька</NavLink>
-        <NavLink to='/admin/test'>Заявки на вывод</NavLink>
+        <NavLink to='/admin/cashout'>Заявки на вывод</NavLink>
         <NavLink to='/admin/faq'>FAQ</NavLink>
       </NavList>
 

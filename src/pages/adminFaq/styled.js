@@ -1,8 +1,12 @@
 import styled from 'styled-components';
 
+import ok from './media/ok.svg';
+
 const AdminUserWrap = styled.div`
   padding-top: 60px;
   padding-bottom: 60px;
+  min-height: calc(100vh - 84px);
+  position: relative;
   .title_section {
     display: flex;
     width: 100%;
@@ -17,6 +21,55 @@ const AdminUserWrap = styled.div`
       font-size: 28px;
       line-height: 36px;
       color: #FFFFFF;
+    }
+    .right {
+      display: flex;
+      align-items: center;
+      .search {
+        background: #424242;
+        border-radius: 12px;
+        min-width: 300px;
+        display: flex;
+        align-items: center;
+        margin-right: 24px;
+        position: relative;
+        input {
+          height: 48px;
+          background-color: transparent;
+          border: none;
+          width: 100%;
+          border-radius: 12px;
+          padding-left: 56px;
+          font-family: 'TTInterfaces-Regular', sans-serif;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 16px;
+          line-height: 22px;
+          color: rgba(255, 255, 255, 0.64);
+          &::placeholder {
+            font-family: 'TTInterfaces-Regular', sans-serif;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 16px;
+            line-height: 22px;
+            color: rgba(255, 255, 255, 0.64);
+          }
+        }
+        img {
+          width: 24px;
+          height: 24px;
+          object-fit: contain;
+          position: absolute;
+          left: 16px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+      }
+    }
+    & .right div:nth-child(2){
+      min-width: 300px;
+      margin-bottom: 0;
+      margin-right: 24px;
     }
   }
   .bottom_info {
@@ -53,17 +106,17 @@ const TableWrap = styled.table`
         font-size: 14px;
         line-height: 20px;
         color: #9E9E9E;
-        text-align: right;
+        text-align: left;
         padding-bottom: 14px;
         border-bottom: 2px solid #424242;
         //padding-right: 15px;
-        width: 20%;
+        padding-right: 20px;
+        width: 33%;
       }
     }
 
     & tr th:first-child {
       text-align: left;
-      width: 40%;
     }
   }
 
@@ -80,38 +133,15 @@ const TableWrap = styled.table`
         font-weight: normal;
         font-size: 16px;
         line-height: 22px;
-        text-align: right;
+        text-align: left;
         color: #FFFFFF;
-        
+        padding-right: 20px;
+        vertical-align: top;
       }
       & td:first-child{
         text-align: left;
-      }
-    }
-
-    & tr:hover {
-      background: #212121;
-      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.16);
-      border-radius: 12px;
-      border-bottom: none;
-      transition: 0.5s;
-      transform: scale(1.04);
-
-      & td {
-        padding: 20px 0;
-        background: #212121;
-      }
-
-      & td:first-child {
-        padding-left: 20px;
-        border-top-left-radius: 12px;
-        border-bottom-left-radius: 12px;
-      }
-
-      & td:last-child {
-        padding-right: 20px;
-        border-top-right-radius: 12px;
-        border-bottom-right-radius: 12px;
+        display: flex;
+        align-items: center;
       }
     }
   }
@@ -165,7 +195,6 @@ const PaginationWrap = styled.ul`
 `
 
 const InfoSection = styled.div`
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -182,6 +211,7 @@ const InfoSection = styled.div`
       color: #D0D0D4;
       margin-right: 24px;
     }
+    margin-right: 24px;
   }
   .right {
     display: flex;
@@ -295,11 +325,96 @@ const TabHeadNav = styled.div`
   }
 `
 
+const CashoutInfoModal = styled.div`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 24px;
+  padding: 16px 24px;
+  background: #212121;
+  box-shadow: 0px 100px 179px rgba(0, 0, 0, 0.16), 0px 22.3363px 39.982px rgba(0, 0, 0, 0.0953772), 0px 6.6501px 11.9037px rgba(0, 0, 0, 0.0646228);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  max-height: 72px;
+  .text {
+    font-family: 'TTInterfaces-Regular', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    color: #FFFFFF;
+    margin-right: 32px;
+  }
+ .cancel {
+   background-color: transparent;
+   border: none;
+   margin-left: 16px;
+   font-family: 'TTInterfaces-Regular', sans-serif;
+   font-style: normal;
+   font-weight: normal;
+   font-size: 14px;
+   line-height: 22px;
+   color: #9E9E9E;
+   cursor: pointer;
+ }
+  .select_all {
+    background-color: transparent;
+    border: none;
+    margin-right: 24px;
+    cursor: pointer;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    position: relative;
+    .hover {
+      display: none;
+      font-family: 'TTInterfaces-Regular', sans-serif;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 22px;
+      color: #FFFFFF;
+      padding: 5px 10px;
+      background: rgba(0, 0, 0, 0.72);
+      border-radius: 2px;
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      &::after {
+        content: '';
+        width: 8px;
+        height: 8px;
+        background: rgba(0, 0, 0, 0.72);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        bottom: -4px;
+      }
+    }
+    img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+    &:hover {
+      transition: .3s;
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+    &:hover .hover{
+      display: block;
+    }
+  }
+`
+
 export {
   AdminUserWrap,
   TableWrap,
   PaginationWrap,
   InfoSection,
   TabHead,
-  TabHeadNav
+  TabHeadNav,
+  CashoutInfoModal
 }

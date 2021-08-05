@@ -19,6 +19,13 @@ const getAllBalance = (balance) => {
   }
 }
 
+const getAllCashout = (cashout) => {
+  return {
+    type: 'GET_ALL_CASHOUT',
+    cashout
+  }
+}
+
 // передаем текст в success modal
 const setSuccessModalText = (text) => {
   return {type: 'SHOW_SUCCESS_MODAL', text}
@@ -34,5 +41,6 @@ export {
   getAllUsers,
   setSuccessModalText,
   setErrorModalText,
-  getAllBalance
+  getAllBalance,
+  getAllCashout
 }

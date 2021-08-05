@@ -144,23 +144,39 @@ const WithDraw = ({close, user, update, loginUser, setErrorModalText}) => {
           const data2 = new FormData();
           data2.set("user_balance", newBalance);
 
-          // обновляем баланс юзера
-          axios.put(`${server.getApi()}api/users/${user.id}/update/`, data2)
+          // // обновляем баланс юзера
+          // axios.put(`${server.getApi()}api/users/${user.id}/update/`, data2)
+          //   .then(res => {
+          //     axios.get(`${server.getApi()}api/users/${user.id}/`)
+          //       .then(res => {
+          //         loginUser(res.data)
+          //       }).catch(error => console.error(error))
+          //   })
+          //   .catch(error => console.error(error))
+          //
+          // // обновляем список транзакций
+          // axios.post(`${server.getApi()}api/balance/`, data)
+          //   .then(res => {
+          //     setSuccessModal(res.data)
+          //   }).catch(error => {
+          //   console.error(error);
+          // });
+
+          const today = new Date();
+
+          const data3 = new FormData();
+          data3.set('summa',  e.target.summa.value);
+          data3.set('wallet', e.target.wallet.value)
+          data3.set("user_id", user.id);
+          data3.set("date", today.toLocaleDateString());
+          data3.set('status', 'on_moderation')
+          //создаем заявку на вывод средств
+          axios.post(`${server.getApi()}api/cashout/`, data3)
             .then(res => {
-              axios.get(`${server.getApi()}api/users/${user.id}/`)
-                .then(res => {
-                  loginUser(res.data)
-                }).catch(error => console.error(error))
+              setSuccessModal(res.data)
             })
             .catch(error => console.error(error))
 
-          // обновляем список транзакций
-          axios.post(`${server.getApi()}api/balance/`, data)
-            .then(res => {
-              setSuccessModal(res.data)
-            }).catch(error => {
-            console.error(error);
-          });
         } else {
           console.log('error')
           validationInput();
@@ -226,7 +242,7 @@ const WithDraw = ({close, user, update, loginUser, setErrorModalText}) => {
         successModal && (
           <SuccessModal
             close={closeModal}
-            title={'Вы успешно вывели деньги'}
+            title={'Ваша заявка на модерации'}
             data={successModal}
           />
         )

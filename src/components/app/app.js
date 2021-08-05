@@ -3,7 +3,7 @@ import {Redirect, Route, Switch} from "react-router";
 import {connect} from "react-redux";
 import axios from "axios";
 
-import {loginUser, getAllUsers, getAllBalance} from '../../actions/index';
+import {loginUser, getAllUsers, getAllBalance, getAllCashout} from '../../actions/index';
 
 import Login from '../../pages/login/login';
 import Registration from '../../pages/registration/registration'
@@ -16,6 +16,8 @@ import Preloader from "../preloader/preloader";
 import AdminHeader from "../adminHeader/adminHeader";
 import AdminUsers from "../../pages/adminUsers/adminUsers";
 import AdminWallets from "../../pages/adminWallets/adminWallets";
+import AdminCashout from "../../pages/adminCashout/adminCashout";
+import AdminFaq from "../../pages/adminFaq/adminFaq";
 
 //import Dashboard from '../../pages/dashboard/dashboard';
 // import Settings from '../../pages/settings/settings';
@@ -66,7 +68,7 @@ const Notification = React.lazy(() => {
   });
 });
 
-const App = ({loginUser, user, getAllUsers, getAllBalance}) => {
+const App = ({loginUser, user, getAllUsers, getAllBalance, getAllCashout}) => {
   const [loading, setLoading] = useState(false);
   // window width
   const [windowWidth, setWidth] = useState(window.innerWidth);
@@ -147,6 +149,23 @@ const App = ({loginUser, user, getAllUsers, getAllBalance}) => {
 
   useEffect(() => {
     getBalance().catch(error => console.error(error));
+  }, [])
+
+  // получаем все заявки
+  const getCashout = async () => {
+    axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+    axios.defaults.xsrfCookieName = 'csrftoken';
+
+    const server = new ServerSettings();
+
+    await axios.get(`${server.getApi()}api/cashout/`)
+      .then(res => {
+        getAllCashout(res.data)
+      }).catch(error => console.error(error))
+  }
+
+  useEffect(()=> {
+    getCashout().catch(error => console.error(error))
   }, [])
 
   let isAdmin = window.location.pathname.split("/")[1] === "admin";
@@ -249,6 +268,24 @@ const App = ({loginUser, user, getAllUsers, getAllBalance}) => {
                 : <Redirect to='/login'/>
             }
           </Route>
+          <Route path='/admin/cashout' exact>
+            {
+              loading && user.type === 'admin'
+                ? <AdminCashout/>
+                : loading && user.type === 'user'
+                ? <Redirect to='/dashboard'/>
+                : <Redirect to='/login'/>
+            }
+          </Route>
+          <Route path='/admin/faq' exact>
+            {
+              loading && user.type === 'admin'
+                ? <AdminFaq/>
+                : loading && user.type === 'user'
+                ? <Redirect to='/dashboard'/>
+                : <Redirect to='/login'/>
+            }
+          </Route>
         </Switch>
       </Suspense>
     </>
@@ -265,7 +302,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
   loginUser,
   getAllUsers,
-  getAllBalance
+  getAllBalance,
+  getAllCashout
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
