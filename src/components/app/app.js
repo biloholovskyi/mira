@@ -241,7 +241,7 @@ const App = ({loginUser, user, getAllUsers, getAllBalance, getAllCashout, getAll
               loading && user.type === 'user'
                 ? <Dashboard/>
                 : loading && user.type === 'admin'
-                ? <Redirect to={'/admin/users'}/>
+                ? <Redirect to={'/admin/'}/>
                 : <Redirect to={'/login'}/>
             }
           </Route>

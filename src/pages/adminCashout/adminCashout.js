@@ -28,6 +28,8 @@ const AdminCashout = ({users, cashout, loginUser, getAllCashout}) => {
   const [diapason, setDiapason] = useState({from: '', to: ''})
   const [checkedModal, setCheckedModal] = useState([])
   const [selectedSum, setSelectedSum] = useState([])
+  const [totalSum, setTotalSum] = useState('');
+
 
   const getDiapasonDate = (value) => {
     setDiapason(value)
@@ -58,7 +60,7 @@ const AdminCashout = ({users, cashout, loginUser, getAllCashout}) => {
     const dateReal = new Date(date);
     return {...event, sortTime: myDate, realDate: dateReal};
   })
-console.log(cashoutOnModeration)
+
   // соритруем по дате
   sortList.sort((a, b) => {
     return new Date(a.sortTime).getTime() - new Date(b.sortTime).getTime()
@@ -246,89 +248,86 @@ console.log(cashoutOnModeration)
 
   const handleChange = ({target}) => {
     if (target.checked){
-      const getUser = cashoutOnModeration.find(u => parseInt(u.id) === parseInt(target.value))
+      const getUser = cashoutOnModeration.find(u => parseInt(u.id) === parseInt(target.value));
 
-      setSelectedSum([...selectedSum, getUser.summa])
-      setCheckedModal([...checkedModal, getUser.id])
-      target.removeAttribute('checked');
-
-    } else {
-      const index = checkedModal.findIndex(elem => parseInt(elem) === parseInt(target.value));
-      const newData = [...checkedModal.slice(0, index), ...checkedModal.slice(index + 1)];
-      const newData2 = [...selectedSum.slice(0, index), ...selectedSum.slice(index + 1)];
-
-      setCheckedModal(newData)
-      setSelectedSum(newData2)
+      setSelectedSum([...selectedSum, getUser])
       target.setAttribute('checked', true);
+    } else {
+      const index = selectedSum.findIndex(elem => parseInt(elem.id) === parseInt(target.value));
+      const newData = [...selectedSum.slice(0, index), ...selectedSum.slice(index + 1)];
+
+      setSelectedSum(newData)
+      target.removeAttribute('checked');
     }
   }
 
-  const successfulCashOut = async () => {
+  useEffect(()=> {
+    const allPercent = selectedSum.map(u => parseFloat(u.summa))
+    const totalPerc = allPercent.reduce((a, b) => a + b, 0)
+    setTotalSum(totalPerc)
+  })
+  const successCashOut = async () => {
     axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
     axios.defaults.xsrfCookieName = 'csrftoken';
 
     const server = new ServerSettings();
 
-    const allRequest = checkedModal
+    selectedSum.map(item => {
 
-    const getRequest = cashoutOnModeration.find(u => u.id === allRequest[0])
-    console.log(getRequest)
+      axios.get(`${server.getApi()}api/users/${item.user_id}/`)
+        .then(res => {
+          const newBalance = parseInt(res.data.user_balance) - (parseInt(item.summa) + (item.summa * 8 / 100));
 
-    await axios.get(`${server.getApi()}api/users/${getRequest.user_id}/`)
-      .then(res => {
-        const newBalance = parseInt(res.data.user_balance) - (parseInt(getRequest.summa) + (getRequest.summa * 8 / 100));
+          const data = new FormData()
+          data.set("user_balance", newBalance);
 
-        const data2 = new FormData()
-        data2.set("user_balance", newBalance);
+          // обновляем баланс юзера
+          axios.put(`${server.getApi()}api/users/${res.data.id}/update/`, data)
+            .catch(error => console.error(error))
 
-        // обновляем баланс юзера
-        axios.put(`${server.getApi()}api/users/${getRequest.user_id}/update/`, data2)
-          .catch(error => console.error(error))
+          // обновляем список транзакций
+          const data2 = new FormData();
+          data2.set("summa", item.summa);
+          data2.set("wallet", item.wallet);
+          data2.set("user_id", item.user_id);
+          data2.set('operation', 'вывод средств')
+          data2.set('background', '#FF3842')
 
-        const data = new FormData();
-        data.set("summa", getRequest.summa);
-        data.set("wallet", getRequest.wallet);
-        data.set("user_id", res.data.id);
-        data.set('operation', 'вывод средств')
-        data.set('background', '#FF3842')
+          axios.post(`${server.getApi()}api/balance/`, data2)
+            .catch(error => {console.error(error);});
 
-        // обновляем список транзакций
-        axios.post(`${server.getApi()}api/balance/`, data)
-          .catch(error => {
-          console.error(error);
-        });
+          //обновляем заявки на вывод средств
+          const data3 = new FormData();
+          data3.set("summa", item.summa);
+          data3.set("wallet", item.wallet);
+          data3.set("user_id", item.user_id);
+          data3.set('status', 'successful')
 
-        const data3 = new FormData();
+          axios.put(`${server.getApi()}api/cashout/${item.id}/update/`, data3)
+            .then(res => {
 
-        data3.set("summa", getRequest.summa);
-        data3.set("wallet", getRequest.wallet);
-        data3.set("user_id", res.data.id);
-        data3.set('status', 'successful')
-        data3.set('date', getRequest.date)
+              axios.get(`${server.getApi()}api/cashout/`)
+                .then(res => {
+                  getAllCashout(res.data)
 
-        //создаем заявку на вывод средств
-        axios.put(`${server.getApi()}api/cashout/${getRequest.id}/update/`, data3)
-          .then(res => {
+                  const currentCashOut = res.data.filter(u => u.status === 'on_moderation');
+                  setCashOutOnModeration(currentCashOut)
+                  setSelectedSum([])
+                }).catch(error => console.error(error))
 
-            axios.get(`${server.getApi()}api/cashout/`)
-              .then(res => {
-                getAllCashout(res.data)
-                // updateList(res.data)
-                window.location.assign('/admin/cashout/')
-              }).catch(error => console.error(error))
+            }).catch(error => console.error(error))
 
-          }).catch(error => console.error(error))
 
-      }).catch(error => console.error(error))
+        }).catch(error => console.error(error))
+    })
+
   }
 
-  // обновляем баланс
-  // const updateList = (event) => {
-  //   setCashOutOnModeration([...cashoutOnModeration, event])
-  // }
+  const cancelAll = () => {
+    setSelectedSum([])
+    document.location.assign('/admin/cashout')
+  }
 
-
-  // selectedSum.reduce((a, b) => a + b, 0)
   return (
     <div className={'admin_container'}>
       <AdminUserWrap>
@@ -398,6 +397,8 @@ console.log(cashoutOnModeration)
                       onClick={handleChange}
                       type="checkbox"
                       value={item.id}
+                      className={'check'}
+                      defaultChecked={false}
                     />
                     {getNickName.email.split('@')[0]}</td>
                   <td>{dateNormal}</td>
@@ -412,7 +413,7 @@ console.log(cashoutOnModeration)
         <div className="bottom_info">
           <Pagination
             usersPerPage={usersPerPage}
-            totalUsers={cashout.length}
+            totalUsers={cashoutOnModeration.length}
             paginate={paginate}
             currentPage={currentPage}
           />
@@ -426,19 +427,19 @@ console.log(cashoutOnModeration)
           </div>
         </div>
         {
-          checkedModal.length !== 0 && (
+          selectedSum.length > 0 && (
             <CashoutInfoModal >
-              <button className={'select_all'}>
+              <button  className={'select_all'}>
                 <div className="hover">Выбрать все</div>
                 <img src={all} alt="icon"/>
               </button>
-              <div className="text">Выбрано {checkedModal.length} заявки на сумму 0 MRC</div>
+              <div className="text">Выбрано {selectedSum.length} заявки на сумму {totalSum} MRC</div>
               <MainButton
                 text={'Одобрить'}
                 colorBg={true}
-                func={successfulCashOut}
+                func={successCashOut}
               />
-              <button className={'cancel'}>Отменить</button>
+              <button onClick={cancelAll} className={'cancel'}>Отменить</button>
             </CashoutInfoModal>
           )
         }

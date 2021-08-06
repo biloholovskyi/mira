@@ -363,6 +363,7 @@ const CashoutInfoModal = styled.div`
     cursor: pointer;
     width: 42px;
     height: 42px;
+    min-width: 42px;
     border-radius: 50%;
     position: relative;
     .hover {
